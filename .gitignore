@@ -1,0 +1,24 @@
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+desktop.ini
+
+
+
+
+
+# Go
+*.exe
+*.dll
+*.so
+*.dylib
+*.test
+vendor/
+
+# IDE and editor settings
+.vscode/
+.idea/
+
+
