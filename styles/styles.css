@@ -6,10 +6,9 @@
 body {
   background: linear-gradient(
     to right,
-    #2c3e50,
-    #fd746c,
-    #2c3e50
+    #ffffff,
+    #eb8500
   ); /* Градиент от тёмного серого к оранжевому */
-  color: #ffffff;
+  color: #5b95f0;
   font-family: Arial, sans-serif;
 }
