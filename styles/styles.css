@@ -4,11 +4,7 @@
   object-fit: cover;
 }
 body {
-  background: linear-gradient(
-    to right,
-    #ffffff,
-    #eb8500
-  ); /* Градиент от тёмного серого к оранжевому */
+  background: linear-gradient(to right, #ffffff, #eb8500);
   color: #5b95f0;
   font-family: Arial, sans-serif;
 }
