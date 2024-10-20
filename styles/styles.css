@@ -8,3 +8,8 @@ body {
   color: #5b95f0;
   font-family: Arial, sans-serif;
 }
+
+#label_for_reg {
+  display: block;
+  margin-bottom: 10px;
+}
