@@ -1,4 +1,4 @@
-/** {
+/* * {
   box-sizing: border-box;
   font-size: 0;
   margin: 0;
@@ -16,11 +16,7 @@
   height: 120px;
 }
 
-.mb-3 form-check {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  align-items: center;
-  gap: 5px;
+header {
 }
 
 .wrapper {
@@ -39,7 +35,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 27, 159, 0.81);
+  background-color: rgba(0, 32, 70, 0.7);
 }
 
 .content {
@@ -49,28 +45,4 @@
   transform: translate(-50%, -50%);
   color: white;
   text-align: center;
-}
-
-.github {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-}
-
-.github-icon {
-  width: 30px;
-  height: 30px;
-  color: #000000;
-  transition: color 0.3s ease;
-}
-
-.github-icon:hover {
-  color: #007bff;
-}
-
-@font-face {
-  font-family: 'Actay';
-  src: url(../fonts/OTF/ActayFamily/Actay-Regular.otf) format('otf');
-  font-weight: normal;
-  font-style: normal;
 }
