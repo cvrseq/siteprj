@@ -68,6 +68,23 @@
   color: #007bff;
 }
 
+.theme {
+  position: absolute;
+  top: 10px;
+  right: 60px;
+}
+
+#theme-icon {
+  width: 30px;
+  height: 30px;
+  color: #000000;
+  transition: color 0.3s ease;
+}
+
+#theme-icon:hover {
+  color: #007bff;
+}
+
 .footer {
   background-color: #ffffff;
   color: #000000;
