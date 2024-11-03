@@ -24,7 +24,7 @@
 }
 
 .wrapper {
-  background-image: url('../images/узор.webp');
+  background-image: url('../images/фон.jpg'); /* htmlimage.png */
   background-size: cover;
   background-position: center;
   position: relative;
@@ -39,7 +39,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 27, 159, 0.81);
+  /* background-color: rgba(0, 27, 159, 0.81);*/
 }
 
 .content {
@@ -66,6 +66,17 @@
 
 .github-icon:hover {
   color: #007bff;
+}
+
+.footer {
+  background-color: #ffffff;
+  color: #000000;
+  text-align: center;
+  padding: 15px;
+  font-size: 14px;
+  position: relative;
+  bottom: 0;
+  width: 100%;
 }
 
 @font-face {
