@@ -77,6 +77,7 @@
   position: relative;
   bottom: 0;
   width: 100%;
+  font-family: 'Actay';
 }
 
 .toolbar {
@@ -110,6 +111,7 @@
   font-size: 14px;
   color: #555;
   cursor: pointer;
+  font-family: 'Actay';
 }
 
 .category .icon {
@@ -124,11 +126,13 @@
   white-space: nowrap;
   text-overflow: ellipsis;
   width: 100%;
+  font-family: 'Actay';
 }
 
 @font-face {
   font-family: 'Actay';
-  src: url(../fonts/OTF/ActayFamily/Actay-Regular.otf) format('otf');
+  src: url('../fonts/OTF/ActayFamily/ActayWide-BoldItalic.otf')
+    format('opentype');
   font-weight: normal;
   font-style: normal;
 }
