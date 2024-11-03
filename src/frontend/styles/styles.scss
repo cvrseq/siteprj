@@ -79,6 +79,53 @@
   width: 100%;
 }
 
+.toolbar {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  gap: 20px;
+}
+
+.categories {
+  display: flex;
+  gap: 10px;
+
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.category {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 120px;
+  padding: 10px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  font-size: 14px;
+  color: #555;
+  cursor: pointer;
+}
+
+.category .icon {
+  width: 40px;
+  height: 40px;
+  margin-bottom: 5px;
+}
+
+.category span {
+  font-size: 14px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+
 @font-face {
   font-family: 'Actay';
   src: url(../fonts/OTF/ActayFamily/Actay-Regular.otf) format('otf');
