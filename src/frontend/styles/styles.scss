@@ -19,13 +19,12 @@
     opacity: 1;
   }
 }
-
 .logo {
-  width: 300px;
-  height: 120px;
-  animation: fadein 1.5s;
+  width: 100px;
+  height: auto;
+  padding: 15px;
+  animation: fadein 2s;
 }
-
 .mb-3 form-check {
   display: grid;
   grid-template-columns: auto 1fr;
@@ -34,7 +33,6 @@
 }
 
 .wrapper {
-  background-image: url('../images/фон.jpg'); /* htmlimage.png */
   background-size: cover;
   background-position: center;
   position: relative;
@@ -164,48 +162,69 @@
 /* dark mode */
 
 .dark-mode {
-  background-color: rgb(7, 35, 64);
+  /*background-color: rgb(7, 35, 64);*/
+  background-color: #171d26;
   color: rgb(217, 215, 215);
-  animation: fadein 0.6s;
 }
 
 .dark-mode body,
 .dark-mode html {
-  background-color: rgb(7, 35, 64);
+  /*background-color: rgb(7, 35, 64);*/
+  background-color: #171d26;
   border-radius: 5px;
-  animation: fadein 0.5s;
 }
 
 .dark-mode .wrapper {
   border-radius: 5px;
-  background-color: rgb(7, 35, 64);
-  animation: fadein 0.5s;
+  /*background-color: rgb(7, 35, 64);*/
+  background-color: #171d26;
 }
 
 .dark-mode .content {
-  background-color: rgb(7, 35, 64);
-  animation: fadein 0.5s;
+  /*background-color: rgb(7, 35, 64);*/
+  background-color: #171d26;
 }
 
 .dark-mode .footer {
-  background-color: rgb(7, 35, 64);
+  /*background-color: rgb(7, 35, 64);*/
+  background-color: #171d26;
   color: rgb(217, 215, 215);
-  animation: fadein 0.5s;
-}
-
-.dark-mode .logo {
-  background-color: rgb(7, 35, 64);
-  animation: fadein 0.5s;
 }
 
 .dark-mode .github-icon {
   color: rgb(217, 215, 215);
-  animation: fadein 0.5s;
+}
+
+.dark-mode .github-icon:hover {
+  color: #007bff;
 }
 
 .dark-mode #theme-icon {
   color: rgb(217, 215, 215);
-  animation: fadein 0.5s;
+}
+
+.dark-mode #theme-icon:hover {
+  color: #007bff;
+}
+
+.dark-mode .categories span {
+  color: #ffffff;
+}
+
+.dark-mode .categories {
+  background-color: rgb(217, 215, 215);
+}
+
+.dark-mode .category {
+  background-color: rgb(168, 166, 166);
+}
+
+.dark-mode .toolbar {
+  background-color: rgb(217, 215, 215);
+}
+
+.dark-mode .logo {
+  filter: hue-rotate(205deg);
 }
 @font-face {
   font-family: 'Actay';
