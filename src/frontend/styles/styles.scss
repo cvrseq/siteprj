@@ -231,20 +231,16 @@
   color: #007bff;
 }
 
-.dark-mode .categories span {
-  color: #ffffff;
-}
-
 .dark-mode .categories {
-  background-color: rgb(217, 215, 215);
-}
-
-.dark-mode .category {
   background-color: rgb(168, 166, 166);
 }
 
-.dark-mode .toolbar {
+.dark-mode .category {
   background-color: rgb(217, 215, 215);
+}
+
+.dark-mode .toolbar {
+  background-color: rgb(168, 166, 166);
 }
 
 .dark-mode .logo {
