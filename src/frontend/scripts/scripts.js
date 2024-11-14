@@ -19,7 +19,7 @@ function generatepdf() {
   const doc = new jsPDF();
 
   doc.setFont('helvetica', 'normal');
-  doc.text('Hello', 10, 10);
+  doc.text('привет', 10, 10);
   doc.text('shrift', 10, 20);
 
   doc.save('test.pdf');
