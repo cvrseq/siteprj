@@ -23,6 +23,9 @@
   position: absolute;
   top: 10px;
 }
+header {
+  height: 30px;
+}
 
 .logo {
   width: 80px;
@@ -179,11 +182,9 @@
 .dark-mode html {
   /*background-color: rgb(7, 35, 64);*/
   background-color: #171d26;
-  border-radius: 5px;
 }
 
 .dark-mode .wrapper {
-  border-radius: 5px;
   /*background-color: rgb(7, 35, 64);*/
   background-color: #171d26;
 }
