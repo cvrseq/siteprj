@@ -1,0 +1,206 @@
+/** {
+  box-sizing: border-box;
+  font-size: 0;
+  margin: 0;
+  padding: 0;
+}
+*/
+:root {
+  --general-color: ;
+  --text-color: ;
+  --bg-color: ;
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.position-logo {
+  position: absolute;
+  top: 10px;
+}
+
+.logo {
+  width: 80px;
+  height: auto;
+  padding: 7px;
+  animation: fadein 2s;
+  transition: transform 0.3s ease;
+}
+
+.logo:hover {
+  transform: scale(1.1);
+}
+
+.wrapper {
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  animation: fadein 2.5s;
+}
+
+.wrapper::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* background-color: rgba(0, 27, 159, 0.81);*/
+}
+
+.content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  text-align: center;
+  animation: fadein 3s;
+}
+
+.field {
+  display: flex;
+  align-items: center;
+  background-color: #f9f9f9;
+  color: #000000;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  border-radius: 20px;
+  width: 300px;
+  height: 600px;
+}
+
+.field-container {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  align-items: center;
+}
+
+.content-login,
+.content-password {
+  width: 100%;
+}
+
+.content-login input,
+.content-password input {
+  width: 100%;
+  padding: 10px;
+  border: 2px solid #ccc;
+  border-radius: 15px;
+  font-size: 18px;
+}
+
+.btn {
+  padding: 10px 30px;
+  font-size: 20px;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn:hover {
+  background-color: #0056b3;
+}
+
+.field-container.horizontal {
+  flex-direction: row;
+  align-items: center;
+}
+
+.github {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+#github-icon {
+  width: 30px;
+  height: 30px;
+  color: #000000;
+  transition: color 0.3s ease, transform 0.3s ease;
+  animation: fadein 3.5s;
+}
+
+#github-icon:hover {
+  color: #007bff;
+  transform: scale(1.2);
+}
+
+.theme {
+  position: absolute;
+  top: 10px;
+  right: 60px;
+}
+
+#theme-icon {
+  width: 30px;
+  height: 30px;
+  color: #000000;
+  transition: color 0.3s ease, transform 0.3s ease;
+  animation: fadein 3.5s;
+}
+
+#theme-icon:hover {
+  color: #007bff;
+  transform: scale(1.2);
+}
+
+/* dark mode */
+
+.dark-mode {
+  /*background-color: rgb(7, 35, 64);*/
+  background-color: #171d26;
+  color: rgb(217, 215, 215);
+}
+
+.dark-mode body,
+.dark-mode html {
+  /*background-color: rgb(7, 35, 64);*/
+  background-color: #171d26;
+  border-radius: 5px;
+}
+
+.dark-mode .wrapper {
+  border-radius: 5px;
+  /*background-color: rgb(7, 35, 64);*/
+  background-color: #171d26;
+}
+
+.dark-mode .content {
+  /*background-color: rgb(7, 35, 64);*/
+  background-color: #171d26;
+}
+
+.dark-mode #github-icon {
+  color: rgb(217, 215, 215);
+}
+
+.dark-mode #github-icon:hover {
+  color: #007bff;
+}
+
+.dark-mode #theme-icon {
+  color: rgb(217, 215, 215);
+}
+
+.dark-mode #theme-icon:hover {
+  color: #007bff;
+}
+
+@font-face {
+  font-family: 'Actay';
+  src: url('../fonts/OTF/ActayFamily/ActayWide-BoldItalic.otf')
+    format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
