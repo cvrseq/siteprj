@@ -105,10 +105,10 @@ header {
 }
 
 .content-login:hover {
-  transform: scale(1.02);
+  transform: scale(1.01);
 }
 .content-password:hover {
-  transform: scale(1.02);
+  transform: scale(1.01);
 }
 
 .content-login input,
@@ -225,7 +225,7 @@ header {
 }
 
 .dark-mode .field {
-  background-color: rgb(22, 19, 19);
+  background-color: rgb(30, 27, 27);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 0, 0, 0.5),
     0 0 30px rgba(0, 0, 0, 0.5), 0 0 40px rgba(0, 0, 0, 0.8);
   border-radius: 3.5px solid #ffffff;
