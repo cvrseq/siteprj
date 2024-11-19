@@ -31,7 +31,7 @@ header {
 }
 
 .logo {
-  width: 90px;
+  width: 120px;
   height: auto;
   padding: 7px;
   animation: fadein 2s;
@@ -76,12 +76,13 @@ header {
   align-items: center;
   background-color: #f9f9f9;
   color: #000000;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 10px rgba(200, 200, 200, 0.5),
+    0 0 20px rgba(200, 200, 200, 0.5), 0 0 30px rgba(200, 200, 200, 0.5),
+    0 0 40px rgba(200, 200, 200, 0.8);
   border-radius: 50px;
   width: 350px;
   height: 700px;
 }
-
 .field-container {
   display: flex;
   width: 100%;
@@ -221,13 +222,15 @@ header {
 }
 
 .dark-mode .field {
-  background-color: rgb(201, 201, 201);
+  background-color: rgb(22, 19, 19);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 0, 0, 0.5),
     0 0 30px rgba(0, 0, 0, 0.5), 0 0 40px rgba(0, 0, 0, 0.8);
+  border-radius: 3.5px solid #ffffff;
 }
 
 .dark-mode .btn {
   background-color: #0d1928;
+  border: 1.5px solid #fff;
 }
 
 .dark-mode .btn:hover {
@@ -235,13 +238,15 @@ header {
 }
 
 .dark-mode .content-login input {
-  background-color: rgb(201, 201, 201);
-  border: 3px solid #ffffff;
+  background-color: rgb(22, 19, 19);
+  border: 1.5px solid #ffffff;
+  color: #ffffff;
 }
 
 .dark-mode .content-password input {
-  background-color: rgb(201, 201, 201);
-  border: 3px solid #ffffff;
+  background-color: rgb(22, 19, 19);
+  border: 1.5px solid #ffffff;
+  color: #ffffff;
 }
 
 @font-face {
