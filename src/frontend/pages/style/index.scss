@@ -82,7 +82,9 @@ header {
   border-radius: 50px;
   width: 350px;
   height: 700px;
+  border: 1.5px solid #ccc;
 }
+
 .field-container {
   display: flex;
   width: 100%;
@@ -103,10 +105,10 @@ header {
 }
 
 .content-login:hover {
-  transform: scale(1.04);
+  transform: scale(1.02);
 }
 .content-password:hover {
-  transform: scale(1.04);
+  transform: scale(1.02);
 }
 
 .content-login input,
@@ -114,7 +116,7 @@ header {
   width: 100%;
   padding: 12px;
   background-color: #f9f9f9;
-  border: 3px solid #ccc;
+  border: 1.5px solid #ccc;
   border-radius: 20px;
   font-size: 20px;
 }
@@ -126,7 +128,7 @@ header {
   padding: 10px 30px;
   font-size: 20px;
   color: #fff;
-  background-color: #007bff;
+  background-color: rgb(22, 19, 19);
   border: none;
   border-radius: 20px;
   cursor: pointer;
@@ -135,7 +137,7 @@ header {
 
 .btn:hover {
   background-color: #0d1928;
-  transform: scale(1.04);
+  transform: scale(1.02);
 }
 
 .field-container.horizontal {
@@ -159,7 +161,7 @@ header {
 
 #github-icon:hover {
   color: #007bff;
-  transform: scale(1.2);
+  transform: scale(1.1);
 }
 
 .theme {
@@ -178,7 +180,7 @@ header {
 
 #theme-icon:hover {
   color: #007bff;
-  transform: scale(1.2);
+  transform: scale(1.1);
 }
 
 /* dark mode */
@@ -229,12 +231,13 @@ header {
 }
 
 .dark-mode .btn {
-  background-color: #0d1928;
+  background-color: #ffffff;
   border: 1.5px solid #fff;
+  color: rgb(22, 19, 19);
 }
 
 .dark-mode .btn:hover {
-  background-color: #007bff;
+  background-color: #f1f1f1;
 }
 
 .dark-mode .content-login input {
