@@ -78,22 +78,25 @@ header {
   color: #000000;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
   border-radius: 50px;
-  width: 320px;
-  height: 600px;
+  width: 350px;
+  height: 700px;
 }
 
 .field-container {
   display: flex;
+  width: 100%;
   flex-direction: column;
   gap: 30px;
   align-items: center;
 }
 
 .content-login {
+  display: flex;
   width: 100%;
   transition: transform 0.3s ease;
 }
 .content-password {
+  display: flex;
   width: 100%;
   transition: transform 0.3s ease;
 }
@@ -108,13 +111,16 @@ header {
 .content-login input,
 .content-password input {
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   background-color: #f9f9f9;
   border: 3px solid #ccc;
-  border-radius: 15px;
+  border-radius: 20px;
   font-size: 20px;
 }
-
+.container-btn {
+  display: flex;
+  align-items: center;
+}
 .btn {
   padding: 10px 30px;
   font-size: 20px;
