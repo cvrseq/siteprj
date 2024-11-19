@@ -162,7 +162,8 @@
   font-family: 'Actay';
 }
 
-.category .icon {
+.category .icon,
+.category span {
   width: 45px;
   height: 45px;
   margin-bottom: 5px;
@@ -176,6 +177,7 @@
 }
 
 .category span {
+  visibility: inherit;
   font-size: 12px;
   overflow: hidden;
   white-space: wrap;
