@@ -139,12 +139,9 @@
   border: 2px solid #ccc;
 }
 
-.toolbar:hover {
-  transform: scale(1.02);
-}
-
 .categories {
   display: flex;
+  height: 130px;
   gap: 10px;
   overflow-x: auto;
   white-space: nowrap;
@@ -182,7 +179,7 @@
 
 .category span {
   visibility: inherit;
-  font-size: 13px;
+  font-size: 12px;
   color: #000000;
   overflow: hidden;
   white-space: wrap;
