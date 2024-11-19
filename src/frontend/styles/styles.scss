@@ -125,18 +125,21 @@
 }
 
 .toolbar {
+  height: 250px;
   display: flex;
   align-items: center;
   padding: 20px;
   background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 25px;
+  box-shadow: 0 0 10px rgba(165, 165, 165, 0.5),
+    0 0 20px rgba(165, 165, 165, 0.5), 0 0 30px rgba(165, 165, 165, 0.5),
+    0 0 40px rgba(165, 165, 165, 0.8);
   gap: 20px;
   transition: transform 0.3s ease;
 }
 
 .toolbar:hover {
-  transform: scale(1.1);
+  transform: scale(1.02);
 }
 
 .categories {
@@ -153,7 +156,7 @@
   width: 180px;
   padding: 10px;
   background-color: #ffffff;
-  border-radius: 8px;
+  border-radius: 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   text-align: center;
   font-size: 14px;
@@ -162,23 +165,22 @@
   font-family: 'Actay';
 }
 
-.category .icon,
-.category span {
-  width: 45px;
-  height: 45px;
-  margin-bottom: 5px;
-  filter: brightness(1.2);
+.category .icon {
+  width: 50px;
+  height: 50px;
+  margin-bottom: 10px;
+  filter: brightness(1.1);
   transition: transform 0.3s ease, filter 0.3s ease;
 }
 
 .category .icon:hover {
-  transform: scale(1.3);
-  filter: brightness(1.6);
+  transform: scale(1.15);
+  filter: brightness(1.4);
 }
 
 .category span {
   visibility: inherit;
-  font-size: 12px;
+  font-size: 13px;
   overflow: hidden;
   white-space: wrap;
   width: 100%;
@@ -190,36 +192,36 @@
 
 .dark-mode {
   /*background-color: rgb(7, 35, 64);*/
-  background-color: #0d1928;
+  background-color: rgb(22, 19, 19);
   color: rgb(217, 215, 215);
 }
 
 .dark-mode body,
 .dark-mode html {
   /*background-color: rgb(7, 35, 64);*/
-  background-color: #0d1928;
+  background-color: rgb(22, 19, 19);
   border-radius: 5px;
 }
 
 .dark-mode .wrapper {
   border-radius: 5px;
   /*background-color: rgb(7, 35, 64);*/
-  background-color: #0d1928;
+  background-color: rgb(22, 19, 19);
 }
 
 .dark-mode .content {
   /*background-color: rgb(7, 35, 64);*/
-  background-color: #0d1928;
+  background-color: rgb(22, 19, 19);
 }
 
 .dark-mode .footer {
   /*background-color: rgb(7, 35, 64);*/
-  background-color: #0d1928;
-  color: rgb(201, 201, 201);
+  background-color: rgb(22, 19, 19);
+  color: #ffffff;
 }
 
 .dark-mode #github-icon {
-  color: rgb(201, 201, 201);
+  color: #ffffff;
 }
 
 .dark-mode #github-icon:hover {
@@ -227,7 +229,7 @@
 }
 
 .dark-mode #theme-icon {
-  color: rgb(201, 201, 201);
+  color: #ffffff;
 }
 
 .dark-mode #theme-icon:hover {
@@ -235,17 +237,24 @@
 }
 
 .dark-mode .categories {
-  background-color: rgb(168, 166, 166);
+  background-color: rgb(22, 19, 19);
 }
 
 .dark-mode .category {
-  background-color: rgb(201, 201, 201);
+  background-color: rgb(22, 19, 19);
+  border: 2px solid #fff;
+  box-shadow: 0 2px 4px rgba(255, 255, 255, 0.8);
 }
 
 .dark-mode .toolbar {
-  background-color: rgb(168, 166, 166);
+  background-color: rgb(22, 19, 19);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0), 0 0 20px rgba(0, 0, 0, 0.5),
+    0 0 30px rgba(0, 0, 0, 0.5), 0 0 40px rgba(0, 0, 0, 0.8);
 }
 
+.dark-mode .category span {
+  color: #ffffff;
+}
 @font-face {
   font-family: 'Actay';
   src: url('../fonts/OTF/ActayFamily/ActayWide-BoldItalic.otf')
