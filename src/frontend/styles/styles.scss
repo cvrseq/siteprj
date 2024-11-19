@@ -136,6 +136,7 @@
     0 0 40px rgba(165, 165, 165, 0.8);
   gap: 20px;
   transition: transform 0.3s ease;
+  border: 2px solid #ffffff;
 }
 
 .toolbar:hover {
@@ -157,12 +158,13 @@
   padding: 10px;
   background-color: #ffffff;
   border-radius: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
   text-align: center;
   font-size: 14px;
-  color: #555;
+  color: #000000;
   cursor: pointer;
   font-family: 'Actay';
+  border: 2px solid #ccc;
 }
 
 .category .icon {
@@ -181,6 +183,7 @@
 .category span {
   visibility: inherit;
   font-size: 13px;
+  color: #000000;
   overflow: hidden;
   white-space: wrap;
   width: 100%;
@@ -193,7 +196,7 @@
 .dark-mode {
   /*background-color: rgb(7, 35, 64);*/
   background-color: rgb(22, 19, 19);
-  color: rgb(217, 215, 215);
+  color: #ffffff;
 }
 
 .dark-mode body,
@@ -248,8 +251,8 @@
 
 .dark-mode .toolbar {
   background-color: rgb(22, 19, 19);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0), 0 0 20px rgba(0, 0, 0, 0.5),
-    0 0 30px rgba(0, 0, 0, 0.5), 0 0 40px rgba(0, 0, 0, 0.8);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0), 0 0 20px rgba(255, 255, 255, 0.5),
+    0 0 30px rgba(255, 255, 255, 0.5), 0 0 40px rgba(255, 255, 255, 0.8);
 }
 
 .dark-mode .category span {
