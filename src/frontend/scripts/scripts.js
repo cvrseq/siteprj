@@ -26,3 +26,5 @@ function generatepdf() {
 }
 
 /* <-------------------------------------------------------------------> */
+
+const form = document.getElementById("loginform");
