@@ -7,22 +7,22 @@ import (
 	_ "github.com/lib/pq"
 )
 
-func queries(){ 
+func ConnectDB() (*sql.DB, error){ 
 	connStr := "host=localhost port=5433 user=admin password='Zxczxczxc1' dbname=postgres sslmode=disable"
     db, err := sql.Open("postgres", connStr)
     if err != nil { 
-        fmt.Println("Ошибка при открытии подключения: ", err)
-        return 
+        return nil, fmt.Errorf("ошибка при открытии подключения: %w", err)
     }
 
-    defer db.Close()
+    
 
 
     err = db.Ping()
     if err != nil { 
-        fmt.Println("Ошибка при проверке соединения: ", err)
-        return 
+        
+        return nil, fmt.Errorf("ошибка при проверке соединения: %w", err)
     }
 
     fmt.Println("Успешно подключились к базе данных!")
+	return db, nil
 }
