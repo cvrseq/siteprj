@@ -2,7 +2,7 @@ package main
 
 import (
 	"backend/db"
-
+	"backend/utils"
 	"fmt"
 )
 
@@ -18,13 +18,13 @@ func main() {
 
 	/* <-------------------------------------------------------------- */
 
-	/*password := "secret"
-	hash, _ := hashPassword(password)
+	password := "secret"
+	hash, _ := utils.HashPassword(password)
 
 	fmt.Println("Password:", password)
     fmt.Println("Hash:    ", hash)
 
-    match := checkPasswordHash(password, hash)
-    fmt.Println("Match:   ", match)*/
+    match := utils.CheckPasswordHash(password, hash)
+    fmt.Println("Match:   ", match)
 
 }
