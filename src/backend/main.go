@@ -4,6 +4,7 @@ import (
 	"backend/db"
 	"backend/utils"
 	"fmt"
+	"log"
 )
 
 func main() {
@@ -27,4 +28,13 @@ func main() {
     match := utils.CheckPasswordHash(password, hash)
     fmt.Println("Match:   ", match)
 
+	
+	/* <-------------------------------------------------------------- */
+
+	err = db.InsertUsers(dbConn, "admin", "admin_password")
+	if err != nil { 
+		log.Fatalf("Ошибка при добавлении пользователя: %s", err)
+	}
+
+	fmt.Println("Пользователь успешно добавлен в базу данных!")
 }
