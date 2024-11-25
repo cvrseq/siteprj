@@ -2,11 +2,11 @@ package main
 
 import (
 	"backend/db"
+
 	"fmt"
 )
 
 func main() {
-	// Подключаемся к базе данных
 	dbConn, err := db.ConnectDB()
 	if err != nil {
 		fmt.Println("Ошибка подключения к базе данных:", err)
@@ -15,5 +15,16 @@ func main() {
 	defer dbConn.Close()
 
 	fmt.Println("Сервер успешно запущен!")
-	// Здесь можно вызвать другие функции для обработки запросов
+
+	/* <-------------------------------------------------------------- */
+
+	/*password := "secret"
+	hash, _ := hashPassword(password)
+
+	fmt.Println("Password:", password)
+    fmt.Println("Hash:    ", hash)
+
+    match := checkPasswordHash(password, hash)
+    fmt.Println("Match:   ", match)*/
+
 }
