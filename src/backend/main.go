@@ -1,40 +1,18 @@
 package main
 
 import (
-	"backend/db"
-	"backend/utils"
-	"fmt"
 	"log"
+	"net/http"
 )
 
 func main() {
-	dbConn, err := db.ConnectDB()
-	if err != nil {
-		fmt.Println("Ошибка подключения к базе данных:", err)
-		return
-	}
-	defer dbConn.Close()
+	fs := http.FileServer(http.Dir("./frontend/pages"))
+	http.Handle("/static/", http.StripPrefix("/static/", fs))
 
-	fmt.Println("Сервер успешно запущен!")
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "./frontend/pages/registration.html")
+	})
 
-	/* <-------------------------------------------------------------- */
-
-	password := "secret"
-	hash, _ := utils.HashPassword(password)
-
-	fmt.Println("Password:", password)
-    fmt.Println("Hash:    ", hash)
-
-    match := utils.CheckPasswordHash(password, hash)
-    fmt.Println("Match:   ", match)
-
-	
-	/* <-------------------------------------------------------------- */
-
-	err = db.InsertUsers(dbConn, "admin", "admin_password")
-	if err != nil { 
-		log.Fatalf("Ошибка при добавлении пользователя: %s", err)
-	}
-
-	fmt.Println("Пользователь успешно добавлен в базу данных!")
+	log.Println("Сервер запущен на http://localhost:8080")
+	http.ListenAndServe(":8080", nil)
 }
