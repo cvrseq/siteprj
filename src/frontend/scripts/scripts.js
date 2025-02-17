@@ -1,7 +1,7 @@
 const themeToggle = document.getElementById('theme-icon');
 const container = document.querySelector('.container');
 
-themeToggle.addEventListener('click', function () {
+themeToggle.addEventListener('click', () => {
   document.body.classList.toggle('dark-mode');
   container.body.classList.toggle('dark-mode');
 
@@ -27,4 +27,4 @@ function generatepdf() {
 
 /* <-------------------------------------------------------------------> */
 
-const form = document.getElementById("loginform");
+const form = document.getElementById('loginform');

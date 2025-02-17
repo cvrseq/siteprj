@@ -1,16 +1,18 @@
-/** {
+/* Можно использовать универсальный селектор для сброса стилей, если требуется
+* {
   box-sizing: border-box;
-  font-size: 0;
   margin: 0;
   padding: 0;
 }
 */
+
 :root {
-  --general-color: ;
-  --text-color: ;
-  --bg-color: ;
+  --general-color: #000; /* Пример значений, задайте по необходимости */
+  --text-color: #000;
+  --bg-color: #fff;
 }
 
+/* Анимация появления */
 @keyframes fadein {
   from {
     opacity: 0;
@@ -19,6 +21,8 @@
     opacity: 1;
   }
 }
+
+/* Позиционирование логотипа, если требуется */
 .position-logo {
   position: absolute;
   top: 20%;
@@ -27,13 +31,13 @@
 }
 
 header {
-  height: 40px;
+  height: 2.5rem; /* 40px */
 }
 
 .logo {
-  width: 120px;
+  width: 7.5rem; /* 120px */
   height: auto;
-  padding: 7px;
+  padding: 0.44rem; /* ~7px */
   animation: fadein 2s;
   transition: transform 0.3s ease;
 }
@@ -58,7 +62,7 @@ header {
   left: 0;
   width: 100%;
   height: 100%;
-  /* background-color: rgba(0, 27, 159, 0.81);*/
+  /* background-color: rgba(0, 27, 159, 0.81); */
 }
 
 .content {
@@ -71,42 +75,37 @@ header {
   animation: fadein 3s;
 }
 
+/* Основное поле (например, форма входа) */
 .field {
   display: flex;
   align-items: center;
   background-color: #f9f9f9;
   color: #000000;
-  box-shadow: 0 0 10px rgba(165, 165, 165, 0.5),
-    0 0 20px rgba(165, 165, 165, 0.5), 0 0 30px rgba(165, 165, 165, 0.5),
-    0 0 40px rgba(165, 165, 165, 0.8);
-  border-radius: 50px;
-  width: 350px;
-  height: 700px;
-  border: 1.5px solid #ccc;
+  box-shadow: 0 0 0.625rem rgba(165, 165, 165, 0.5),
+    0 0 1.25rem rgba(165, 165, 165, 0.5), 0 0 1.875rem rgba(165, 165, 165, 0.5),
+    0 0 2.5rem rgba(165, 165, 165, 0.8);
+  border-radius: 3.125rem; /* 50px */
+  width: 21.88rem; /* 350px */
+  height: 43.75rem; /* 700px */
+  border: 0.1rem solid #ccc; /* ~1.5px */
 }
 
 .field-container {
   display: flex;
   width: 100%;
   flex-direction: column;
-  gap: 30px;
+  gap: 1.875rem; /* 30px */
   align-items: center;
 }
 
-.content-login {
-  display: flex;
-  width: 100%;
-  transition: transform 0.3s ease;
-}
+.content-login,
 .content-password {
   display: flex;
   width: 100%;
   transition: transform 0.3s ease;
 }
 
-.content-login:hover {
-  transform: scale(1.01);
-}
+.content-login:hover,
 .content-password:hover {
   transform: scale(1.01);
 }
@@ -114,24 +113,26 @@ header {
 .content-login input,
 .content-password input {
   width: 100%;
-  padding: 12px;
-  background-color: #f9f9f9;
-  border: 1.5px solid #ccc;
-  border-radius: 20px;
-  font-size: 20px;
+  padding: 0.75rem; /* 12px */
   background-color: #f3f3f3;
+  border: 0.1rem solid #ccc;
+  border-radius: 1.25rem; /* 20px */
+  font-size: 1.25rem; /* 20px */
 }
+
+/* Контейнер кнопки */
 .container-btn {
   display: flex;
   align-items: center;
 }
+
 .btn {
-  padding: 10px 30px;
-  font-size: 20px;
+  padding: 0.625rem 1.875rem; /* 10px 30px */
+  font-size: 1.25rem; /* 20px */
   color: #fff;
   background-color: rgb(22, 19, 19);
   border: none;
-  border-radius: 20px;
+  border-radius: 1.25rem; /* 20px */
   cursor: pointer;
   transition: background-color 0.3s, transform 0.3s ease;
 }
@@ -141,20 +142,22 @@ header {
   transform: scale(1.02);
 }
 
+/* Если контейнер располагается горизонтально */
 .field-container.horizontal {
   flex-direction: row;
   align-items: center;
 }
 
+/* Стили для иконок GitHub и темы */
 .github {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 0.625rem; /* 10px */
+  right: 0.625rem; /* 10px */
 }
 
 #github-icon {
-  width: 30px;
-  height: 30px;
+  width: 1.875rem; /* 30px */
+  height: 1.875rem; /* 30px */
   color: #000000;
   transition: color 0.3s ease, transform 0.3s ease;
   animation: fadein 3.5s;
@@ -167,13 +170,13 @@ header {
 
 .theme {
   position: absolute;
-  top: 10px;
-  right: 60px;
+  top: 0.625rem; /* 10px */
+  right: 3.75rem; /* 60px */
 }
 
 #theme-icon {
-  width: 30px;
-  height: 30px;
+  width: 1.875rem; /* 30px */
+  height: 1.875rem; /* 30px */
   color: #000000;
   transition: color 0.3s ease, transform 0.3s ease;
   animation: fadein 3.5s;
@@ -184,27 +187,22 @@ header {
   transform: scale(1.1);
 }
 
-/* dark mode */
-
+/* Dark mode стили */
 .dark-mode {
-  /*background-color: rgb(7, 35, 64);*/
   background-color: rgb(22, 19, 19);
   color: #ffffff;
 }
 
 .dark-mode body,
 .dark-mode html {
-  /*background-color: rgb(7, 35, 64);*/
   background-color: rgb(22, 19, 19);
 }
 
 .dark-mode .wrapper {
-  /*background-color: rgb(7, 35, 64);*/
   background-color: rgb(22, 19, 19);
 }
 
 .dark-mode .content {
-  /*background-color: rgb(7, 35, 64);*/
   background-color: rgb(22, 19, 19);
 }
 
@@ -226,14 +224,14 @@ header {
 
 .dark-mode .field {
   background-color: rgb(30, 27, 27);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 0, 0, 0.5),
-    0 0 30px rgba(0, 0, 0, 0.5), 0 0 40px rgba(0, 0, 0, 0.8);
-  border-radius: 3.5px solid #ffffff;
+  box-shadow: 0 0 0.625rem rgba(0, 0, 0, 0.5), 0 0 1.25rem rgba(0, 0, 0, 0.5),
+    0 0 1.875rem rgba(0, 0, 0, 0.5), 0 0 2.5rem rgba(0, 0, 0, 0.8);
+  border: 0.22rem solid #ffffff; /* примерно 3.5px */
 }
 
 .dark-mode .btn {
   background-color: #ffffff;
-  border: 1.5px solid #fff;
+  border: 0.1rem solid #fff;
   color: rgb(22, 19, 19);
 }
 
@@ -241,22 +239,47 @@ header {
   background-color: #f1f1f1;
 }
 
-.dark-mode .content-login input {
-  background-color: rgb(22, 19, 19);
-  border: 1.5px solid #ffffff;
-  color: #ffffff;
-}
-
+.dark-mode .content-login input,
 .dark-mode .content-password input {
   background-color: rgb(22, 19, 19);
-  border: 1.5px solid #ffffff;
+  border: 0.1rem solid #ffffff;
   color: #ffffff;
 }
 
+/* Подключение шрифта */
 @font-face {
   font-family: 'Actay';
   src: url('../fonts/OTF/ActayFamily/ActayWide-BoldItalic.otf')
     format('opentype');
   font-weight: normal;
   font-style: normal;
+}
+
+/* Медиа-запрос для мобильных устройств */
+@media (max-width: 768px) {
+  header {
+    height: 4rem;
+  }
+
+  .logo {
+    width: 6rem;
+    padding: 0.3rem;
+  }
+
+  /* Поле формы адаптируется по ширине экрана */
+  .field {
+    width: 100%;
+    height: auto;
+  }
+
+  /* Уменьшаем размер шрифта в кнопке и полях ввода */
+  .btn {
+    font-size: 1rem;
+    padding: 0.5rem 1.5rem;
+  }
+
+  .content-login input,
+  .content-password input {
+    font-size: 1rem;
+  }
 }
