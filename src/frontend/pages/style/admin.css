@@ -330,7 +330,7 @@
   background-color: #f8f8f8;
   border-radius: 1.25rem; /* 20px */
   box-shadow: 0 0.125rem 0.3125rem rgba(0, 0, 0, 0.3);
-  padding: 3.75rem; /* 20px */
+  padding: 3rem;
   overflow-y: auto;
   transition: right 0.3s ease;
   z-index: 1000;
@@ -345,9 +345,15 @@
 }
 
 .panel-section h3 {
-  margin-bottom: 0.625rem; /* 10px */
+  margin-bottom: 1.625rem;
   font-size: 1rem;
   font-family: 'Actay', sans-serif;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.panel-section h3:hover {
+  color: #007bff;
+  transform: scale(1.1);
 }
 
 .close-btn {

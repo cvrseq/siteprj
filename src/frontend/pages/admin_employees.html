@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#ffffff" />
+    <link rel="stylesheet" href="./style/admin_employees.css" />
+    <title>Панель управления сотрудниками</title>
+  </head>
+  <body>
+    <script src="/script/admin_employees.js"></script>
+    <header>
+      <div class="control-title">
+        <h1>Панель упавления сотрудниками</h1>
+      </div>
+    </header>
+    <div class="buttons">
+      <button id="addBtn">Добавить</button>
+      <button id="editBtn">Редактировать</button>
+      <button id="deleteBtn">Удалить</button>
+    </div>
+    <main>
+      <table id="data-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Логин</th>
+            <th>Пароль</th>
+            <th>Роль</th>
+          </tr>
+        </thead>
+      </table>
+    </main>
+
+    <div id="modal" class="modal">
+      <div class="modal-content">
+        <span id="closeModal" class="close">&times;</span>
+        <h2 id="modalTitle">Добавить запись</h2>
+        <form id="recordForm">
+          <label>
+            Логин:
+            <input type="text" name="Название" required />
+          </label>
+          <label>
+            Пароль:
+            <input type="text" name="Модель" required />
+          </label>
+          <label>
+            Роль:
+            <input type="text" name="Топливо" required />
+          </label>
+          <button type="submit" class="btn">Сохранить</button>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

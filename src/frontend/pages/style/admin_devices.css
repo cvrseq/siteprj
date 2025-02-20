@@ -1,0 +1,47 @@
+:root {
+  font-size: 16px; /* 1rem = 16px */
+  --general-color: #000;
+  --text-color: #000;
+  --bg-color: #fff;
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+html,
+body {
+  animation: fadein 1.5s;
+}
+
+header {
+  position: fixed;
+  width: 100%;
+  height: 10rem;
+  background-color: #f8f8f8;
+  border-radius: 1.25rem; /* 20px */
+  box-shadow: 0 0 0.625rem rgba(165, 165, 165, 0.5),
+    0 0 1.25rem rgba(165, 165, 165, 0.5), 0 0 1.875rem rgba(165, 165, 165, 0.5),
+    0 0 2.5rem rgba(165, 165, 165, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.control-title h1 {
+  font-family: 'Actay', sans-serif;
+  color: #000000;
+}
+
+@font-face {
+  font-family: 'Actay';
+  src: url('../../fonts/OTF/ActayFamily/ActayWide-BoldItalic.otf'),
+    format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}

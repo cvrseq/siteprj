@@ -1,0 +1,125 @@
+:root {
+  font-size: 16px; /* 1rem = 16px */
+  --general-color: #000;
+  --text-color: #000;
+  --bg-color: #fff;
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+html,
+body {
+  animation: fadein 1.5s;
+}
+
+header {
+  position: absolute;
+  width: 100%;
+  height: 10rem;
+  background-color: #f8f8f8;
+  border-radius: 1.25rem; /* 20px */
+  box-shadow: 0 0 0.625rem rgba(165, 165, 165, 0.5),
+    0 0 1.25rem rgba(165, 165, 165, 0.5), 0 0 1.875rem rgba(165, 165, 165, 0.5),
+    0 0 2.5rem rgba(165, 165, 165, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 2%;
+}
+
+.control-title h1 {
+  font-family: 'Actay', sans-serif;
+  color: #000000;
+}
+
+/* Пример стилей для модального окна */
+.modal {
+  display: none; /* скрыто по умолчанию */
+  position: fixed;
+  z-index: 2000;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  background-color: #fff;
+  margin: 10% auto;
+  padding: 1.5rem;
+  border-radius: 0.625rem;
+  width: 90%;
+  max-width: 500px;
+  position: relative;
+}
+
+.close {
+  color: #aaa;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+main {
+  margin-top: 12rem;
+  padding: 1rem;
+}
+
+.buttons {
+  margin-top: 20rem;
+  text-align: center;
+}
+
+.buttons button {
+  margin: 0 0.5rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  background-color: rgb(22, 19, 19);
+  color: #ffffff;
+  border-radius: 1.5rem;
+  border: none;
+  box-shadow: 0 0 0.625rem rgba(165, 165, 165, 0.5),
+    0 0 1.25rem rgba(165, 165, 165, 0.5), 0 0 1.875rem rgba(165, 165, 165, 0.5),
+    0 0 2.5rem rgba(165, 165, 165, 0.8);
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  font-family: 'Actay', sans-serif;
+}
+
+.buttons button:hover {
+  background-color: #0d1928;
+  transform: scale(1.1);
+}
+
+table {
+  width: 90%;
+  margin: 0 auto;
+  border-collapse: collapse;
+}
+
+table th,
+table td {
+  border: 1px solid #ddd;
+  padding: 0.75rem;
+  text-align: center;
+}
+
+@font-face {
+  font-family: 'Actay';
+  src: url('../../fonts/OTF/ActayFamily/ActayWide-BoldItalic.otf'),
+    format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
