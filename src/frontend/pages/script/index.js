@@ -13,8 +13,6 @@ themeToggle.addEventListener('click', () => {
 });
 
 // form
-
-// Обработчик формы авторизации
 const loginForm = document.getElementById('loginform');
 loginForm.addEventListener('submit', async (e) => {
   e.preventDefault();

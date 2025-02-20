@@ -25,3 +25,13 @@ toggleBtn.addEventListener('click', () => {
 closeBtn.addEventListener('click', () => {
   sidebar.classList.remove('open');
 });
+
+document.addEventListener('click', (e) => {
+  if (
+    sidebar.classList.contains('open') &&
+    !sidebar.contains(e.target) &&
+    !toggleBtn.contains(e.target)
+  ) {
+    sidebar.classList.remove('open');
+  }
+});
