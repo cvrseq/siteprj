@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html lang="ru">
   <head>
-    <meta charset="utf-8" />
+    <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#ffffff" />
-    <link rel="stylesheet" href="style/index.css" />
     <title>Авторизация</title>
+    <link rel="stylesheet" href="style/index.css" />
   </head>
   <body>
     <header>
@@ -48,25 +47,28 @@
         </div>
       </div>
     </header>
+
     <div class="wrapper">
       <div class="content">
-        <form id="loginform" action="/login" method="post">
+        <h1>Вход в систему</h1>
+        <form id="loginform">
           <fieldset class="field">
-            <div class="position-logo">
-              <a href="registration.html" target="_blank">
-                <img
-                  src="../images/logo/Layer2.png"
-                  class="logo"
-                  loading="lazy"
-                />
-              </a>
-            </div>
             <div class="field-container">
               <div class="content-login">
-                <input id="login" type="text" placeholder="Логин" />
+                <input
+                  type="text"
+                  name="username"
+                  placeholder="Логин"
+                  required
+                />
               </div>
               <div class="content-password">
-                <input id="password" type="password" placeholder="Пароль" />
+                <input
+                  type="password"
+                  name="password"
+                  placeholder="Пароль"
+                  required
+                />
               </div>
               <div class="container-btn">
                 <button type="submit" class="btn">Авторизоваться</button>
@@ -76,6 +78,52 @@
         </form>
       </div>
     </div>
-    <script src="script/index.js"></script>
+
+    <script>
+      // Переключение темы
+      const themeToggle = document.getElementById('theme-icon');
+      // Удаляем неверный вызов container.body
+      const container = document.querySelector('.container');
+
+      function toggleTheme() {
+        document.body.classList.toggle('dark-mode');
+        container.classList.toggle('dark-mode');
+
+        if (document.body.classList.contains('dark-mode')) {
+          themeToggle.innerHTML = `<path d="M12 8a4 4 0 1 1-8 0 4 4 0 0 1 8 0M8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0m0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13m8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5M3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8m10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0m-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0m9.193 2.121a.5.5 0 0 1 0 .707l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707M4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708"/>`;
+        } else {
+          themeToggle.innerHTML = `<path d="M6 .278a.77.77 0 0 1 .08.858 7.2 7.2 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277q.792-.001 1.533-.16a.79.79 0 0 1 .81.316.73.73 0 0 1-.031.893A8.35 8.35 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.75.75 0 0 1 6 .278"/>`;
+        }
+      }
+
+      // Обработчик формы авторизации
+      const loginForm = document.getElementById('loginform');
+      loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(loginForm);
+        const data = {
+          username: formData.get('username'),
+          password: formData.get('password'),
+        };
+
+        try {
+          const response = await fetch('http://localhost:8080/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data),
+          });
+
+          if (!response.ok) {
+            alert('Неверные логин или пароль');
+            return;
+          }
+
+          const result = await response.json();
+          window.location.href = result.redirect;
+        } catch (err) {
+          console.error('Ошибка запроса:', err);
+        }
+      });
+    </script>
   </body>
 </html>

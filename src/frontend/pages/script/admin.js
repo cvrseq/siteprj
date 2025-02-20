@@ -12,33 +12,16 @@ themeToggle.addEventListener('click', () => {
   }
 });
 
-// form
+/* <---------------------------------------------------------------------->  */
 
-// Обработчик формы авторизации
-const loginForm = document.getElementById('loginform');
-loginForm.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const formData = new FormData(loginForm);
-  const data = {
-    username: formData.get('username'),
-    password: formData.get('password'),
-  };
+const toggleBtn = document.getElementById('toggleSidebar');
+const sidebar = document.getElementById('sidebar');
+const closeBtn = document.getElementById('closeSidebar');
 
-  try {
-    const response = await fetch('http://localhost:8080/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
-    });
+toggleBtn.addEventListener('click', () => {
+  sidebar.classList.toggle('open');
+});
 
-    if (!response.ok) {
-      alert('Неверные логин или пароль');
-      return;
-    }
-
-    const result = await response.json();
-    window.location.href = result.redirect;
-  } catch (err) {
-    console.error('Ошибка запроса:', err);
-  }
+closeBtn.addEventListener('click', () => {
+  sidebar.classList.remove('open');
 });
