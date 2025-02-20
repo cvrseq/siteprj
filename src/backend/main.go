@@ -21,7 +21,7 @@ type Device struct {
 	Давление_атм           sql.NullString `json:"давление_атм"`
 	Паропроизводительность sql.NullString `json:"паропроизводительность, кг/ч"`
 	Температура_пара       sql.NullString `json:"температура_пара"`
-	// Дополнительные поля можно добавить при необходимости
+	// Дополнительные поля можно добавить
 }
 
 // Employee описывает сотрудника для логина
@@ -59,13 +59,12 @@ func main() {
 	// CRUD-операции для устройств
 	router.HandleFunc("/devices", getDevices).Methods("GET")
 	router.HandleFunc("/devices/{id}", getDevice).Methods("GET")
-	// Другие обработчики (create, update, delete) можно добавить при необходимости
+	// Другие обработчики для устройств (create, update, delete) можно добавить
 
 	// Эндпоинт логина: GET – отдает registration.html, POST – авторизация
 	router.HandleFunc("/login", loginHandler).Methods("GET", "POST")
 
-	// Настройка статической раздачи файлов
-	// Все запросы, не обработанные выше, отдаются из директории ../frontend/
+	// Раздача статических файлов из директории ../frontend/
 	router.PathPrefix("/").Handler(http.FileServer(http.Dir("../frontend/")))
 
 	fmt.Println("Сервер запущен на порту 8080")
@@ -128,12 +127,12 @@ func getDevice(w http.ResponseWriter, r *http.Request) {
 
 func loginHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodGet {
-		// Отдаем страницу регистрации
+		// Отдаем страницу регистрации (registration.html)
 		http.ServeFile(w, r, "../frontend/pages/registration.html")
 		return
 	}
 
-	// POST-запрос: ожидаем JSON с полями username и password
+	// POST-запрос: ожидаем JSON с username и password
 	var creds struct {
 		Username string `json:"username"`
 		Password string `json:"password"`
@@ -161,21 +160,14 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Логика перенаправления в зависимости от роли
+	// При успешной авторизации
 	if role == "admin" {
-		// Для администратора отправляем JSON с URL для перенаправления
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(map[string]string{"redirect": "/pages/admin.html"})
 	} else if role == "user" {
-		// Для пользователя можно делать редирект напрямую
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(map[string]string{"redirect": "/index.html"})
 	} else {
 		http.Error(w, "Неизвестная роль", http.StatusForbidden)
 	}
-
-	// Для отладки (при необходимости)
-	fmt.Println("storedPassword =", storedPassword)
-	fmt.Println("role =", role)
-	fmt.Println("creds.Password =", creds.Password)
 }
