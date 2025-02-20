@@ -372,13 +372,3 @@
 #gen-panel {
   font-family: 'Actay', sans-serif;
 }
-
-.panel-section li {
-  font-family: 'Actay', sans-serif;
-  transition: color 0.3s ease, transform 0.3s ease;
-}
-
-.panel-section li:hover {
-  transform: scale(1.2);
-  color: #007bff;
-}
