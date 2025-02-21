@@ -31,7 +31,26 @@ header {
   display: flex;
   align-items: center;
   justify-content: center;
-  top: 2%;
+  top: 0%;
+}
+
+.theme {
+  position: absolute;
+  top: 0.625rem; /* 10px */
+  right: 0.75rem; /* 60px */
+}
+
+#theme-icon {
+  width: 1.3rem; /* 30px */
+  height: 1.3rem; /* 30px */
+  color: #000000;
+  transition: color 0.3s ease, transform 0.3s ease;
+  animation: fadein 3.5s;
+}
+
+#theme-icon:hover {
+  color: #007bff;
+  transform: scale(1.1);
 }
 
 .control-title h1 {
@@ -114,6 +133,32 @@ table td {
   border: 1px solid #ddd;
   padding: 0.75rem;
   text-align: center;
+}
+
+/* Dark mode стили */
+.dark-mode {
+  background-color: rgb(22, 19, 19);
+  color: #ffffff;
+}
+
+.dark-mode body,
+.dark-mode html {
+  background-color: rgb(22, 19, 19);
+}
+
+.dark-mode header {
+  background-color: rgb(22, 19, 19);
+  color: #ffffff;
+}
+
+.dark-mode .control-title h1 {
+  font-family: 'Actay', sans-serif;
+  color: #ffffff;
+}
+
+.dark-mode .buttons button {
+  background-color: #ffffff;
+  color: rgb(22, 19, 19);
 }
 
 @font-face {
