@@ -58,6 +58,7 @@ func main() {
 
 
 	router.HandleFunc("/employees", getEmployees).Methods("GET")
+	router.HandleFunc("/employees/{id}", getEmployee).Methods("GET")
 	router.HandleFunc("/employees", createEmployee).Methods("POST")
 	router.HandleFunc("/employees/{id}", updateEmployee).Methods("PUT")
 	router.HandleFunc("/employees/{id}", deleteEmployee).Methods("DELETE")
@@ -96,6 +97,27 @@ func getEmployees(w http.ResponseWriter, r *http.Request) {
 	}
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(employees)
+}
+
+
+func getEmployee(w http.ResponseWriter, r *http.Request) {
+    // Получаем id из URL
+    vars := mux.Vars(r)
+    id := vars["id"]
+
+    var e Employee
+    // Выполняем запрос к базе с WHERE id = ?
+    err := dbEmployees.QueryRow(
+        "SELECT id, username, password, role FROM employees WHERE id = ?", id,
+    ).Scan(&e.ID, &e.Username, &e.Password, &e.Role)
+
+    if err != nil {
+        http.Error(w, "Не удалось найти сотрудника с id "+id, http.StatusNotFound)
+        return
+    }
+
+    w.Header().Set("Content-Type", "application/json")
+    json.NewEncoder(w).Encode(e)
 }
 
 // POST /employees – добавление нового сотрудника

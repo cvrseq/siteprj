@@ -61,26 +61,42 @@ addBtn.addEventListener('click', () => {
 });
 
 // Открытие модального окна для редактирования
-editBtn.addEventListener('click', () => {
+editBtn.addEventListener('click', async () => {
+  // Получаем все выбранные чекбоксы из таблицы
   const selected = document.querySelectorAll(
     '#data-table tbody input[type="checkbox"]:checked'
   );
+
   if (selected.length !== 1) {
     alert('Пожалуйста, выберите одну запись для редактирования');
     return;
   }
+
   const id = selected[0].dataset.id;
-  fetch(`/employees/${id}`)
-    .then((res) => res.json())
-    .then((emp) => {
-      modalTitle.textContent = 'Редактировать запись';
-      recordForm.elements.id.value = emp.id;
-      recordForm.elements.username.value = emp.username;
-      recordForm.elements.password.value = emp.password;
-      recordForm.elements.role.value = emp.role;
-      modal.style.display = 'block';
-    })
-    .catch((err) => console.error(err));
+
+  try {
+    // Запрос на сервер для получения данных выбранной записи
+    const response = await fetch(`/employees/${id}`);
+    if (!response.ok) {
+      throw new Error('Не удалось получить данные для редактирования');
+    }
+    const emp = await response.json();
+
+    // Заполняем форму модального окна данными из ответа
+    recordForm.elements.id.value = emp.id;
+    recordForm.elements.username.value = emp.username;
+    recordForm.elements.password.value = emp.password;
+    recordForm.elements.role.value = emp.role;
+
+    // Меняем заголовок модального окна, если нужно
+    modalTitle.textContent = 'Редактировать запись';
+
+    // Открываем модальное окно
+    modal.style.display = 'block';
+  } catch (err) {
+    console.error(err);
+    alert('Ошибка при получении данных для редактирования');
+  }
 });
 
 // Удаление записей
