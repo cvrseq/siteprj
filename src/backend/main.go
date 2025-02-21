@@ -56,6 +56,11 @@ func main() {
 
 	router := mux.NewRouter()
 
+
+	router.HandleFunc("/employees", getEmployees).Methods("GET")
+	router.HandleFunc("/employees", createEmployee).Methods("POST")
+	router.HandleFunc("/employees/{id}", updateEmployee).Methods("PUT")
+	router.HandleFunc("/employees/{id}", deleteEmployee).Methods("DELETE")
 	// CRUD-операции для устройств
 	router.HandleFunc("/devices", getDevices).Methods("GET")
 	router.HandleFunc("/devices/{id}", getDevice).Methods("GET")
@@ -69,6 +74,89 @@ func main() {
 
 	fmt.Println("Сервер запущен на порту 8080")
 	log.Fatal(http.ListenAndServe(":8080", router))
+}
+
+func getEmployees(w http.ResponseWriter, r *http.Request) {
+	rows, err := dbEmployees.Query("SELECT id, username, password, role FROM employees")
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	defer rows.Close()
+
+	var employees []Employee
+	for rows.Next() {
+		var e Employee
+		err := rows.Scan(&e.ID, &e.Username, &e.Password, &e.Role)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		employees = append(employees, e)
+	}
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(employees)
+}
+
+// POST /employees – добавление нового сотрудника
+func createEmployee(w http.ResponseWriter, r *http.Request) {
+	var e Employee
+	if err := json.NewDecoder(r.Body).Decode(&e); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	result, err := dbEmployees.Exec("INSERT INTO employees (username, password, role) VALUES (?, ?, ?)",
+		e.Username, e.Password, e.Role)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	lastID, _ := result.LastInsertId()
+	e.ID = int(lastID)
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(e)
+}
+
+// PUT /employees/{id} – обновление сотрудника
+func updateEmployee(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id := vars["id"]
+
+	var e Employee
+	if err := json.NewDecoder(r.Body).Decode(&e); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	_, err := dbEmployees.Exec("UPDATE employees SET username = ?, password = ?, role = ? WHERE id = ?",
+		e.Username, e.Password, e.Role, id)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	e.ID = atoi(id)
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(e)
+}
+
+// DELETE /employees/{id} – удаление сотрудника
+func deleteEmployee(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id := vars["id"]
+
+	_, err := dbEmployees.Exec("DELETE FROM employees WHERE id = ?", id)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	w.WriteHeader(http.StatusNoContent)
+}
+
+func atoi(s string) int {
+	var i int
+	fmt.Sscanf(s, "%d", &i)
+	return i
 }
 
 func getDevices(w http.ResponseWriter, r *http.Request) {
