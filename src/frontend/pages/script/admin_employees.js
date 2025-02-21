@@ -75,26 +75,23 @@ editBtn.addEventListener('click', async () => {
   const id = selected[0].dataset.id;
 
   try {
-    // Запрос на сервер для получения данных выбранной записи
     const response = await fetch(`/employees/${id}`);
     if (!response.ok) {
       throw new Error('Не удалось получить данные для редактирования');
     }
     const emp = await response.json();
+    console.log('emp = ', emp);
 
-    // Заполняем форму модального окна данными из ответа
     recordForm.elements.id.value = emp.id;
     recordForm.elements.username.value = emp.username;
     recordForm.elements.password.value = emp.password;
     recordForm.elements.role.value = emp.role;
 
-    // Меняем заголовок модального окна, если нужно
     modalTitle.textContent = 'Редактировать запись';
 
-    // Открываем модальное окно
     modal.style.display = 'block';
   } catch (err) {
-    console.error(err);
+    console.error('Реальная ошибка: ', err);
     alert('Ошибка при получении данных для редактирования');
   }
 });

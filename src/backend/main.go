@@ -142,25 +142,32 @@ func createEmployee(w http.ResponseWriter, r *http.Request) {
 
 // PUT /employees/{id} – обновление сотрудника
 func updateEmployee(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	id := vars["id"]
+    vars := mux.Vars(r)
+    id := vars["id"]
 
-	var e Employee
-	if err := json.NewDecoder(r.Body).Decode(&e); err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
+    var e Employee
+    if err := json.NewDecoder(r.Body).Decode(&e); err != nil {
+        http.Error(w, "Ошибка парсинга JSON: "+err.Error(), http.StatusBadRequest)
+        return
+    }
 
-	_, err := dbEmployees.Exec("UPDATE employees SET username = ?, password = ?, role = ? WHERE id = ?",
-		e.Username, e.Password, e.Role, id)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-	e.ID = atoi(id)
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(e)
+    // Выполняем UPDATE employees SET ... WHERE id = ?
+    // e.ID, e.Username, e.Password, e.Role
+    _, err := dbEmployees.Exec(`
+        UPDATE employees 
+           SET username = ?, password = ?, role = ?
+         WHERE id = ?
+    `, e.Username, e.Password, e.Role, id)
+    if err != nil {
+        http.Error(w, "Ошибка при обновлении записи: "+err.Error(), http.StatusInternalServerError)
+        return
+    }
+
+    // Возвращаем обновлённый объект
+    w.Header().Set("Content-Type", "application/json")
+    json.NewEncoder(w).Encode(e)
 }
+
 
 // DELETE /employees/{id} – удаление сотрудника
 func deleteEmployee(w http.ResponseWriter, r *http.Request) {
@@ -175,11 +182,6 @@ func deleteEmployee(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNoContent)
 }
 
-func atoi(s string) int {
-	var i int
-	fmt.Sscanf(s, "%d", &i)
-	return i
-}
 
 func getDevices(w http.ResponseWriter, r *http.Request) {
 	rows, err := dbDevices.Query("SELECT * FROM devices")
