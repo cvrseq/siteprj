@@ -62,6 +62,7 @@ func main() {
 	router.HandleFunc("/employees", createEmployee).Methods("POST")
 	router.HandleFunc("/employees/{id}", updateEmployee).Methods("PUT")
 	router.HandleFunc("/employees/{id}", deleteEmployee).Methods("DELETE")
+
 	// CRUD-операции для устройств
 	router.HandleFunc("/devices", getDevices).Methods("GET")
 	router.HandleFunc("/devices/{id}", getDevice).Methods("GET")
@@ -101,12 +102,10 @@ func getEmployees(w http.ResponseWriter, r *http.Request) {
 
 
 func getEmployee(w http.ResponseWriter, r *http.Request) {
-    // Получаем id из URL
     vars := mux.Vars(r)
     id := vars["id"]
 
     var e Employee
-    // Выполняем запрос к базе с WHERE id = ?
     err := dbEmployees.QueryRow(
         "SELECT id, username, password, role FROM employees WHERE id = ?", id,
     ).Scan(&e.ID, &e.Username, &e.Password, &e.Role)
@@ -119,6 +118,7 @@ func getEmployee(w http.ResponseWriter, r *http.Request) {
     w.Header().Set("Content-Type", "application/json")
     json.NewEncoder(w).Encode(e)
 }
+
 
 // POST /employees – добавление нового сотрудника
 func createEmployee(w http.ResponseWriter, r *http.Request) {
@@ -143,7 +143,7 @@ func createEmployee(w http.ResponseWriter, r *http.Request) {
 // PUT /employees/{id} – обновление сотрудника
 func updateEmployee(w http.ResponseWriter, r *http.Request) {
     vars := mux.Vars(r)
-    id := vars["id"]
+    id := vars["id"] // id из URL
 
     var e Employee
     if err := json.NewDecoder(r.Body).Decode(&e); err != nil {
@@ -151,8 +151,7 @@ func updateEmployee(w http.ResponseWriter, r *http.Request) {
         return
     }
 
-    // Выполняем UPDATE employees SET ... WHERE id = ?
-    // e.ID, e.Username, e.Password, e.Role
+    // Выполняем UPDATE employees
     _, err := dbEmployees.Exec(`
         UPDATE employees 
            SET username = ?, password = ?, role = ?
@@ -163,10 +162,10 @@ func updateEmployee(w http.ResponseWriter, r *http.Request) {
         return
     }
 
-    // Возвращаем обновлённый объект
     w.Header().Set("Content-Type", "application/json")
     json.NewEncoder(w).Encode(e)
 }
+
 
 
 // DELETE /employees/{id} – удаление сотрудника

@@ -60,20 +60,16 @@ addBtn.addEventListener('click', () => {
   modal.style.display = 'block';
 });
 
-// Открытие модального окна для редактирования
 editBtn.addEventListener('click', async () => {
-  // Получаем все выбранные чекбоксы из таблицы
   const selected = document.querySelectorAll(
     '#data-table tbody input[type="checkbox"]:checked'
   );
-
   if (selected.length !== 1) {
     alert('Пожалуйста, выберите одну запись для редактирования');
     return;
   }
 
   const id = selected[0].dataset.id;
-
   try {
     const response = await fetch(`/employees/${id}`);
     if (!response.ok) {
@@ -82,13 +78,13 @@ editBtn.addEventListener('click', async () => {
     const emp = await response.json();
     console.log('emp = ', emp);
 
+    // Заполняем форму
     recordForm.elements.id.value = emp.id;
     recordForm.elements.username.value = emp.username;
     recordForm.elements.password.value = emp.password;
     recordForm.elements.role.value = emp.role;
 
     modalTitle.textContent = 'Редактировать запись';
-
     modal.style.display = 'block';
   } catch (err) {
     console.error('Реальная ошибка: ', err);
@@ -118,22 +114,23 @@ deleteBtn.addEventListener('click', async () => {
   loadEmployees();
 });
 
-// Обработка отправки формы (добавление/редактирование)
 recordForm.addEventListener('submit', async (e) => {
   e.preventDefault();
   const formData = new FormData(recordForm);
   const record = {};
-  formData.forEach((value, key) => {
-    record[key] = value;
+  formData.forEach((val, key) => {
+    record[key] = val;
   });
 
   if (record.id) {
+    // PUT
     await fetch(`/employees/${record.id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(record),
     });
   } else {
+    // POST
     await fetch('/employees', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

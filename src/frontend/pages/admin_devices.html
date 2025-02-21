@@ -4,15 +4,144 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#ffffff" />
-    <link rel="stylesheet" href="./style/admin_devices.css" />
+    <link rel="stylesheet" href="/pages/style/admin_devices.css" />
     <title>Панель управления девайсами</title>
   </head>
   <body>
-    <script src="/script/admin_devices.js"></script>
     <header>
+      <div class="container">
+        <div class="theme" onclick="toggleTheme()">
+          <svg
+            id="theme-icon"
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            class="bi bi-moon-fill"
+            viewBox="0 0 16 16"
+          >
+            <path
+              d="M6 .278a.77.77 0 0 1 .08.858 7.2 7.2 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277q.792-.001 1.533-.16a.79.79 0 0 1 .81.316.73.73 0 0 1-.031.893A8.35 8.35 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.75.75 0 0 1 6 .278"
+            />
+          </svg>
+        </div>
+      </div>
       <div class="control-title">
         <h1>Панель упавления девайсами</h1>
       </div>
     </header>
+    <div class="buttons">
+      <button id="addBtn">Добавить</button>
+      <button id="editBtn">Редактировать</button>
+      <button id="deleteBtn">Удалить</button>
+    </div>
+    <main>
+      <table id="data-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Тип</th>
+            <th>Название</th>
+            <th>Модель</th>
+            <th>Топливо</th>
+            <th>Давление, атм</th>
+            <th>Паропроизводительность, кг/ч</th>
+            <th>Температура пара</th>
+            <th>КПД</th>
+            <th>Мощность, кВт</th>
+            <th>Производство пара, кг/ч</th>
+            <th>Расход газа</th>
+            <th>Расход дизеля</th>
+            <th>Расход мазута</th>
+            <th>Расход твердого топлива</th>
+            <th>Вес, кг</th>
+            <th>Расход твердого топлива3</th>
+            <th>Расход твердого топлива4</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </main>
+
+    <div id="modal" class="modal">
+      <div class="modal-content">
+        <span id="closeModal" class="close">&times;</span>
+        <h2 id="modalTitle">Добавить запись</h2>
+        <form id="recordForm">
+          <input type="hidden" name="id" />
+          <label>
+            Тип:
+            <input type="text" name="type" required />
+          </label>
+          <label>
+            Название:
+            <input type="text" name="name" required />
+          </label>
+          <label>
+            Модель:
+            <input type="text" name="model" required />
+          </label>
+          <label>
+            Топливо:
+            <input type="text" name="fuel" required />
+          </label>
+          <label>
+            Давление, атм:
+            <input type="text" name="pressure" required />
+          </label>
+          <label>
+            Паропроизводительность:
+            <input type="text" name="steam_capacity" required />
+          </label>
+          <label>
+            Температура пара:
+            <input type="text" name="steam_temperature" required />
+          </label>
+          <label>
+            КПД:
+            <input type="text" name="efficiency" required />
+          </label>
+          <label>
+            Мощность, кВт:
+            <input type="text" name="power" required />
+          </label>
+          <label>
+            Производство пара, кг/ч:
+            <input type="text" name="steam_production" required />
+          </label>
+          <label>
+            Расход газа:
+            <input type="text" name="gas_consumption" required />
+          </label>
+          <label>
+            Расход дизеля:
+            <input type="text" name="diesel_consumption" required />
+          </label>
+          <label>
+            Расход мазута:
+            <input type="text" name="fuel_oil_consumption" required />
+          </label>
+          <label>
+            Расход твердого топлива:
+            <input type="text" name="solid_fuel_consumption" required />
+          </label>
+          <label>
+            Вес, кг:
+            <input type="text" name="weight" required />
+          </label>
+          <label>
+            Расход твердого топлива3:
+            <input type="text" name="solid_fuel_consumption3" required />
+          </label>
+          <label>
+            Расход твердого топлива4:
+            <input type="text" name="solid_fuel_consumption4" required />
+          </label>
+
+          <button type="submit" class="btn">Сохранить</button>
+        </form>
+      </div>
+    </div>
+    <script src="script/admin_devices.js"></script>
   </body>
 </html>
