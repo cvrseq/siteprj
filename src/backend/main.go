@@ -63,15 +63,11 @@ func main() {
 	router.HandleFunc("/employees/{id}", updateEmployee).Methods("PUT")
 	router.HandleFunc("/employees/{id}", deleteEmployee).Methods("DELETE")
 
-	// CRUD-операции для устройств
 	router.HandleFunc("/devices", getDevices).Methods("GET")
 	router.HandleFunc("/devices/{id}", getDevice).Methods("GET")
-	// Другие обработчики для устройств (create, update, delete) можно добавить
-
-	// Эндпоинт логина: GET – отдает registration.html, POST – авторизация
 	router.HandleFunc("/login", loginHandler).Methods("GET", "POST")
 
-	// Раздача статических файлов из директории ../frontend/
+	
 	router.PathPrefix("/").Handler(http.FileServer(http.Dir("../frontend/")))
 
 	fmt.Println("Сервер запущен на порту 8080")
