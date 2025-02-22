@@ -17,9 +17,9 @@ themeToggle.addEventListener('click', () => {
 // Функция для загрузки данных сотрудников
 async function loadDevices() {
   try {
-    const response = await fetch('/mydatabase');
-    const mydatabase = await response.json();
-    populateTable(mydatabase);
+    const response = await fetch('/devices');
+    const devices = await response.json();
+    populateTable(devices);
   } catch (error) {
     console.error('Ошибка загрузки девайсов:', error);
   }
@@ -83,12 +83,12 @@ editBtn.addEventListener('click', async () => {
 
   const id = selected[0].dataset.id;
   try {
-    const response = await fetch(`/mydatabase/${id}`);
+    const response = await fetch(`/devices/${id}`);
     if (!response.ok) {
       throw new Error('Не удалось получить данные для редактирования');
     }
-    const emp = await response.json();
-    console.log('emp = ', emp);
+    const dev = await response.json();
+    console.log('dev = ', dev);
 
     // Заполняем форму
     recordForm.elements.id.value = dev.id;
@@ -117,7 +117,6 @@ editBtn.addEventListener('click', async () => {
   }
 });
 
-// Удаление записей
 deleteBtn.addEventListener('click', async () => {
   const selected = document.querySelectorAll(
     '#data-table tbody input[type="checkbox"]:checked'

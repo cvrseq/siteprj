@@ -11,20 +11,27 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-// Device описывает устройство
 type Device struct {
-	ID                     int            `json:"id"`
-	Тип                    string         `json:"тип"`
-	Название               string         `json:"название"`
-	Модель                 string         `json:"Модель"`
-	Топливо                string         `json:"Топливо"`
-	Давление_атм           sql.NullString `json:"давление_атм"`
-	Паропроизводительность sql.NullString `json:"паропроизводительность, кг/ч"`
-	Температура_пара       sql.NullString `json:"температура_пара"`
-	// Дополнительные поля можно добавить
+	ID                         int            `json:"id"`
+	Тип                        string         `json:"тип"`
+	Название                   string         `json:"название"`
+	Модель                     string         `json:"Модель"`
+	Топливо                    string         `json:"Топливо"`
+	Давление_атм               sql.NullString `json:"давление_атм"`
+	Паропроизводительность     sql.NullString `json:"паропроизводительность, кг/ч"`
+	Температура_пара           sql.NullString `json:"температура_пара"`
+	КПД					       sql.NullString `json:"КПД"`
+	Мощность           	       sql.NullString `json:"мощность"`
+	Производство_пара_кг_ч     sql.NullString `json:"производство_пара, кг/ч"`
+	Расход_газа                sql.NullString `json:"расход_газа"`
+	Расход_дизеля		       sql.NullString `json:"расход_дизеля"`
+	Расход_мазута              sql.NullString `json:"расход_мазута"`
+	Расход_твердого_топлива    sql.NullString `json:"расход_твердого_топлива"`
+	Вес_кг      			   sql.NullString `json:"вес, кг"`
+	Расход_твердого_топлива3   sql.NullString `json:"расход_твердого_топлива3"`
+	Расход_твердого_топлива4   sql.NullString `json:"расход_твердого_топлива4"`
 }
 
-// Employee описывает сотрудника для логина
 type Employee struct {
 	ID       int    `json:"id"`
 	Username string `json:"username"`
@@ -65,6 +72,11 @@ func main() {
 
 	router.HandleFunc("/devices", getDevices).Methods("GET")
 	router.HandleFunc("/devices/{id}", getDevice).Methods("GET")
+	router.HandleFunc("/devices", createDevices).Methods("POST")
+	router.HandleFunc("/devices/{id}", updateDevices).Methods("PUT")
+	router.HandleFunc("/devices/{id}", deleteDevices).Methods("DELETE")
+
+	
 	router.HandleFunc("/login", loginHandler).Methods("GET", "POST")
 
 	
@@ -95,6 +107,7 @@ func getEmployees(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(employees)
 }
+
 
 
 func getEmployee(w http.ResponseWriter, r *http.Request) {
@@ -198,6 +211,16 @@ func getDevices(w http.ResponseWriter, r *http.Request) {
 			&d.Давление_атм,
 			&d.Паропроизводительность,
 			&d.Температура_пара,
+			&d.КПД, 
+			&d.Мощность,
+			&d.Производство_пара_кг_ч,
+			&d.Расход_газа,
+			&d.Расход_дизеля,
+			&d.Расход_мазута,
+			&d.Расход_твердого_топлива, 
+			&d.Вес_кг,
+			&d.Расход_твердого_топлива3,
+			&d.Расход_твердого_топлива4,
 		)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -215,14 +238,25 @@ func getDevice(w http.ResponseWriter, r *http.Request) {
 
 	var d Device
 	err := dbDevices.QueryRow("SELECT * FROM devices WHERE id = ?", id).Scan(
-		&d.ID,
-		&d.Тип,
-		&d.Название,
-		&d.Модель,
-		&d.Топливо,
-		&d.Давление_атм,
-		&d.Паропроизводительность,
-		&d.Температура_пара,
+			&d.ID,
+			&d.Тип,
+			&d.Название,
+			&d.Модель,
+			&d.Топливо,
+			&d.Давление_атм,
+			&d.Паропроизводительность,
+			&d.Температура_пара,
+			&d.КПД, 
+			&d.Мощность,
+			&d.Производство_пара_кг_ч,
+			&d.Расход_газа,
+			&d.Расход_дизеля,
+			&d.Расход_мазута,
+			&d.Расход_твердого_топлива, 
+			&d.Вес_кг,
+			&d.Расход_твердого_топлива3,
+			&d.Расход_твердого_топлива4,
+
 	)
 	if err != nil {
 		http.Error(w, "Не найдено", http.StatusNotFound)
@@ -230,6 +264,78 @@ func getDevice(w http.ResponseWriter, r *http.Request) {
 	}
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(d)
+}
+
+func createDevices(w http.ResponseWriter, r *http.Request) {
+	var e Device
+	if err := json.NewDecoder(r.Body).Decode(&e); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	result, err := dbDevices.Exec(`INSERT INTO devices (
+		"тип", "название", "Модель", "Топливо", "Давление, атм",
+		"Паропроизводительность, кг/ч", "температура пара", "КПД", "мощность, кВт",
+		"Производство пара, кг/ч", "Расход газа", "Расход дизеля", "Расход мазута",
+		"Расход твердого топлива", "вес, кг", "Расход твердого топлива3", "Расход твердого топлива4"
+	  ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+		e.Тип, e.Название, e.Модель, e.Топливо, e.Давление_атм, e.Паропроизводительность, e.Температура_пара, e.КПД,
+		e.Мощность, e.Производство_пара_кг_ч, e.Расход_газа, e.Расход_дизеля, e.Расход_мазута, e.Расход_твердого_топлива, 
+		e.Вес_кг, e.Расход_твердого_топлива3, e.Расход_твердого_топлива4)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	lastID, _ := result.LastInsertId()
+	e.ID = int(lastID)
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(e)
+}
+
+// PUT /employees/{id} – обновление сотрудника
+func updateDevices(w http.ResponseWriter, r *http.Request) {
+    vars := mux.Vars(r)
+    id := vars["id"] // id из URL
+
+    var e Device
+    if err := json.NewDecoder(r.Body).Decode(&e); err != nil {
+        http.Error(w, "Ошибка парсинга JSON: "+err.Error(), http.StatusBadRequest)
+        return
+    }
+
+    // Выполняем UPDATE employees
+    _, err := dbEmployees.Exec(`
+        UPDATE devices
+           SET "тип" = ?, "название" = ?, "Модель" = ?, "Топливо" = ?, "Давление, атм" = ?,
+		   "Паропроизводительность, кг/ч" = ?, "температура пара" = ?, "КПД" = ?, "мощность, кВт" = ?,
+		   "Производство пара, кг/ч" = ?, "Расход газа" = ?, "Расход дизеля" = ?, "Расход мазута" = ?,
+		   "Расход твердого топлива" = ?, "вес, кг" = ?, "Расход твердого топлива3" = ?, "Расход твердого топлива4" = ?
+         WHERE id = ?
+    `, e.Тип, e.Название, e.Модель, e.Топливо, e.Давление_атм, e.Паропроизводительность, e.Температура_пара, e.КПД,
+	e.Мощность, e.Производство_пара_кг_ч, e.Расход_газа, e.Расход_дизеля, e.Расход_мазута, e.Расход_твердого_топлива, 
+	e.Вес_кг, e.Расход_твердого_топлива3, e.Расход_твердого_топлива4, id)
+    if err != nil {
+        http.Error(w, "Ошибка при обновлении записи: "+err.Error(), http.StatusInternalServerError)
+        return
+    }
+
+    w.Header().Set("Content-Type", "application/json")
+    json.NewEncoder(w).Encode(e)
+}
+
+
+
+// DELETE /employees/{id} – удаление сотрудника
+func deleteDevices(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id := vars["id"]
+
+	_, err := dbEmployees.Exec("DELETE FROM devices WHERE id = ?", id)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	w.WriteHeader(http.StatusNoContent)
 }
 
 func loginHandler(w http.ResponseWriter, r *http.Request) {
