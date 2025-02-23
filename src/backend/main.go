@@ -12,30 +12,31 @@ import (
 )
 
 type Device struct {
-	ID                         int            `json:"id"`
-	Тип                        string         `json:"тип"`
-	Название                   string         `json:"название"`
-	Модель                     string         `json:"Модель"`
-	Топливо                    string         `json:"Топливо"`
-	Давление_атм               sql.NullString `json:"давление_атм"`
-	Паропроизводительность     sql.NullString `json:"паропроизводительность, кг/ч"`
-	Температура_пара           sql.NullString `json:"температура_пара"`
-	КПД					       sql.NullString `json:"КПД"`
-	Мощность           	       sql.NullString `json:"мощность"`
-	Производство_пара_кг_ч     sql.NullString `json:"производство_пара, кг/ч"`
-	Расход_газа                sql.NullString `json:"расход_газа"`
-	Расход_дизеля		       sql.NullString `json:"расход_дизеля"`
-	Расход_мазута              sql.NullString `json:"расход_мазута"`
-	Расход_твердого_топлива    sql.NullString `json:"расход_твердого_топлива"`
-	Вес_кг      			   sql.NullString `json:"вес, кг"`
-	Расход_твердого_топлива3   sql.NullString `json:"расход_твердого_топлива3"`
-	Расход_твердого_топлива4   sql.NullString `json:"расход_твердого_топлива4"`
+	ID             int    `json:"id"`
+  	Type           string `json:"type"`
+  	Name           string `json:"name"`
+  	Model          string `json:"model"`
+  	Fuel           string `json:"fuel"`
+  	PressureAtm    string `json:"pressure"`
+  	SteamCapacity  string `json:"steam_capacity"`
+  	SteamTemp      string `json:"steam_temperature"`
+  	Efficiency     string `json:"efficiency"`
+  	Power          string `json:"power"`
+  	SteamProd      string `json:"steam_production"`
+  	GasCons        string `json:"gas_cons"`
+  	DieselCons     string `json:"diesel_cons"`
+  	FuelOilCons    string `json:"fuel_oil_cons"`
+  	SolidFuelCons  string `json:"solid_fuel_cons"`
+  	Weight         string `json:"weight"`
+	Burner         string `json:"burner"`
+	mop       	   string `json:"modification_one_pump"`
+	mtp       	   string `json:"modification_two_pump"`
 }
 
 type Employee struct {
 	ID       int    `json:"id"`
 	Username string `json:"username"`
-	Password string `json:"password"` // Сырой пароль
+	Password string `json:"password"` 
 	Role     string `json:"role"`
 }
 
@@ -47,14 +48,12 @@ var (
 func main() {
 	var err error
 
-	// Подключаемся к базе устройств
 	dbDevices, err = sql.Open("sqlite3", "./db/mydatabase.db")
 	if err != nil {
 		log.Fatal("Ошибка подключения к базе устройств:", err)
 	}
 	defer dbDevices.Close()
 
-	// Подключаемся к базе сотрудников
 	dbEmployees, err = sql.Open("sqlite3", "./db/employees.db")
 	if err != nil {
 		log.Fatal("Ошибка подключения к базе сотрудников:", err)
@@ -204,23 +203,24 @@ func getDevices(w http.ResponseWriter, r *http.Request) {
 		var d Device
 		err := rows.Scan(
 			&d.ID,
-			&d.Тип,
-			&d.Название,
-			&d.Модель,
-			&d.Топливо,
-			&d.Давление_атм,
-			&d.Паропроизводительность,
-			&d.Температура_пара,
-			&d.КПД, 
-			&d.Мощность,
-			&d.Производство_пара_кг_ч,
-			&d.Расход_газа,
-			&d.Расход_дизеля,
-			&d.Расход_мазута,
-			&d.Расход_твердого_топлива, 
-			&d.Вес_кг,
-			&d.Расход_твердого_топлива3,
-			&d.Расход_твердого_топлива4,
+			&d.Type,
+			&d.Name,
+			&d.Model,
+			&d.Fuel,
+			&d.PressureAtm,
+			&d.SteamCapacity,
+			&d.SteamTemp,
+			&d.Efficiency, 
+			&d.Power,
+			&d.SteamProd,
+			&d.GasCons,
+			&d.DieselCons,
+			&d.FuelOilCons,
+			&d.SolidFuelCons, 
+			&d.Weight,
+			&d.Burner, 
+			&d.mop,
+			&d.mtp,			
 		)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -239,23 +239,25 @@ func getDevice(w http.ResponseWriter, r *http.Request) {
 	var d Device
 	err := dbDevices.QueryRow("SELECT * FROM devices WHERE id = ?", id).Scan(
 			&d.ID,
-			&d.Тип,
-			&d.Название,
-			&d.Модель,
-			&d.Топливо,
-			&d.Давление_атм,
-			&d.Паропроизводительность,
-			&d.Температура_пара,
-			&d.КПД, 
-			&d.Мощность,
-			&d.Производство_пара_кг_ч,
-			&d.Расход_газа,
-			&d.Расход_дизеля,
-			&d.Расход_мазута,
-			&d.Расход_твердого_топлива, 
-			&d.Вес_кг,
-			&d.Расход_твердого_топлива3,
-			&d.Расход_твердого_топлива4,
+			&d.ID,
+			&d.Type,
+			&d.Name,
+			&d.Model,
+			&d.Fuel,
+			&d.PressureAtm,
+			&d.SteamCapacity,
+			&d.SteamTemp,
+			&d.Efficiency, 
+			&d.Power,
+			&d.SteamProd,
+			&d.GasCons,
+			&d.DieselCons,
+			&d.FuelOilCons,
+			&d.SolidFuelCons, 
+			&d.Weight,
+			&d.Burner, 
+			&d.mop,
+			&d.mtp,	
 
 	)
 	if err != nil {
@@ -274,14 +276,14 @@ func createDevices(w http.ResponseWriter, r *http.Request) {
 	}
 
 	result, err := dbDevices.Exec(`INSERT INTO devices (
-		"тип", "название", "Модель", "Топливо", "Давление, атм",
-		"Паропроизводительность, кг/ч", "температура пара", "КПД", "мощность, кВт",
-		"Производство пара, кг/ч", "Расход газа", "Расход дизеля", "Расход мазута",
-		"Расход твердого топлива", "вес, кг", "Расход твердого топлива3", "Расход твердого топлива4"
-	  ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-		e.Тип, e.Название, e.Модель, e.Топливо, e.Давление_атм, e.Паропроизводительность, e.Температура_пара, e.КПД,
-		e.Мощность, e.Производство_пара_кг_ч, e.Расход_газа, e.Расход_дизеля, e.Расход_мазута, e.Расход_твердого_топлива, 
-		e.Вес_кг, e.Расход_твердого_топлива3, e.Расход_твердого_топлива4)
+		type, name, model, fuel, pressure, steam_capacity, 
+                steam_temperature, efficiency, power, steam_production, 
+                gas_cons, diesel_cons, fuel_oil_cons, solid_fuel_cons,
+                weight, burner, modification_one_pump, modification_two_pump
+            ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);`,
+		e.Type, e.Name, e.Model, e.Fuel, e.PressureAtm, e.SteamCapacity, e.SteamTemp, e.Efficiency,
+		e.Power, e.SteamProd, e.GasCons, e.DieselCons, e.FuelOilCons, e.SolidFuelCons, 
+		e.Weight, e.Burner, e.mop, e.mtp)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -306,14 +308,15 @@ func updateDevices(w http.ResponseWriter, r *http.Request) {
     // Выполняем UPDATE employees
     _, err := dbEmployees.Exec(`
         UPDATE devices
-           SET "тип" = ?, "название" = ?, "Модель" = ?, "Топливо" = ?, "Давление, атм" = ?,
-		   "Паропроизводительность, кг/ч" = ?, "температура пара" = ?, "КПД" = ?, "мощность, кВт" = ?,
-		   "Производство пара, кг/ч" = ?, "Расход газа" = ?, "Расход дизеля" = ?, "Расход мазута" = ?,
-		   "Расход твердого топлива" = ?, "вес, кг" = ?, "Расход твердого топлива3" = ?, "Расход твердого топлива4" = ?
+           SET type = ?, name = ?, model = ?, fuel = ?, pressure = ?,
+		   steam_capacity = ?, steam_temperature = ?, efficiency = ?, power = ?,
+		   steam_production = ?, gas_cons = ?, diesel_cons = ?, fuel_oil_cons = ?,
+		   solid_fuel_cons = ?, weight = ?, burner = ?, modification_one_pump = ?,
+		   modification_two_pump = ?
          WHERE id = ?
-    `, e.Тип, e.Название, e.Модель, e.Топливо, e.Давление_атм, e.Паропроизводительность, e.Температура_пара, e.КПД,
-	e.Мощность, e.Производство_пара_кг_ч, e.Расход_газа, e.Расход_дизеля, e.Расход_мазута, e.Расход_твердого_топлива, 
-	e.Вес_кг, e.Расход_твердого_топлива3, e.Расход_твердого_топлива4, id)
+    `, e.Type, e.Name, e.Model, e.Fuel, e.PressureAtm, e.SteamCapacity, e.SteamTemp, e.Efficiency,
+	e.Power, e.SteamProd, e.GasCons, e.DieselCons, e.FuelOilCons, e.SolidFuelCons, 
+	e.Weight, e.Burner, e.mop, e.mtp, id)
     if err != nil {
         http.Error(w, "Ошибка при обновлении записи: "+err.Error(), http.StatusInternalServerError)
         return
@@ -324,8 +327,6 @@ func updateDevices(w http.ResponseWriter, r *http.Request) {
 }
 
 
-
-// DELETE /employees/{id} – удаление сотрудника
 func deleteDevices(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id := vars["id"]
@@ -340,12 +341,10 @@ func deleteDevices(w http.ResponseWriter, r *http.Request) {
 
 func loginHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodGet {
-		// Отдаем страницу регистрации (registration.html)
 		http.ServeFile(w, r, "../frontend/pages/registration.html")
 		return
 	}
 
-	// POST-запрос: ожидаем JSON с username и password
 	var creds struct {
 		Username string `json:"username"`
 		Password string `json:"password"`
@@ -356,7 +355,6 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Ищем сотрудника в базе сотрудников
 	var storedPassword, role string
 	err = dbEmployees.QueryRow(
 		"SELECT password, role FROM employees WHERE username = ?",
@@ -367,13 +365,11 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Сравниваем сырой пароль
 	if storedPassword != creds.Password {
 		http.Error(w, "Неверное имя пользователя или пароль", http.StatusUnauthorized)
 		return
 	}
 
-	// При успешной авторизации
 	if role == "admin" {
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(map[string]string{"redirect": "/pages/admin.html"})

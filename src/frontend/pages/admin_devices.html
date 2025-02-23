@@ -55,6 +55,9 @@
             <th>Расход мазута</th>
             <th>Расход твердого топлива</th>
             <th>Вес, кг</th>
+            <th>Горелка</th>
+            <th>Модификая с одним насосом</th>
+            <th>Модификая с двумя насосами</th>
             <th>Выбор</th>
           </tr>
         </thead>
@@ -110,23 +113,35 @@
           </label>
           <label>
             Расход газа:
-            <input type="text" name="gas_consumption" required />
+            <input type="text" name="gas_cons" required />
           </label>
           <label>
             Расход дизеля:
-            <input type="text" name="diesel_consumption" required />
+            <input type="text" name="diesel_cons" required />
           </label>
           <label>
             Расход мазута:
-            <input type="text" name="fuel_oil_consumption" required />
+            <input type="text" name="fuel_oil_cons" required />
           </label>
           <label>
             Расход твердого топлива:
-            <input type="text" name="solid_fuel_consumption" required />
+            <input type="text" name="solid_fuel_cons" required />
           </label>
           <label>
             Вес, кг:
             <input type="text" name="weight" required />
+          </label>
+          <label>
+            Горелка:
+            <input type="text" name="burner" required />
+          </label>
+          <label>
+            Модификация с одним насосом:
+            <input type="text" name="mop" required />
+          </label>
+          <label>
+            Модификация с двумя насосами:
+            <input type="text" name="mpt" required />
           </label>
 
           <button type="submit" class="btn">Сохранить</button>

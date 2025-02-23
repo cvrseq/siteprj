@@ -14,7 +14,6 @@ themeToggle.addEventListener('click', () => {
 
 /* <----------------------------------------------------------------------------------------------------------> */
 
-// Функция для загрузки данных сотрудников
 async function loadDevices() {
   try {
     const response = await fetch('/devices');
@@ -42,29 +41,30 @@ function populateTable(data) {
       <td>${dev.efficiency}</td>
       <td>${dev.power}</td>
       <td>${dev.steam_production}</td>
-      <td>${dev.gas_consumption}</td>
-      <td>${dev.diesel_consumption}</td>
-      <td>${dev.fuel_oil_consumption}</td>
-      <td>${dev.solid_fuel_consumption}</td>
+      <td>${dev.gas_cons}</td>
+      <td>${dev.diesel_cons}</td>
+      <td>${dev.fuel_oil_cons}</td>
+      <td>${dev.solid_fuel_cons}</td>
       <td>${dev.weight}</td>
+      <td>${dev.burner}</td>
+      <td>${dev.mop}</td>
+      <td>${dev.mtp}</td>
       <td><input type="checkbox" data-id="${dev.id}" /></td>
     `;
     tbody.appendChild(tr);
   }
 }
 
-// Модальное окно и его элементы
 const modal = document.getElementById('modal');
 const closeModal = document.getElementById('closeModal');
 const recordForm = document.getElementById('recordForm');
 const modalTitle = document.getElementById('modalTitle');
 
-// Кнопки управления
 const addBtn = document.getElementById('addBtn');
 const editBtn = document.getElementById('editBtn');
 const deleteBtn = document.getElementById('deleteBtn');
 
-// Открытие модального окна для добавления
+
 addBtn.addEventListener('click', () => {
   modalTitle.textContent = 'Добавить запись';
   recordForm.reset();
@@ -102,12 +102,14 @@ editBtn.addEventListener('click', async () => {
     recordForm.elements.efficiency.value = dev.efficiency;
     recordForm.elements.power.value = dev.power;
     recordForm.elements.steam_production.value = dev.steam_production;
-    recordForm.elements.gas_consumption.value = dev.gas_consumption;
-    recordForm.elements.diesel_consumption.value = dev.diesel_consumption;
-    recordForm.elements.fuel_oil_consumption.value = dev.fuel_oil_consumption;
-    recordForm.elements.solid_fuel_consumption.value =
-      dev.solid_fuel_consumption;
+    recordForm.elements.gas_cons.value = dev.gas_cons;
+    recordForm.elements.diesel_cons.value = dev.diesel_cons;
+    recordForm.elements.fuel_oil_cons.value = dev.fuel_oil_cons;
+    recordForm.elements.solid_fuel_cons.value = dev.solid_fuel_cons;
     recordForm.elements.weight.value = dev.weight;
+    recordForm.elements.burner.value = dev.burner;
+    recordForm.elements.mop.value = dev.mop;
+    recordForm.elements.mpt.value = dev.mpt;
 
     modalTitle.textContent = 'Редактировать запись';
     modal.style.display = 'block';
@@ -130,7 +132,7 @@ deleteBtn.addEventListener('click', async () => {
   for (const checkbox of selected) {
     const id = checkbox.dataset.id;
     try {
-      await fetch(`/mydatabase/${id}`, { method: 'DELETE' });
+      await fetch(`/devices/${id}`, { method: 'DELETE' });
     } catch (err) {
       console.error(`Ошибка при удалении записи с id ${id}:`, err);
     }
@@ -148,14 +150,14 @@ recordForm.addEventListener('submit', async (e) => {
 
   if (record.id) {
     // PUT
-    await fetch(`/mydatabase/${record.id}`, {
+    await fetch(`/devices/${record.id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(record),
     });
   } else {
     // POST
-    await fetch('/mydatabase', {
+    await fetch('/devices', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(record),
@@ -165,17 +167,15 @@ recordForm.addEventListener('submit', async (e) => {
   loadDevices();
 });
 
-// Закрытие модального окна по клику на крестик
 closeModal.addEventListener('click', () => {
   modal.style.display = 'none';
 });
 
-// Закрытие модального окна при клике вне его области
 window.addEventListener('click', (e) => {
   if (e.target === modal) {
     modal.style.display = 'none';
   }
 });
 
-// Инициализация: загрузка данных
+
 loadDevices();
