@@ -12,31 +12,31 @@ import (
 )
 
 type Device struct {
-	ID             int    `json:"id"`
-  	Type           string `json:"type"`
-  	Name           string `json:"name"`
-  	Model          string `json:"model"`
-  	Fuel           string `json:"fuel"`
-  	PressureAtm    string `json:"pressure"`
-  	SteamCapacity  string `json:"steam_capacity"`
-  	SteamTemp      string `json:"steam_temperature"`
-  	Efficiency     string `json:"efficiency"`
-  	Power          string `json:"power"`
-  	SteamProd      string `json:"steam_production"`
-  	GasCons        string `json:"gas_cons"`
-  	DieselCons     string `json:"diesel_cons"`
-  	FuelOilCons    string `json:"fuel_oil_cons"`
-  	SolidFuelCons  string `json:"solid_fuel_cons"`
-  	Weight         string `json:"weight"`
-	Burner         string `json:"burner"`
-	mop       	   string `json:"modification_one_pump"`
-	mtp       	   string `json:"modification_two_pump"`
+	ID            int     `json:"id"`
+	Type          string `json:"type"`
+	Name          string `json:"name"`
+	Model         string `json:"model"`
+	Fuel          string `json:"fuel"`
+	PressureAtm   string `json:"pressure"`
+	SteamCapacity string `json:"steam_capacity"`
+	SteamTemp     string `json:"steam_temperature"`
+	Efficiency    string `json:"efficiency"`
+	Power         string `json:"power"`
+	SteamProd     string `json:"steam_production"`
+	GasCons       string `json:"gas_cons"`
+	DieselCons    string `json:"diesel_cons"`
+	FuelOilCons   string `json:"fuel_oil_cons"`
+	SolidFuelCons string `json:"solid_fuel_cons"`
+	Weight        string `json:"weight"`
+	Burner        string `json:"burner"`
+	Mop           string `json:"mop"`
+	Mtp           string `json:"mpt"`
 }
 
 type Employee struct {
 	ID       int    `json:"id"`
 	Username string `json:"username"`
-	Password string `json:"password"` 
+	Password string `json:"password"`
 	Role     string `json:"role"`
 }
 
@@ -62,7 +62,6 @@ func main() {
 
 	router := mux.NewRouter()
 
-
 	router.HandleFunc("/employees", getEmployees).Methods("GET")
 	router.HandleFunc("/employees/{id}", getEmployee).Methods("GET")
 	router.HandleFunc("/employees", createEmployee).Methods("POST")
@@ -75,10 +74,8 @@ func main() {
 	router.HandleFunc("/devices/{id}", updateDevices).Methods("PUT")
 	router.HandleFunc("/devices/{id}", deleteDevices).Methods("DELETE")
 
-	
 	router.HandleFunc("/login", loginHandler).Methods("GET", "POST")
 
-	
 	router.PathPrefix("/").Handler(http.FileServer(http.Dir("../frontend/")))
 
 	fmt.Println("Сервер запущен на порту 8080")
@@ -96,8 +93,7 @@ func getEmployees(w http.ResponseWriter, r *http.Request) {
 	var employees []Employee
 	for rows.Next() {
 		var e Employee
-		err := rows.Scan(&e.ID, &e.Username, &e.Password, &e.Role)
-		if err != nil {
+		if err := rows.Scan(&e.ID, &e.Username, &e.Password, &e.Role); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
@@ -107,35 +103,26 @@ func getEmployees(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(employees)
 }
 
-
-
 func getEmployee(w http.ResponseWriter, r *http.Request) {
-    vars := mux.Vars(r)
-    id := vars["id"]
-
-    var e Employee
-    err := dbEmployees.QueryRow(
-        "SELECT id, username, password, role FROM employees WHERE id = ?", id,
-    ).Scan(&e.ID, &e.Username, &e.Password, &e.Role)
-
-    if err != nil {
-        http.Error(w, "Не удалось найти сотрудника с id "+id, http.StatusNotFound)
-        return
-    }
-
-    w.Header().Set("Content-Type", "application/json")
-    json.NewEncoder(w).Encode(e)
+	vars := mux.Vars(r)
+	id := vars["id"]
+	var e Employee
+	err := dbEmployees.QueryRow("SELECT id, username, password, role FROM employees WHERE id = ?", id).
+		Scan(&e.ID, &e.Username, &e.Password, &e.Role)
+	if err != nil {
+		http.Error(w, "Не удалось найти сотрудника с id "+id, http.StatusNotFound)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(e)
 }
 
-
-// POST /employees – добавление нового сотрудника
 func createEmployee(w http.ResponseWriter, r *http.Request) {
 	var e Employee
 	if err := json.NewDecoder(r.Body).Decode(&e); err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-
 	result, err := dbEmployees.Exec("INSERT INTO employees (username, password, role) VALUES (?, ?, ?)",
 		e.Username, e.Password, e.Role)
 	if err != nil {
@@ -148,39 +135,27 @@ func createEmployee(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(e)
 }
 
-// PUT /employees/{id} – обновление сотрудника
 func updateEmployee(w http.ResponseWriter, r *http.Request) {
-    vars := mux.Vars(r)
-    id := vars["id"] // id из URL
-
-    var e Employee
-    if err := json.NewDecoder(r.Body).Decode(&e); err != nil {
-        http.Error(w, "Ошибка парсинга JSON: "+err.Error(), http.StatusBadRequest)
-        return
-    }
-
-    // Выполняем UPDATE employees
-    _, err := dbEmployees.Exec(`
-        UPDATE employees 
-           SET username = ?, password = ?, role = ?
-         WHERE id = ?
-    `, e.Username, e.Password, e.Role, id)
-    if err != nil {
-        http.Error(w, "Ошибка при обновлении записи: "+err.Error(), http.StatusInternalServerError)
-        return
-    }
-
-    w.Header().Set("Content-Type", "application/json")
-    json.NewEncoder(w).Encode(e)
+	vars := mux.Vars(r)
+	id := vars["id"]
+	var e Employee
+	if err := json.NewDecoder(r.Body).Decode(&e); err != nil {
+		http.Error(w, "Ошибка парсинга JSON: "+err.Error(), http.StatusBadRequest)
+		return
+	}
+	_, err := dbEmployees.Exec("UPDATE employees SET username = ?, password = ?, role = ? WHERE id = ?",
+		e.Username, e.Password, e.Role, id)
+	if err != nil {
+		http.Error(w, "Ошибка при обновлении записи: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(e)
 }
 
-
-
-// DELETE /employees/{id} – удаление сотрудника
 func deleteEmployee(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id := vars["id"]
-
 	_, err := dbEmployees.Exec("DELETE FROM employees WHERE id = ?", id)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -189,10 +164,16 @@ func deleteEmployee(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNoContent)
 }
 
-
 func getDevices(w http.ResponseWriter, r *http.Request) {
-	rows, err := dbDevices.Query("SELECT * FROM devices")
+	query := `
+		SELECT id, type, name, model, fuel, pressure, steam_capacity, steam_temperature,
+		       COALESCE(NULLIF(efficiency, ''), '0') as efficiency,
+		       power, steam_production, gas_cons, diesel_cons, fuel_oil_cons, solid_fuel_cons,
+		       weight, burner, modification_one_pump, modification_two_pump
+		FROM devices`
+	rows, err := dbDevices.Query(query)
 	if err != nil {
+		log.Println("Ошибка запроса SELECT:", err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -201,32 +182,20 @@ func getDevices(w http.ResponseWriter, r *http.Request) {
 	var devices []Device
 	for rows.Next() {
 		var d Device
-		err := rows.Scan(
-			&d.ID,
-			&d.Type,
-			&d.Name,
-			&d.Model,
-			&d.Fuel,
-			&d.PressureAtm,
-			&d.SteamCapacity,
-			&d.SteamTemp,
-			&d.Efficiency, 
-			&d.Power,
-			&d.SteamProd,
-			&d.GasCons,
-			&d.DieselCons,
-			&d.FuelOilCons,
-			&d.SolidFuelCons, 
-			&d.Weight,
-			&d.Burner, 
-			&d.mop,
-			&d.mtp,			
-		)
-		if err != nil {
+		if err := rows.Scan(&d.ID, &d.Type, &d.Name, &d.Model, &d.Fuel, &d.PressureAtm,
+			&d.SteamCapacity, &d.SteamTemp, &d.Efficiency, &d.Power, &d.SteamProd,
+			&d.GasCons, &d.DieselCons, &d.FuelOilCons, &d.SolidFuelCons, &d.Weight,
+			&d.Burner, &d.Mop, &d.Mtp); err != nil {
+			log.Println("Ошибка при Scan:", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 		devices = append(devices, d)
+	}
+	if err := rows.Err(); err != nil {
+		log.Println("rows.Err():", err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
 	}
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(devices)
@@ -235,31 +204,17 @@ func getDevices(w http.ResponseWriter, r *http.Request) {
 func getDevice(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id := vars["id"]
-
+	query := `
+		SELECT id, type, name, model, fuel, pressure, steam_capacity, steam_temperature,
+		       COALESCE(NULLIF(efficiency, ''), '0') as efficiency,
+		       power, steam_production, gas_cons, diesel_cons, fuel_oil_cons, solid_fuel_cons,
+		       weight, burner, modification_one_pump, modification_two_pump
+		FROM devices WHERE id = ?`
 	var d Device
-	err := dbDevices.QueryRow("SELECT * FROM devices WHERE id = ?", id).Scan(
-			&d.ID,
-			&d.ID,
-			&d.Type,
-			&d.Name,
-			&d.Model,
-			&d.Fuel,
-			&d.PressureAtm,
-			&d.SteamCapacity,
-			&d.SteamTemp,
-			&d.Efficiency, 
-			&d.Power,
-			&d.SteamProd,
-			&d.GasCons,
-			&d.DieselCons,
-			&d.FuelOilCons,
-			&d.SolidFuelCons, 
-			&d.Weight,
-			&d.Burner, 
-			&d.mop,
-			&d.mtp,	
-
-	)
+	err := dbDevices.QueryRow(query, id).Scan(&d.ID, &d.Type, &d.Name, &d.Model, &d.Fuel, &d.PressureAtm,
+		&d.SteamCapacity, &d.SteamTemp, &d.Efficiency, &d.Power, &d.SteamProd,
+		&d.GasCons, &d.DieselCons, &d.FuelOilCons, &d.SolidFuelCons, &d.Weight,
+		&d.Burner, &d.Mop, &d.Mtp)
 	if err != nil {
 		http.Error(w, "Не найдено", http.StatusNotFound)
 		return
@@ -269,69 +224,66 @@ func getDevice(w http.ResponseWriter, r *http.Request) {
 }
 
 func createDevices(w http.ResponseWriter, r *http.Request) {
-	var e Device
-	if err := json.NewDecoder(r.Body).Decode(&e); err != nil {
+	var d Device
+	if err := json.NewDecoder(r.Body).Decode(&d); err != nil {
+		fmt.Println("Ошибка декодирования JSON:", err)
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-
-	result, err := dbDevices.Exec(`INSERT INTO devices (
-		type, name, model, fuel, pressure, steam_capacity, 
-                steam_temperature, efficiency, power, steam_production, 
-                gas_cons, diesel_cons, fuel_oil_cons, solid_fuel_cons,
-                weight, burner, modification_one_pump, modification_two_pump
-            ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);`,
-		e.Type, e.Name, e.Model, e.Fuel, e.PressureAtm, e.SteamCapacity, e.SteamTemp, e.Efficiency,
-		e.Power, e.SteamProd, e.GasCons, e.DieselCons, e.FuelOilCons, e.SolidFuelCons, 
-		e.Weight, e.Burner, e.mop, e.mtp)
+	query := `
+		INSERT INTO devices (
+			type, name, model, fuel, pressure, steam_capacity,
+			steam_temperature, efficiency, power, steam_production,
+			gas_cons, diesel_cons, fuel_oil_cons, solid_fuel_cons,
+			weight, burner, modification_one_pump, modification_two_pump
+		) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`
+	result, err := dbDevices.Exec(query,
+		d.Type, d.Name, d.Model, d.Fuel, d.PressureAtm, d.SteamCapacity, d.SteamTemp, d.Efficiency,
+		d.Power, d.SteamProd, d.GasCons, d.DieselCons, d.FuelOilCons, d.SolidFuelCons,
+		d.Weight, d.Burner, d.Mop, d.Mtp)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 	lastID, _ := result.LastInsertId()
-	e.ID = int(lastID)
+	d.ID = int(lastID)
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(e)
+	json.NewEncoder(w).Encode(d)
 }
 
-// PUT /employees/{id} – обновление сотрудника
 func updateDevices(w http.ResponseWriter, r *http.Request) {
-    vars := mux.Vars(r)
-    id := vars["id"] // id из URL
+	vars := mux.Vars(r)
+	id := vars["id"]
 
-    var e Device
-    if err := json.NewDecoder(r.Body).Decode(&e); err != nil {
-        http.Error(w, "Ошибка парсинга JSON: "+err.Error(), http.StatusBadRequest)
-        return
-    }
-
-    // Выполняем UPDATE employees
-    _, err := dbEmployees.Exec(`
-        UPDATE devices
-           SET type = ?, name = ?, model = ?, fuel = ?, pressure = ?,
-		   steam_capacity = ?, steam_temperature = ?, efficiency = ?, power = ?,
-		   steam_production = ?, gas_cons = ?, diesel_cons = ?, fuel_oil_cons = ?,
-		   solid_fuel_cons = ?, weight = ?, burner = ?, modification_one_pump = ?,
-		   modification_two_pump = ?
-         WHERE id = ?
-    `, e.Type, e.Name, e.Model, e.Fuel, e.PressureAtm, e.SteamCapacity, e.SteamTemp, e.Efficiency,
-	e.Power, e.SteamProd, e.GasCons, e.DieselCons, e.FuelOilCons, e.SolidFuelCons, 
-	e.Weight, e.Burner, e.mop, e.mtp, id)
-    if err != nil {
-        http.Error(w, "Ошибка при обновлении записи: "+err.Error(), http.StatusInternalServerError)
-        return
-    }
-
-    w.Header().Set("Content-Type", "application/json")
-    json.NewEncoder(w).Encode(e)
+	var d Device
+	if err := json.NewDecoder(r.Body).Decode(&d); err != nil {
+		http.Error(w, "Ошибка парсинга JSON: "+err.Error(), http.StatusBadRequest)
+		return
+	}
+	query := `
+		UPDATE devices
+		   SET type = ?, name = ?, model = ?, fuel = ?, pressure = ?,
+		       steam_capacity = ?, steam_temperature = ?, efficiency = ?, power = ?,
+		       steam_production = ?, gas_cons = ?, diesel_cons = ?, fuel_oil_cons = ?,
+		       solid_fuel_cons = ?, weight = ?, burner = ?, modification_one_pump = ?,
+		       modification_two_pump = ?
+		 WHERE id = ?`
+	_, err := dbDevices.Exec(query,
+		d.Type, d.Name, d.Model, d.Fuel, d.PressureAtm, d.SteamCapacity, d.SteamTemp, d.Efficiency,
+		d.Power, d.SteamProd, d.GasCons, d.DieselCons, d.FuelOilCons, d.SolidFuelCons,
+		d.Weight, d.Burner, d.Mop, d.Mtp, id)
+	if err != nil {
+		http.Error(w, "Ошибка при обновлении записи: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(d)
 }
-
 
 func deleteDevices(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id := vars["id"]
-
-	_, err := dbEmployees.Exec("DELETE FROM devices WHERE id = ?", id)
+	_, err := dbDevices.Exec("DELETE FROM devices WHERE id = ?", id)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -344,7 +296,6 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "../frontend/pages/registration.html")
 		return
 	}
-
 	var creds struct {
 		Username string `json:"username"`
 		Password string `json:"password"`
@@ -354,22 +305,17 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Неверный формат запроса", http.StatusBadRequest)
 		return
 	}
-
 	var storedPassword, role string
-	err = dbEmployees.QueryRow(
-		"SELECT password, role FROM employees WHERE username = ?",
-		creds.Username,
-	).Scan(&storedPassword, &role)
+	err = dbEmployees.QueryRow("SELECT password, role FROM employees WHERE username = ?", creds.Username).
+		Scan(&storedPassword, &role)
 	if err != nil {
 		http.Error(w, "Неверное имя пользователя или пароль", http.StatusUnauthorized)
 		return
 	}
-
 	if storedPassword != creds.Password {
 		http.Error(w, "Неверное имя пользователя или пароль", http.StatusUnauthorized)
 		return
 	}
-
 	if role == "admin" {
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(map[string]string{"redirect": "/pages/admin.html"})

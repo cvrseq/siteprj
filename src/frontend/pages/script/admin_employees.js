@@ -78,7 +78,6 @@ editBtn.addEventListener('click', async () => {
     const emp = await response.json();
     console.log('emp = ', emp);
 
-    // Заполняем форму
     recordForm.elements.id.value = emp.id;
     recordForm.elements.username.value = emp.username;
     recordForm.elements.password.value = emp.password;
@@ -92,7 +91,6 @@ editBtn.addEventListener('click', async () => {
   }
 });
 
-// Удаление записей
 deleteBtn.addEventListener('click', async () => {
   const selected = document.querySelectorAll(
     '#data-table tbody input[type="checkbox"]:checked'
@@ -141,17 +139,14 @@ recordForm.addEventListener('submit', async (e) => {
   loadEmployees();
 });
 
-// Закрытие модального окна по клику на крестик
 closeModal.addEventListener('click', () => {
   modal.style.display = 'none';
 });
 
-// Закрытие модального окна при клике вне его области
 window.addEventListener('click', (e) => {
   if (e.target === modal) {
     modal.style.display = 'none';
   }
 });
 
-// Инициализация: загрузка данных
 loadEmployees();

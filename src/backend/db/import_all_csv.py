@@ -4,11 +4,13 @@ import glob
 import os
 
 db_path = 'mydatabase.db'
-csv_directory = './devices'  
+csv_directory = './devices'
 
+# Открываем соединение с базой
 conn = sqlite3.connect(db_path)
 cursor = conn.cursor()
 
+# Создаем таблицу, если её ещё нет.
 create_table_query = '''
 CREATE TABLE IF NOT EXISTS devices (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -26,7 +28,7 @@ CREATE TABLE IF NOT EXISTS devices (
     diesel_cons TEXT, 
     fuel_oil_cons TEXT,
     solid_fuel_cons TEXT,
-    weight TEXT,
+    weight INTEGER,
     burner TEXT,
     modification_one_pump TEXT,
     modification_two_pump TEXT
@@ -35,15 +37,18 @@ CREATE TABLE IF NOT EXISTS devices (
 cursor.execute(create_table_query)
 conn.commit()
 
+# Функция для конвертации значений (опционально, если хотите преобразовывать числовые поля)
 def convert_value(value, to_type=float):
     value = value.strip()
     if value == "":
         return None
     try:
+        # Заменяем запятую на точку, чтобы можно было парсить как число
         return to_type(value.replace(',', '.'))
     except ValueError:
         return value
 
+# Получаем список CSV-файлов в директории
 csv_files = glob.glob(os.path.join(csv_directory, '*.csv'))
 
 total_imported = 0
@@ -51,28 +56,30 @@ total_imported = 0
 for csv_file in csv_files:
     print(f'Импортируем файл: {csv_file}')
     with open(csv_file, newline='', encoding='utf-8') as f:
+        # Убедитесь, что разделитель соответствует вашему CSV (здесь используется точка с запятой)
         reader = csv.DictReader(f, delimiter=';')
         rows = []
         for row in reader:
+            # Проверьте, что названия ключей точно совпадают с заголовками в CSV-файле.
             data = (
-                row.get("type", "").strip(),
-                row.get("name", "").strip(),
-                row.get("model", "").strip(),
-                row.get("fuel", "").strip(),
-                row.get("pressure", "").strip(),
-                row.get("steam_capacity", "").strip(),
-                row.get("steam_temperature", "").strip(),
-                row.get("efficiency", "").strip(),
-                row.get("power", "").strip(),
-                row.get("steam_production", "").strip(),
-                row.get("gas_cons", "").strip(),
-                row.get("diesel_cons", "").strip(),
-                row.get("fuel_oil_cons", "").strip(),
-                row.get("solid_fuel_cons", "").strip(),
-                row.get("weight", "").strip(),
-                row.get("burner", "").strip(),
-                row.get("modification_one_pump", "").strip(),
-                row.get("modification_two_pump", "").strip()
+                row.get("тип", "").strip(),
+                row.get("название", "").strip(),
+                row.get("Модель", "").strip(),
+                row.get("Топливо", "").strip(),
+                row.get("Давление, атм", "").strip(),  # Если здесь ожидается число, можно вызвать convert_value
+                row.get("Паропроизводительность, кг/ч", "").strip(),
+                row.get("температура пара", "").strip(),
+                row.get("КПД", "").strip(),
+                row.get("мощность, кВт", "").strip(),
+                row.get("Производство пара, кг/ч", "").strip(),
+                row.get("Расход газа", "").strip(),
+                row.get("Расход дизеля", "").strip(),
+                row.get("Расход мазута", "").strip(),
+                row.get("Расход твердого топлива", "").strip(),
+                row.get("вес, кг", "").strip(),
+                row.get("Горелка", "").strip(),
+                row.get("модификация с одним питательным насосом", "").strip(),
+                row.get("модификация с двумя питательными насосами", "").strip()
             )
             rows.append(data)
         try:
@@ -93,5 +100,4 @@ for csv_file in csv_files:
             print(f'Ошибка при импорте из файла {csv_file}: {e}')
 
 print(f'Всего импортировано записей: {total_imported}')
-
 conn.close()

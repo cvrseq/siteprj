@@ -1,18 +1,17 @@
+// Переключение темы
 const themeToggle = document.getElementById('theme-icon');
 const container = document.querySelector('.container');
 
 themeToggle.addEventListener('click', () => {
   document.body.classList.toggle('dark-mode');
-  container.body.classList.toggle('dark-mode');
+  container.classList.toggle('dark-mode');
 
   if (document.body.classList.contains('dark-mode')) {
-    themeToggle.innerHTML = `<path d="M12 8a4 4 0 1 1-8 0 4 4 0 0 1 8 0M8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0m0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13m8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5M3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8m10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0m-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0m9.193 2.121a.5.5 0 0 1 0 .707l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707M4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708"/>`;
+    themeToggle.innerHTML = `<path d="M12 8a4 4 0 1 1-8 0 4 4 0 0 1 8 0..."/>`;
   } else {
-    themeToggle.innerHTML = `<path d="M6 .278a.77.77 0 0 1 .08.858 7.2 7.2 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277q.792-.001 1.533-.16a.79.79 0 0 1 .81.316.73.73 0 0 1-.031.893A8.35 8.35 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.75.75 0 0 1 6 .278"/>`;
+    themeToggle.innerHTML = `<path d="M6 .278a.77.77 0 0 1 .08.858..."/>`;
   }
 });
-
-/* <----------------------------------------------------------------------------------------------------------> */
 
 async function loadDevices() {
   try {
@@ -31,30 +30,29 @@ function populateTable(data) {
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td>${dev.id}</td>
-      <td>${dev.type}</td>
-      <td>${dev.name}</td>
-      <td>${dev.model}</td>
-      <td>${dev.fuel}</td>
-      <td>${dev.pressure}</td>
-      <td>${dev.steam_capacity}</td>
-      <td>${dev.steam_temperature}</td>
-      <td>${dev.efficiency}</td>
-      <td>${dev.power}</td>
-      <td>${dev.steam_production}</td>
-      <td>${dev.gas_cons}</td>
-      <td>${dev.diesel_cons}</td>
-      <td>${dev.fuel_oil_cons}</td>
-      <td>${dev.solid_fuel_cons}</td>
-      <td>${dev.weight}</td>
-      <td>${dev.burner}</td>
-      <td>${dev.mop}</td>
-      <td>${dev.mtp}</td>
+      <td>${dev.type || ''}</td>
+      <td>${dev.name || ''}</td>
+      <td>${dev.model || ''}</td>
+      <td>${dev.fuel || ''}</td>
+      <td>${dev.pressure || ''}</td>
+      <td>${dev.steam_capacity || ''}</td>
+      <td>${dev.steam_temperature || ''}</td>
+      <td>${dev.efficiency || ''}</td>
+      <td>${dev.power || ''}</td>
+      <td>${dev.steam_production || ''}</td>
+      <td>${dev.gas_cons || ''}</td>
+      <td>${dev.diesel_cons || ''}</td>
+      <td>${dev.fuel_oil_cons || ''}</td>
+      <td>${dev.solid_fuel_cons || ''}</td>
+      <td>${dev.weight || ''}</td>
+      <td>${dev.burner || ''}</td>
+      <td>${dev.mop || ''}</td>
+      <td>${dev.mtp || ''}</td>
       <td><input type="checkbox" data-id="${dev.id}" /></td>
     `;
     tbody.appendChild(tr);
   }
 }
-
 const modal = document.getElementById('modal');
 const closeModal = document.getElementById('closeModal');
 const recordForm = document.getElementById('recordForm');
@@ -64,11 +62,10 @@ const addBtn = document.getElementById('addBtn');
 const editBtn = document.getElementById('editBtn');
 const deleteBtn = document.getElementById('deleteBtn');
 
-
 addBtn.addEventListener('click', () => {
   modalTitle.textContent = 'Добавить запись';
   recordForm.reset();
-  recordForm.id.value = '';
+  recordForm.elements.id.value = '';
   modal.style.display = 'block';
 });
 
@@ -80,7 +77,6 @@ editBtn.addEventListener('click', async () => {
     alert('Пожалуйста, выберите одну запись для редактирования');
     return;
   }
-
   const id = selected[0].dataset.id;
   try {
     const response = await fetch(`/devices/${id}`);
@@ -88,33 +84,32 @@ editBtn.addEventListener('click', async () => {
       throw new Error('Не удалось получить данные для редактирования');
     }
     const dev = await response.json();
-    console.log('dev = ', dev);
+    console.log('Полученные данные:', dev);
 
-    // Заполняем форму
     recordForm.elements.id.value = dev.id;
-    recordForm.elements.type.value = dev.type;
-    recordForm.elements.name.value = dev.name;
-    recordForm.elements.model.value = dev.model;
-    recordForm.elements.fuel.value = dev.fuel;
-    recordForm.elements.pressure.value = dev.pressure;
-    recordForm.elements.steam_capacity.value = dev.steam_capacity;
-    recordForm.elements.steam_temperature.value = dev.steam_temperature;
-    recordForm.elements.efficiency.value = dev.efficiency;
-    recordForm.elements.power.value = dev.power;
-    recordForm.elements.steam_production.value = dev.steam_production;
-    recordForm.elements.gas_cons.value = dev.gas_cons;
-    recordForm.elements.diesel_cons.value = dev.diesel_cons;
-    recordForm.elements.fuel_oil_cons.value = dev.fuel_oil_cons;
-    recordForm.elements.solid_fuel_cons.value = dev.solid_fuel_cons;
-    recordForm.elements.weight.value = dev.weight;
-    recordForm.elements.burner.value = dev.burner;
-    recordForm.elements.mop.value = dev.mop;
-    recordForm.elements.mpt.value = dev.mpt;
+    recordForm.elements.type.value = dev.type || '';
+    recordForm.elements.name.value = dev.name || '';
+    recordForm.elements.model.value = dev.model || '';
+    recordForm.elements.fuel.value = dev.fuel || '';
+    recordForm.elements.pressure.value = dev.pressure || '';
+    recordForm.elements.steam_capacity.value = dev.steam_capacity || '';
+    recordForm.elements.steam_temperature.value = dev.steam_temperature || '';
+    recordForm.elements.efficiency.value = dev.efficiency || '';
+    recordForm.elements.power.value = dev.power || '';
+    recordForm.elements.steam_production.value = dev.steam_production || '';
+    recordForm.elements.gas_cons.value = dev.gas_cons || '';
+    recordForm.elements.diesel_cons.value = dev.diesel_cons || '';
+    recordForm.elements.fuel_oil_cons.value = dev.fuel_oil_cons || '';
+    recordForm.elements.solid_fuel_cons.value = dev.solid_fuel_cons || '';
+    recordForm.elements.weight.value = dev.weight || '';
+    recordForm.elements.burner.value = dev.burner || '';
+    recordForm.elements.mop.value = dev.mop || '';
+    recordForm.elements.mpt.value = dev.mtp || '';
 
     modalTitle.textContent = 'Редактировать запись';
     modal.style.display = 'block';
   } catch (err) {
-    console.error('Реальная ошибка: ', err);
+    console.error('Ошибка получения данных для редактирования:', err);
     alert('Ошибка при получении данных для редактирования');
   }
 });
@@ -128,7 +123,6 @@ deleteBtn.addEventListener('click', async () => {
     return;
   }
   if (!confirm('Вы уверены, что хотите удалить выбранные записи?')) return;
-
   for (const checkbox of selected) {
     const id = checkbox.dataset.id;
     try {
@@ -145,26 +139,31 @@ recordForm.addEventListener('submit', async (e) => {
   const formData = new FormData(recordForm);
   const record = {};
   formData.forEach((val, key) => {
-    record[key] = val;
+    record[key] = val.trim();
   });
-
-  if (record.id) {
-    // PUT
-    await fetch(`/devices/${record.id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(record),
-    });
-  } else {
-    // POST
-    await fetch('/devices', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(record),
-    });
+  console.log('Отправляем record:', record);
+  try {
+    if (record.id) {
+      // Обновление (PUT)
+      await fetch(`/devices/${record.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(record),
+      });
+    } else {
+      // Добавление (POST)
+      await fetch('/devices', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(record),
+      });
+    }
+    modal.style.display = 'none';
+    loadDevices();
+  } catch (err) {
+    console.error('Ошибка при сохранении записи:', err);
+    alert('Ошибка при сохранении записи');
   }
-  modal.style.display = 'none';
-  loadDevices();
 });
 
 closeModal.addEventListener('click', () => {
@@ -176,6 +175,5 @@ window.addEventListener('click', (e) => {
     modal.style.display = 'none';
   }
 });
-
 
 loadDevices();
