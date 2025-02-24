@@ -219,31 +219,30 @@ func deleteEmployee(w http.ResponseWriter, r *http.Request) {
 
 func getDevices(w http.ResponseWriter, r *http.Request) {
 	query := `
-		SELECT 
+		SELECT
 			id,
-			COALESCE(type, '') as type,
-			COALESCE(name, '') as name,
-			COALESCE(model, '') as model,
-			COALESCE(fuel, '') as fuel,
-			COALESCE(pressure, '') as pressure,
-			COALESCE(steam_capacity, '') as steam_capacity,
-			COALESCE(steam_temperature, '') as steam_temperature,
-			COALESCE(efficiency, '') as efficiency,
-			COALESCE(power, '') as power,
-			COALESCE(steam_production, '') as steam_production,
-			COALESCE(gas_cons, '') as gas_cons,
-			COALESCE(diesel_cons, '') as diesel_cons,
-			COALESCE(fuel_oil_cons, '') as fuel_oil_cons,
-			COALESCE(solid_fuel_cons, '') as solid_fuel_cons,
-			COALESCE(weight, '') as weight,
-			COALESCE(burner, '') as burner,
-			COALESCE(modification_one_pump, '') as modification_one_pump,
-			COALESCE(modification_two_pump, '') as modification_two_pump
+			COALESCE(type, '') AS type,
+			COALESCE(name, '') AS name,
+			COALESCE(model, '') AS model,
+			COALESCE(fuel, '') AS fuel,
+			COALESCE(pressure, '') AS pressure,
+			COALESCE(steam_capacity, '') AS steam_capacity,
+			COALESCE(steam_temperature, '') AS steam_temperature,
+			COALESCE(efficiency, '') AS efficiency,
+			COALESCE(power, '') AS power,
+			COALESCE(steam_production, '') AS steam_production,
+			COALESCE(gas_cons, '') AS gas_cons,
+			COALESCE(diesel_cons, '') AS diesel_cons,
+			COALESCE(fuel_oil_cons, '') AS fuel_oil_cons,
+			COALESCE(solid_fuel_cons, '') AS solid_fuel_cons,
+			COALESCE(weight, '') AS weight,
+			COALESCE(burner, '') AS burner,
+			COALESCE(modification_one_pump, '') AS mop,
+			COALESCE(modification_two_pump, '') AS mpt
 		FROM devices
 	`
 	rows, err := dbDevices.Query(query)
 	if err != nil {
-		log.Println("Ошибка запроса SELECT:", err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -252,55 +251,57 @@ func getDevices(w http.ResponseWriter, r *http.Request) {
 	var devices []Device
 	for rows.Next() {
 		var d Device
-		if err := rows.Scan(&d.ID, &d.Type, &d.Name, &d.Model, &d.Fuel, &d.PressureAtm,
-			&d.SteamCapacity, &d.SteamTemp, &d.Efficiency, &d.Power, &d.SteamProd,
-			&d.GasCons, &d.DieselCons, &d.FuelOilCons, &d.SolidFuelCons, &d.Weight,
-			&d.Burner, &d.Mop, &d.Mtp); err != nil {
-			log.Println("Ошибка при Scan:", err)
+		if err := rows.Scan(
+			&d.ID,
+			&d.Type,
+			&d.Name,
+			&d.Model,
+			&d.Fuel,
+			&d.PressureAtm,
+			&d.SteamCapacity,
+			&d.SteamTemp,
+			&d.Efficiency,
+			&d.Power,
+			&d.SteamProd,
+			&d.GasCons,
+			&d.DieselCons,
+			&d.FuelOilCons,
+			&d.SolidFuelCons,
+			&d.Weight,
+			&d.Burner,
+			&d.Mop,
+			&d.Mtp,
+		); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 		devices = append(devices, d)
 	}
-	if err := rows.Err(); err != nil {
-		log.Println("rows.Err():", err)
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(devices)
 }
 
+
 func getDevice(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id := vars["id"]
+
 	query := `
-		SELECT 
+		SELECT
 			id,
-			COALESCE(type, '') as type,
-			COALESCE(name, '') as name,
-			COALESCE(model, '') as model,
-			COALESCE(fuel, '') as fuel,
-			COALESCE(pressure, '') as pressure,
-			COALESCE(steam_capacity, '') as steam_capacity,
-			COALESCE(steam_temperature, '') as steam_temperature,
-			COALESCE(efficiency, '') as efficiency,
-			COALESCE(power, '') as power,
-			COALESCE(steam_production, '') as steam_production,
-			COALESCE(gas_cons, '') as gas_cons,
-			COALESCE(diesel_cons, '') as diesel_cons,
-			COALESCE(fuel_oil_cons, '') as fuel_oil_cons,
-			COALESCE(solid_fuel_cons, '') as solid_fuel_cons,
-			COALESCE(weight, '') as weight,
-			COALESCE(burner, '') as burner,
-			COALESCE(modification_one_pump, '') as modification_one_pump,
-			COALESCE(modification_two_pump, '') as modification_two_pump
-		FROM devices WHERE id = ?`
+			COALESCE(type, '') AS type,
+			...
+			COALESCE(modification_two_pump, '') AS mpt
+		FROM devices
+		WHERE id = ?
+	`
 	var d Device
-	err := dbDevices.QueryRow(query, id).Scan(&d.ID, &d.Type, &d.Name, &d.Model, &d.Fuel, &d.PressureAtm,
-		&d.SteamCapacity, &d.SteamTemp, &d.Efficiency, &d.Power, &d.SteamProd,
-		&d.GasCons, &d.DieselCons, &d.FuelOilCons, &d.SolidFuelCons, &d.Weight,
-		&d.Burner, &d.Mop, &d.Mtp)
+	err := dbDevices.QueryRow(query, id).Scan(
+		&d.ID,
+		&d.Type,
+		// ...
+		&d.Mtp,
+	)
 	if err != nil {
 		http.Error(w, "Не найдено", http.StatusNotFound)
 		return
@@ -308,6 +309,7 @@ func getDevice(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(d)
 }
+
 
 func createDevices(w http.ResponseWriter, r *http.Request) {
 	var d Device

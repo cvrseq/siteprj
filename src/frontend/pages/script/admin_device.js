@@ -5,14 +5,14 @@ const container = document.querySelector('.container');
 themeToggle.addEventListener('click', () => {
   document.body.classList.toggle('dark-mode');
   container.classList.toggle('dark-mode');
-
   if (document.body.classList.contains('dark-mode')) {
-    themeToggle.innerHTML = `<path d="M12 8a4 4 0 1 1-8 0 4 4 0 0 1 8 0..."/>`;
+    themeToggle.innerHTML = `<path d="..."/>`;
   } else {
-    themeToggle.innerHTML = `<path d="M6 .278a.77.77 0 0 1 .08.858..."/>`;
+    themeToggle.innerHTML = `<path d="..."/>`;
   }
 });
 
+// Загрузка устройств при старте
 async function loadDevices() {
   try {
     const response = await fetch('/devices');
@@ -23,6 +23,7 @@ async function loadDevices() {
   }
 }
 
+// Заполняем таблицу устройствами
 function populateTable(data) {
   const tbody = document.querySelector('#data-table tbody');
   tbody.innerHTML = '';
@@ -47,12 +48,14 @@ function populateTable(data) {
       <td>${dev.weight || ''}</td>
       <td>${dev.burner || ''}</td>
       <td>${dev.mop || ''}</td>
-      <td>${dev.mtp || ''}</td>
+      <td>${dev.mpt || ''}</td>
       <td><input type="checkbox" data-id="${dev.id}" /></td>
     `;
     tbody.appendChild(tr);
   }
 }
+
+// Селекторы для элементов
 const modal = document.getElementById('modal');
 const closeModal = document.getElementById('closeModal');
 const recordForm = document.getElementById('recordForm');
@@ -62,13 +65,15 @@ const addBtn = document.getElementById('addBtn');
 const editBtn = document.getElementById('editBtn');
 const deleteBtn = document.getElementById('deleteBtn');
 
+// «Добавить»: открываем форму в режиме добавления
 addBtn.addEventListener('click', () => {
   modalTitle.textContent = 'Добавить запись';
-  recordForm.reset();
-  recordForm.elements.id.value = '';
-  modal.style.display = 'block';
+  recordForm.reset(); // Очищаем поля
+  recordForm.elements.id.value = ''; // Ставим id пустым
+  modal.style.display = 'block'; // Показываем модальное окно
 });
 
+// «Редактировать»: загружаем данные выбранной записи, заполняем форму
 editBtn.addEventListener('click', async () => {
   const selected = document.querySelectorAll(
     '#data-table tbody input[type="checkbox"]:checked'
@@ -86,7 +91,8 @@ editBtn.addEventListener('click', async () => {
     const dev = await response.json();
     console.log('Полученные данные:', dev);
 
-    recordForm.elements.id.value = dev.id;
+    // Заполняем форму
+    recordForm.elements.id.value = dev.id || '';
     recordForm.elements.type.value = dev.type || '';
     recordForm.elements.name.value = dev.name || '';
     recordForm.elements.model.value = dev.model || '';
@@ -104,7 +110,7 @@ editBtn.addEventListener('click', async () => {
     recordForm.elements.weight.value = dev.weight || '';
     recordForm.elements.burner.value = dev.burner || '';
     recordForm.elements.mop.value = dev.mop || '';
-    recordForm.elements.mpt.value = dev.mtp || '';
+    recordForm.elements.mpt.value = dev.mpt || '';
 
     modalTitle.textContent = 'Редактировать запись';
     modal.style.display = 'block';
@@ -114,6 +120,7 @@ editBtn.addEventListener('click', async () => {
   }
 });
 
+// «Удалить»: удаляем каждую выбранную запись
 deleteBtn.addEventListener('click', async () => {
   const selected = document.querySelectorAll(
     '#data-table tbody input[type="checkbox"]:checked'
@@ -123,6 +130,7 @@ deleteBtn.addEventListener('click', async () => {
     return;
   }
   if (!confirm('Вы уверены, что хотите удалить выбранные записи?')) return;
+
   for (const checkbox of selected) {
     const id = checkbox.dataset.id;
     try {
@@ -134,46 +142,52 @@ deleteBtn.addEventListener('click', async () => {
   loadDevices();
 });
 
+// Сохранение (добавление или редактирование)
 recordForm.addEventListener('submit', async (e) => {
   e.preventDefault();
   const formData = new FormData(recordForm);
   const record = {};
+
   formData.forEach((val, key) => {
-    record[key] = val.trim();
+    record[key] = val.trim(); // Удаляем пробелы
   });
-  console.log('Отправляем record:', record);
+
+  console.log('Отправляемые данные:', JSON.stringify(record)); // Логируем отправку
+
   try {
     if (record.id) {
-      // Обновление (PUT)
+      // Режим редактирования
       await fetch(`/devices/${record.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(record),
       });
     } else {
-      // Добавление (POST)
+      // Режим добавления
       await fetch('/devices', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(record),
       });
     }
+
     modal.style.display = 'none';
-    loadDevices();
+    loadDevices(); // Обновляем таблицу
   } catch (err) {
     console.error('Ошибка при сохранении записи:', err);
     alert('Ошибка при сохранении записи');
   }
 });
 
+// Закрытие модального окна
 closeModal.addEventListener('click', () => {
   modal.style.display = 'none';
 });
-
 window.addEventListener('click', (e) => {
   if (e.target === modal) {
     modal.style.display = 'none';
   }
 });
 
+// При загрузке страницы
 loadDevices();
