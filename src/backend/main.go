@@ -10,9 +10,37 @@ import (
 	"github.com/gorilla/mux"
 	_ "github.com/mattn/go-sqlite3"
 )
+func stringOrEmpty(ns sql.NullString) string {
+	if ns.Valid {
+		return ns.String
+	}
+	return ""
+}
 
 type Device struct {
-	ID            int     `json:"id"`
+	ID            int            `json:"-"`
+	Type          sql.NullString `json:"-"`
+	Name          sql.NullString `json:"-"`
+	Model         sql.NullString `json:"-"`
+	Fuel          sql.NullString `json:"-"`
+	PressureAtm   sql.NullString `json:"-"`
+	SteamCapacity sql.NullString `json:"-"`
+	SteamTemp     sql.NullString `json:"-"`
+	Efficiency    sql.NullString `json:"-"`
+	Power         sql.NullString `json:"-"`
+	SteamProd     sql.NullString `json:"-"`
+	GasCons       sql.NullString `json:"-"`
+	DieselCons    sql.NullString `json:"-"`
+	FuelOilCons   sql.NullString `json:"-"`
+	SolidFuelCons sql.NullString `json:"-"`
+	Weight        sql.NullString `json:"-"`
+	Burner        sql.NullString `json:"-"`
+	Mop           sql.NullString `json:"-"`
+	Mtp           sql.NullString `json:"-"`
+}
+
+type deviceAlias struct {
+	ID            int    `json:"id"`
 	Type          string `json:"type"`
 	Name          string `json:"name"`
 	Model         string `json:"model"`
@@ -31,6 +59,31 @@ type Device struct {
 	Burner        string `json:"burner"`
 	Mop           string `json:"mop"`
 	Mtp           string `json:"mpt"`
+}
+
+func (d Device) MarshalJSON() ([]byte, error) {
+	alias := deviceAlias{
+		ID:            d.ID,
+		Type:          stringOrEmpty(d.Type),
+		Name:          stringOrEmpty(d.Name),
+		Model:         stringOrEmpty(d.Model),
+		Fuel:          stringOrEmpty(d.Fuel),
+		PressureAtm:   stringOrEmpty(d.PressureAtm),
+		SteamCapacity: stringOrEmpty(d.SteamCapacity),
+		SteamTemp:     stringOrEmpty(d.SteamTemp),
+		Efficiency:    stringOrEmpty(d.Efficiency),
+		Power:         stringOrEmpty(d.Power),
+		SteamProd:     stringOrEmpty(d.SteamProd),
+		GasCons:       stringOrEmpty(d.GasCons),
+		DieselCons:    stringOrEmpty(d.DieselCons),
+		FuelOilCons:   stringOrEmpty(d.FuelOilCons),
+		SolidFuelCons: stringOrEmpty(d.SolidFuelCons),
+		Weight:        stringOrEmpty(d.Weight),
+		Burner:        stringOrEmpty(d.Burner),
+		Mop:           stringOrEmpty(d.Mop),
+		Mtp:           stringOrEmpty(d.Mtp),
+	}
+	return json.Marshal(alias)
 }
 
 type Employee struct {
@@ -166,11 +219,28 @@ func deleteEmployee(w http.ResponseWriter, r *http.Request) {
 
 func getDevices(w http.ResponseWriter, r *http.Request) {
 	query := `
-		SELECT id, type, name, model, fuel, pressure, steam_capacity, steam_temperature,
-		       COALESCE(NULLIF(efficiency, ''), '0') as efficiency,
-		       power, steam_production, gas_cons, diesel_cons, fuel_oil_cons, solid_fuel_cons,
-		       weight, burner, modification_one_pump, modification_two_pump
-		FROM devices`
+		SELECT 
+			id,
+			COALESCE(type, '') as type,
+			COALESCE(name, '') as name,
+			COALESCE(model, '') as model,
+			COALESCE(fuel, '') as fuel,
+			COALESCE(pressure, '') as pressure,
+			COALESCE(steam_capacity, '') as steam_capacity,
+			COALESCE(steam_temperature, '') as steam_temperature,
+			COALESCE(efficiency, '') as efficiency,
+			COALESCE(power, '') as power,
+			COALESCE(steam_production, '') as steam_production,
+			COALESCE(gas_cons, '') as gas_cons,
+			COALESCE(diesel_cons, '') as diesel_cons,
+			COALESCE(fuel_oil_cons, '') as fuel_oil_cons,
+			COALESCE(solid_fuel_cons, '') as solid_fuel_cons,
+			COALESCE(weight, '') as weight,
+			COALESCE(burner, '') as burner,
+			COALESCE(modification_one_pump, '') as modification_one_pump,
+			COALESCE(modification_two_pump, '') as modification_two_pump
+		FROM devices
+	`
 	rows, err := dbDevices.Query(query)
 	if err != nil {
 		log.Println("Ошибка запроса SELECT:", err)
@@ -205,10 +275,26 @@ func getDevice(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id := vars["id"]
 	query := `
-		SELECT id, type, name, model, fuel, pressure, steam_capacity, steam_temperature,
-		       COALESCE(NULLIF(efficiency, ''), '0') as efficiency,
-		       power, steam_production, gas_cons, diesel_cons, fuel_oil_cons, solid_fuel_cons,
-		       weight, burner, modification_one_pump, modification_two_pump
+		SELECT 
+			id,
+			COALESCE(type, '') as type,
+			COALESCE(name, '') as name,
+			COALESCE(model, '') as model,
+			COALESCE(fuel, '') as fuel,
+			COALESCE(pressure, '') as pressure,
+			COALESCE(steam_capacity, '') as steam_capacity,
+			COALESCE(steam_temperature, '') as steam_temperature,
+			COALESCE(efficiency, '') as efficiency,
+			COALESCE(power, '') as power,
+			COALESCE(steam_production, '') as steam_production,
+			COALESCE(gas_cons, '') as gas_cons,
+			COALESCE(diesel_cons, '') as diesel_cons,
+			COALESCE(fuel_oil_cons, '') as fuel_oil_cons,
+			COALESCE(solid_fuel_cons, '') as solid_fuel_cons,
+			COALESCE(weight, '') as weight,
+			COALESCE(burner, '') as burner,
+			COALESCE(modification_one_pump, '') as modification_one_pump,
+			COALESCE(modification_two_pump, '') as modification_two_pump
 		FROM devices WHERE id = ?`
 	var d Device
 	err := dbDevices.QueryRow(query, id).Scan(&d.ID, &d.Type, &d.Name, &d.Model, &d.Fuel, &d.PressureAtm,
@@ -236,7 +322,8 @@ func createDevices(w http.ResponseWriter, r *http.Request) {
 			steam_temperature, efficiency, power, steam_production,
 			gas_cons, diesel_cons, fuel_oil_cons, solid_fuel_cons,
 			weight, burner, modification_one_pump, modification_two_pump
-		) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`
+		) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+	`
 	result, err := dbDevices.Exec(query,
 		d.Type, d.Name, d.Model, d.Fuel, d.PressureAtm, d.SteamCapacity, d.SteamTemp, d.Efficiency,
 		d.Power, d.SteamProd, d.GasCons, d.DieselCons, d.FuelOilCons, d.SolidFuelCons,
