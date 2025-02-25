@@ -3,14 +3,12 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="setup_style/setup.css" />
-    <title>Настройка PDF</title>
+    <meta name="theme-color" content="#ffffff" />
+    <link link="stylesheet" href="./setup_style/boilers.css" />
+    <title>Конфигурация</title>
   </head>
   <body>
     <header>
-      <a href="../index.html">
-        <img class="logo" src="./Layer2.png" loading="lazy" />
-      </a>
       <div class="container">
         <div class="theme" onclick="toggleTheme()">
           <svg
@@ -29,11 +27,8 @@
         </div>
       </div>
     </header>
-    <div class="wrapper">
-      <div class="content">
-        <div class="toolbar"></div>
-      </div>
-    </div>
-    <script src="setup_script/setup.js"></script>
+    <script src="./setup_script/boilers.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   </body>
 </html>

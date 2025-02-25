@@ -14,7 +14,6 @@ themeToggle.addEventListener('click', () => {
 
 /* <----------------------------------------------------------------------------------------------------------> */
 
-// Функция для загрузки данных сотрудников
 async function loadEmployees() {
   try {
     const response = await fetch('/employees');
@@ -41,18 +40,15 @@ function populateTable(data) {
   }
 }
 
-// Модальное окно и его элементы
 const modal = document.getElementById('modal');
 const closeModal = document.getElementById('closeModal');
 const recordForm = document.getElementById('recordForm');
 const modalTitle = document.getElementById('modalTitle');
 
-// Кнопки управления
 const addBtn = document.getElementById('addBtn');
 const editBtn = document.getElementById('editBtn');
 const deleteBtn = document.getElementById('deleteBtn');
 
-// Открытие модального окна для добавления
 addBtn.addEventListener('click', () => {
   modalTitle.textContent = 'Добавить запись';
   recordForm.reset();
@@ -117,26 +113,37 @@ recordForm.addEventListener('submit', async (e) => {
   const formData = new FormData(recordForm);
   const record = {};
   formData.forEach((val, key) => {
-    record[key] = val;
+    const trimmed = val.trim();
+    // Если поле id пустое, не добавляем его в объект
+    if (key === 'id' && trimmed === '') {
+      return;
+    }
+    record[key] = trimmed;
   });
+  console.log('Отправляем record:', JSON.stringify(record));
 
-  if (record.id) {
-    // PUT
-    await fetch(`/employees/${record.id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(record),
-    });
-  } else {
-    // POST
-    await fetch('/employees', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(record),
-    });
+  try {
+    if (record.id) {
+      // PUT для редактирования
+      await fetch(`/employees/${record.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(record),
+      });
+    } else {
+      // POST для создания
+      await fetch('/employees', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(record),
+      });
+    }
+    modal.style.display = 'none';
+    loadEmployees();
+  } catch (err) {
+    console.error('Ошибка при сохранении записи:', err);
+    alert('Ошибка при сохранении записи');
   }
-  modal.style.display = 'none';
-  loadEmployees();
 });
 
 closeModal.addEventListener('click', () => {
