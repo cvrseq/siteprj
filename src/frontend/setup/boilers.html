@@ -8,25 +8,21 @@
     <title>Конфигурация</title>
   </head>
   <body>
-    <header>
-      <div class="container">
-        <div class="theme" onclick="toggleTheme()">
-          <svg
-            id="theme-icon"
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            fill="currentColor"
-            class="bi bi-moon-fill"
-            viewBox="0 0 16 16"
-          >
-            <path
-              d="M6 .278a.77.77 0 0 1 .08.858 7.2 7.2 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277q.792-.001 1.533-.16a.79.79 0 0 1 .81.316.73.73 0 0 1-.031.893A8.35 8.35 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.75.75 0 0 1 6 .278"
-            />
-          </svg>
-        </div>
-      </div>
+    <header class="head">
+      <img src="./Layer2.png" />
+      <div id="name-company">ИНВЕРСИЯ</div>
+      <div id="classification">паровые котлы и парогенераторы</div>
+      <div id="first_number">+7 3432548039</div>
+      <div id="second_number">+7 3433370058</div>
+      <div id="mail">2548039@gmail.com</div>
+      <div id="site">inversiya.com</div>
     </header>
+
+    <div id="pdf-content">
+      <div id="original_number"></div> <!--input-->
+      <div id="tlx_group">"ТЛХ-Групп"</div>
+      <div id="date"></div> <!--считывание либо инпут-->
+    </div>
     <script src="./setup_script/boilers.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
