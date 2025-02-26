@@ -1,32 +1,116 @@
 <!DOCTYPE html>
 <html lang="ru">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#ffffff" />
-    <link link="stylesheet" href="./setup_style/generators.css" />
-    <title>Конфигурация</title>
+    <meta charset="UTF-8" />
+    <title>Форма для генерации PDF</title>
+    <!-- При желании добавьте свои стили -->
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+      }
+      #pdfForm label {
+        display: block;
+        margin-bottom: 10px;
+      }
+      #pdfForm input,
+      #pdfForm select {
+        margin-left: 5px;
+      }
+      #pdfContent {
+        border: 1px solid #ccc;
+        padding: 10px;
+        width: 600px; /* условная ширина под формат А4 */
+        margin-top: 20px;
+      }
+    </style>
   </head>
   <body>
-    <header class="head">
-      <img src="./Layer2.png" />
-      <div id="name-company">ИНВЕРСИЯ</div>
-      <div id="classification">паровые котлы и парогенераторы</div>
-      <div id="first_number">+7 3432548039</div>
-      <div id="second_number">+7 3433370058</div>
-      <div id="mail">2548039@gmail.com</div>
-      <div id="site">inversiya.com</div>
-    </header>
+    <h1>Заполните форму</h1>
+    <form id="pdfForm">
+      <label>
+        Имя:
+        <input type="text" name="username" required />
+      </label>
 
-    <div id="pdf-content">
-      <div id="original_number"></div>
-      <!--input-->
-      <div id="tlx_group">"ТЛХ-Групп"</div>
-      <div id="date"></div>
-      <!--считывание либо инпут-->
+      <label>
+        Город:
+        <input type="text" name="city" />
+      </label>
+
+      <label>
+        Тип котла:
+        <select name="boilerType">
+          <option value="Паровой">Паровой</option>
+          <option value="Твердотопливный">Твердотопливный</option>
+          <option value="Электрический">Электрический</option>
+        </select>
+      </label>
+
+      <button type="submit">Сформировать PDF</button>
+    </form>
+
+    <!-- Блок, который будем «фотографировать» -->
+    <!-- Изначально скрываем (display: none), но можно и держать открытым, если нужно -->
+    <div id="pdfContent" style="display: none">
+      <h2>Данные формы</h2>
+      <p><b>Имя:</b> <span id="usernameOutput"></span></p>
+      <p><b>Город:</b> <span id="cityOutput"></span></p>
+      <p><b>Тип котла:</b> <span id="boilerTypeOutput"></span></p>
     </div>
-    <script src="./setup_script/generatours.js"></script>
+
+    <!-- Подключаем библиотеки для генерации PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jspdf"></script>
+
+    <script>
+      import { jsPDF } from 'https://cdn.jsdelivr.net/npm/jspdf@2.5.1/+esm';
+      const form = document.getElementById('pdfForm');
+      const pdfContent = document.getElementById('pdfContent');
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        // 1. Собираем данные формы
+        const formData = new FormData(form);
+        const username = formData.get('username');
+        const city = formData.get('city');
+        const boilerType = formData.get('boilerType');
+
+        // 2. Подставляем в скрытый блок
+        document.getElementById('usernameOutput').textContent = username;
+        document.getElementById('cityOutput').textContent = city;
+        document.getElementById('boilerTypeOutput').textContent = boilerType;
+
+        // 3. Отображаем блок, чтобы html2canvas мог его «увидеть»
+        pdfContent.style.display = 'block';
+
+        try {
+          // 4. «Фотографируем» блок
+          const canvas = await html2canvas(pdfContent);
+          const imgData = canvas.toDataURL('image/png');
+
+          // 5. Создаём PDF (jsPDF)
+          const pdf = new jsPDF('p', 'pt', 'a4');
+          const pageWidth = pdf.internal.pageSize.getWidth();
+
+          // Рассчитываем пропорциональную высоту
+          const imgWidth = pageWidth - 40; // отступы 20px слева/справа
+          const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+          // 6. Добавляем изображение в PDF
+          pdf.addImage(imgData, 'PNG', 20, 20, imgWidth, imgHeight);
+
+          // 7. Сохраняем PDF
+          pdf.save('otchet.pdf');
+        } catch (err) {
+          console.error('Ошибка генерации PDF:', err);
+          alert('Не удалось сгенерировать PDF');
+        } finally {
+          // 8. Если не нужно показывать блок после генерации, скрываем обратно
+          pdfContent.style.display = 'none';
+        }
+      });
+    </script>
   </body>
 </html>
