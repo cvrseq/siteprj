@@ -258,10 +258,9 @@
   font-style: normal;
 }
 
-/* Мобильная версия (телефоны) */
 @media (max-width: 768px) {
   .logo {
-    width: 5rem; /* немного меньше */
+    width: 5rem;
     padding: 0.5rem;
   }
 

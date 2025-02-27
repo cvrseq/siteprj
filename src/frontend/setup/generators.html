@@ -1,116 +1,89 @@
 <!DOCTYPE html>
 <html lang="ru">
   <head>
-    <meta charset="UTF-8" />
-    <title>Форма для генерации PDF</title>
-    <!-- При желании добавьте свои стили -->
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        margin: 20px;
-      }
-      #pdfForm label {
-        display: block;
-        margin-bottom: 10px;
-      }
-      #pdfForm input,
-      #pdfForm select {
-        margin-left: 5px;
-      }
-      #pdfContent {
-        border: 1px solid #ccc;
-        padding: 10px;
-        width: 600px; /* условная ширина под формат А4 */
-        margin-top: 20px;
-      }
-    </style>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#ffffff" />
+    <title>Парогенераторы</title>
+    <link rel="stylesheet" href="./setup_style/generators.css" />
   </head>
+
   <body>
-    <h1>Заполните форму</h1>
-    <form id="pdfForm">
-      <label>
-        Имя:
-        <input type="text" name="username" required />
-      </label>
+    <div class="page-container">
+      <header class="page_header">
+        <div class="header-top">
+          <div class="logo-block">
+            <img
+              src="../images/logoforpdfmod.png"
+              loading="lazy"
+              class="logo"
+            />
+          </div>
+          <div class="contacts">
+            <div class="phone-col">
+              <span class="first_phone">+7 3432548039</span>
+              <span class="second_phone">+7 3433370058</span>
+            </div>
+            <span class="email">2548039@gmail.com</span>
+            <span class="site"
+              ><img src="../images/icons/inversiyacom.png" class="site-img"
+            /></span>
+          </div>
+        </div>
 
-      <label>
-        Город:
-        <input type="text" name="city" />
-      </label>
+        <hr class="header-line" />
 
-      <label>
-        Тип котла:
-        <select name="boilerType">
-          <option value="Паровой">Паровой</option>
-          <option value="Твердотопливный">Твердотопливный</option>
-          <option value="Электрический">Электрический</option>
-        </select>
-      </label>
+        <div class="header-details">
+          <div class="counter-date">
+            <div class="detail-left">Исх №000</div>
+            <div class="detail-center">09.10.2025</div>
+          </div>
+          <div class="detail-right">«ТЛХ-Групп»</div>
+        </div>
+      </header>
 
-      <button type="submit">Сформировать PDF</button>
-    </form>
+      <main class="main-content">
+        <div class="content-wrapper">
+          <p>Добрый, день исходя из вашего запроса, предлагаем Вам:</p>
+          <h1 class="main-title">Паровой котел двухходовой КПО-1000</h1>
 
-    <!-- Блок, который будем «фотографировать» -->
-    <!-- Изначально скрываем (display: none), но можно и держать открытым, если нужно -->
-    <div id="pdfContent" style="display: none">
-      <h2>Данные формы</h2>
-      <p><b>Имя:</b> <span id="usernameOutput"></span></p>
-      <p><b>Город:</b> <span id="cityOutput"></span></p>
-      <p><b>Тип котла:</b> <span id="boilerTypeOutput"></span></p>
+          <section class="boiler-specs">
+            <div class="specs-icon">
+              <img src="../images/icons/mbboiler.png" />
+            </div>
+
+            <div class="specs-columns">
+              <div class="spec-col">
+                <h4>ПРОИЗВОДИТЕЛЬНОСТЬ</h4>
+                <p>1000 кг пара в час</p>
+
+                <h4>ТОПЛИВО</h4>
+                <p>ГАЗ ПРИРОДНЫЙ</p>
+              </div>
+
+              <div class="spec-col">
+                <h4>ДАВЛЕНИЕ</h4>
+                <p>6 атм</p>
+
+                <h4>ГАБАРИТНЫЕ РАЗМЕРЫ</h4>
+                <p>3000x2000x1500мм</p>
+              </div>
+
+              <div class="spec-col">
+                <h4>ТЕМПЕРАТУРА ПАРА</h4>
+                <p>140°C</p>
+
+                <h4>ВЕС</h4>
+                <p>4357 кг</p>
+              </div>
+            </div>
+          </section>
+
+          <section class="technical-description">
+            <h2 class="section-title">Техническое описание</h2>
+          </section>
+        </div>
+      </main>
     </div>
-
-    <!-- Подключаем библиотеки для генерации PDF -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jspdf"></script>
-
-    <script>
-      import { jsPDF } from 'https://cdn.jsdelivr.net/npm/jspdf@2.5.1/+esm';
-      const form = document.getElementById('pdfForm');
-      const pdfContent = document.getElementById('pdfContent');
-
-      form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        // 1. Собираем данные формы
-        const formData = new FormData(form);
-        const username = formData.get('username');
-        const city = formData.get('city');
-        const boilerType = formData.get('boilerType');
-
-        // 2. Подставляем в скрытый блок
-        document.getElementById('usernameOutput').textContent = username;
-        document.getElementById('cityOutput').textContent = city;
-        document.getElementById('boilerTypeOutput').textContent = boilerType;
-
-        // 3. Отображаем блок, чтобы html2canvas мог его «увидеть»
-        pdfContent.style.display = 'block';
-
-        try {
-          // 4. «Фотографируем» блок
-          const canvas = await html2canvas(pdfContent);
-          const imgData = canvas.toDataURL('image/png');
-
-          // 5. Создаём PDF (jsPDF)
-          const pdf = new jsPDF('p', 'pt', 'a4');
-          const pageWidth = pdf.internal.pageSize.getWidth();
-
-          // Рассчитываем пропорциональную высоту
-          const imgWidth = pageWidth - 40; // отступы 20px слева/справа
-          const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-          // 6. Добавляем изображение в PDF
-          pdf.addImage(imgData, 'PNG', 20, 20, imgWidth, imgHeight);
-
-          // 7. Сохраняем PDF
-          pdf.save('otchet.pdf');
-        } catch (err) {
-          console.error('Ошибка генерации PDF:', err);
-          alert('Не удалось сгенерировать PDF');
-        } finally {
-          // 8. Если не нужно показывать блок после генерации, скрываем обратно
-          pdfContent.style.display = 'none';
-        }
-      });
-    </script>
   </body>
 </html>
