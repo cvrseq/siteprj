@@ -1,18 +1,58 @@
 html {
-  font-size: 16px;
+  font-size: 1rem;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
 }
 
 body {
   margin: 0;
+  padding: 0;
+  background-color: #eee;
+  font-family: sans-serif;
+}
+
+.first_phone,
+.second_phone,
+.email,
+.detail-left,
+.detail-center,
+.detail-right,
+.element,
+.descript {
   font-family: 'Actay', sans-serif;
-  color: #333;
-  padding: 3rem;
+}
+
+.element {
+  font-size: 0.8rem;
+}
+
+.descript {
+  font-size: 0.7rem;
+}
+
+.general-wrapper {
+  width: 70rem;
+  min-height: 99rem;
+  margin: 2% auto;
+  padding: 2rem;
+  background-color: #fff;
+  border: 0.0625rem solid #ccc;
+  box-shadow: 0 0 0.625rem rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  position: relative;
 }
 
 .page-container {
-  max-width: 60rem;
+  width: 60rem;
   margin: 0 auto;
-  padding: 1rem;
+  padding: 0 1rem;
 }
 
 .page-header {
@@ -76,8 +116,12 @@ body {
   align-items: flex-start;
 }
 
-.content-wrapper {
-  padding: 1rem;
+/* main <--- */
+
+.container-main-title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .boiler-specs {
@@ -88,13 +132,14 @@ body {
 }
 
 .specs-icon img {
-  max-width: 80px;
+  max-width: 10rem;
   height: auto;
 }
 
 .specs-columns {
   display: flex;
-  gap: 2rem;
+  align-items: center;
+  gap: 6rem;
 }
 
 .spec-col {
@@ -115,9 +160,50 @@ body {
   margin: 0 0 1rem 0;
 }
 
+/* info sections <---- */
+
+.info-sections {
+  margin-top: 2rem;
+}
+
+.info-row {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+  gap: 3rem;
+}
+
+.info-heading {
+  flex: 0 0 12rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin: 0;
+  font-family: 'Actay', sans-serif;
+  color: #333;
+}
+
+.info-text {
+  flex: 1;
+  margin: 0;
+  line-height: 1.4;
+  font-family: 'Actay', sans-serif;
+  font-size: 0.85rem;
+}
+
+#first_title {
+  font-family: 'Actay', sans-serif;
+  font-size: 0.8rem;
+}
+
+#second_title {
+  font-family: 'Actay', sans-serif;
+  font-size: 1.5rem;
+}
+
 @font-face {
   font-family: 'Actay';
-  src: url('../fonts/OTF/ActayFamily/ActayWide-BoldItalic.otf')
+  src: url('../../fonts/OTF/ActayFamily/ActayWide-BoldItalic.otf')
     format('opentype');
   font-weight: normal;
   font-style: normal;
