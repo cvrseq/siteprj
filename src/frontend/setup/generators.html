@@ -9,13 +9,10 @@
   </head>
   <body>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jspdf"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="./setup_script/generatours.js"></script>
     <!-- Обёртка для всего документа (A4-область) -->
     <div class="general-wrapper">
-      <!-- Кнопка «Сохранить» (глобальная) -->
-      <button class="save-global-btn">Сохранить</button>
-
       <header class="page_header">
         <div class="page-container">
           <div class="header-top">
@@ -49,7 +46,12 @@
             <div class="counter-date">
               <div class="detail-left">
                 Исх №
-                <input type="text" id="ish" placeholder="Введите номер..." />
+                <input
+                  type="text"
+                  id="ish"
+                  placeholder="Введите номер..."
+                  class="inline-input"
+                />
               </div>
               <div class="detail-center">
                 <input type="text" id="date" placeholder="Введите дату..." />
@@ -73,6 +75,7 @@
               type="text"
               id="boiler-name"
               placeholder="Введите название котла..."
+              class="inline-input"
             />
           </div>
         </div>
@@ -126,9 +129,9 @@
               </div>
 
               <div class="spec-col">
-                <div class="element">ТЕМПЕРАТУРА ПАРА</div>
+                <div class="element">ТЕМПЕРАТУРА ПАРА °C</div>
                 <div class="descript">
-                  <input type="text" id="temp" placeholder="Температура..." />°C
+                  <input type="text" id="temp" placeholder="Температура..." />
                 </div>
 
                 <div class="element">ВЕС</div>
@@ -252,4 +255,5 @@
       </footer>
     </div>
   </body>
+  <button class="save-global-btn">Сохранить</button>
 </html>
