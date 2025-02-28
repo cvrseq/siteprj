@@ -201,6 +201,87 @@ body {
   font-size: 1.5rem;
 }
 
+.info-list {
+  margin-top: 1rem;
+}
+
+.info-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.info-item-text {
+  max-width: 70%;
+  line-height: 1.4;
+  font-family: 'Actay', sans-serif;
+  font-size: 0.85rem;
+}
+
+.info-item-price {
+  white-space: nowrap;
+  text-align: right;
+  min-width: 6rem;
+  margin-left: 1rem;
+  font-family: 'Actay', sans-serif;
+  font-size: 0.85rem;
+}
+
+
+.bottom-signature {
+  display: flex;
+  justify-content: space-between; 
+  align-items: center;
+  margin-top: 4rem; 
+}
+
+.director-block .paragraphs {
+  margin: 0.25rem 0; 
+  line-height: 1.2;
+  font-family: 'Actay', sans-serif;
+  font-size: 0.85rem;
+}
+
+.signature-block {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 2rem;
+}
+
+.signature-block img {
+  max-height: 5rem;
+}
+
+.director-name .paragraphs {
+  margin: 0.25rem 0;
+  line-height: 1.2;
+  text-align: right;
+  font-family: 'Actay', sans-serif;
+  font-size: 0.85rem;
+}
+
+.page-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 0.0625rem solid #ccc; 
+  padding-top: 1rem;
+  margin-top: 2rem; 
+}
+
+.footer-logo img {
+  max-height: 2.5rem;
+}
+
+.footer-info {
+  display: flex;
+  flex-wrap: wrap; 
+  gap: 1rem;
+  font-size: 0.85rem; 
+  font-family: 'Actay', sans-serif;
+}
+
 @font-face {
   font-family: 'Actay';
   src: url('../../fonts/OTF/ActayFamily/ActayWide-BoldItalic.otf')
