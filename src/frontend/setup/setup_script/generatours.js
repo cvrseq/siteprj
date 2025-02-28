@@ -3,9 +3,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const pdfWrapper = document.querySelector('.general-wrapper');
   let originalElements = [];
 
-  // Функция замены полей на текст
   const replaceInputsWithText = () => {
-    originalElements = []; // Сбрасываем хранилище
+    originalElements = [];
 
     for (const el of document.querySelectorAll('input, textarea')) {
       const textEl = document.createElement('div');
@@ -32,7 +31,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  // Восстановление полей ввода
   const restoreInputs = () => {
     for (const { original, parent, nextSibling } of originalElements) {
       if (nextSibling) {
@@ -47,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
   saveBtn.addEventListener('click', async () => {
     try {
       saveBtn.disabled = true;
-      replaceInputsWithText(); // Заменяем поля перед генерацией
+      replaceInputsWithText();
 
       const canvas = await html2canvas(pdfWrapper, {
         scale: 2,
@@ -67,17 +65,15 @@ document.addEventListener('DOMContentLoaded', () => {
       console.error('PDF Error:', err);
       alert(`Ошибка генерации: ${err.message}`);
     } finally {
-      restoreInputs(); // Восстанавливаем поля
+      restoreInputs();
       saveBtn.disabled = false;
     }
   });
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Собираем все элементы ввода в порядке их появления в DOM
   const formElements = Array.from(document.querySelectorAll('input, textarea'));
 
-  // Функция обработки нажатия клавиш
   const handleKeyNavigation = (event) => {
     if (event.key === 'Enter' && event.target.tagName !== 'TEXTAREA') {
       event.preventDefault();
@@ -89,19 +85,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  // Добавляем обработчики для всех элементов
   for (const el of formElements) {
     el.addEventListener('keydown', handleKeyNavigation);
   }
-
-  // Остальной код генерации PDF...
 });
 
 const updateFormElements = () => {
   formElements = Array.from(document.querySelectorAll('input, textarea'));
 };
 
-// Вызывать при добавлении новых полей
 document.querySelector('.add-equipment').addEventListener('click', () => {
   addNewEquipmentField();
   updateFormElements();
@@ -132,7 +124,6 @@ if (currentIndex > -1) {
       block: 'center',
     });
   } else {
-    // Для последнего элемента
     if (!event.shiftKey) {
       document.querySelector('.save-global-btn').focus();
     }

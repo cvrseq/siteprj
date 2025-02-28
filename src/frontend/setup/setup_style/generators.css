@@ -331,7 +331,7 @@ textarea {
 }
 
 textarea {
-  min-height: 2rem; /* примерная высота */
+  min-height: 2rem; 
   resize: vertical, horizontal;
   font-family: 'Actay', sans-serif;
 }
