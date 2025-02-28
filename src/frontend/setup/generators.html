@@ -7,9 +7,12 @@
     <title>Парогенераторы</title>
     <link rel="stylesheet" href="./setup_style/generators.css" />
   </head>
-
   <body>
+    <!-- Обёртка для всего документа (A4-область) -->
     <div class="general-wrapper">
+      <!-- Кнопка «Сохранить» (глобальная) -->
+      <button class="save-global-btn">Сохранить</button>
+
       <header class="page_header">
         <div class="page-container">
           <div class="header-top">
@@ -18,6 +21,7 @@
                 src="../images/logoforpdfmod.png"
                 loading="lazy"
                 class="logo"
+                alt="Логотип"
               />
             </div>
             <div class="contacts">
@@ -26,9 +30,13 @@
                 <span class="second_phone">+7 3433370058</span>
               </div>
               <span class="email">2548039@gmail.com</span>
-              <span class="site"
-                ><img src="../images/icons/inversiyacom.png" class="site-img"
-              /></span>
+              <span class="site">
+                <img
+                  src="../images/icons/inversiyacom.png"
+                  class="site-img"
+                  alt="Сайт inversiya.com"
+                />
+              </span>
             </div>
           </div>
 
@@ -36,10 +44,17 @@
 
           <div class="header-details">
             <div class="counter-date">
-              <div class="detail-left">Исх №000</div>
-              <div class="detail-center">09.10.2025</div>
+              <div class="detail-left">
+                Исх №
+                <input type="text" id="ish" placeholder="Введите номер..." />
+              </div>
+              <div class="detail-center">
+                <input type="text" id="date" placeholder="Введите дату..." />
+              </div>
             </div>
-            <div class="detail-right">«ТЛХ-Групп»</div>
+            <div class="detail-right">
+              <input type="text" id="group" placeholder="ТЛХ_Групп..." />
+            </div>
           </div>
         </div>
       </header>
@@ -47,196 +62,194 @@
       <main class="main-content">
         <div class="container-main-title">
           <div id="first_title">
-            Добрый, день исходя из вашего запроса, предлагаем Вам:
+            Добрый день, исходя из вашего запроса, предлагаем Вам:
           </div>
-          <div id="second_title">Паровой котел двухходовой КПО-1000</div>
+          <div id="second_title">
+            Паровой котел
+            <input
+              type="text"
+              id="boiler-name"
+              placeholder="Введите название котла..."
+            />
+          </div>
         </div>
+
         <div class="page-container">
+          <!-- Блок с характеристиками котла -->
           <section class="boiler-specs">
             <div class="specs-icon">
-              <img src="../images/icons/mbboiler.png" />
+              <img src="../images/icons/mbboiler.png" alt="Иконка котла" />
             </div>
 
             <div class="specs-columns">
               <div class="spec-col">
                 <div class="element">ПРОИЗВОДИТЕЛЬНОСТЬ</div>
-                <div class="descript">1000 кг пара в час</div>
+                <div class="descript">
+                  <input
+                    type="text"
+                    id="capacity"
+                    placeholder="Введите производительность..."
+                  />
+                </div>
 
                 <div class="element">ТОПЛИВО</div>
-                <div class="descript">газ природный</div>
+                <div class="descript">
+                  <input
+                    type="text"
+                    id="fuel"
+                    placeholder="Введите вид топлива..."
+                  />
+                </div>
               </div>
 
               <div class="spec-col">
                 <div class="element">ДАВЛЕНИЕ</div>
-                <div class="descript">6 атм</div>
+                <div class="descript">
+                  <input
+                    type="text"
+                    id="pressure"
+                    placeholder="Введите давление (атм)..."
+                  />
+                </div>
 
                 <div class="element">ГАБАРИТНЫЕ РАЗМЕРЫ</div>
-                <div class="descript">3000x2000x1500мм</div>
+                <div class="descript">
+                  <input
+                    type="text"
+                    id="size"
+                    placeholder="Пример: 3000x2000x1500мм"
+                  />
+                </div>
               </div>
 
               <div class="spec-col">
                 <div class="element">ТЕМПЕРАТУРА ПАРА</div>
-                <div class="descript">140°C</div>
+                <div class="descript">
+                  <input type="text" id="temp" placeholder="Температура..." />°C
+                </div>
 
                 <div class="element">ВЕС</div>
-                <div class="descript">4357 кг</div>
+                <div class="descript">
+                  <input type="text" id="weight" placeholder="Вес (кг)..." />
+                </div>
               </div>
             </div>
           </section>
 
+          <!-- Информационные блоки -->
           <section class="info-sections">
+            <!-- Техническое описание -->
             <div class="info-row">
               <div class="info-heading">ТЕХНИЧЕСКОЕ<br />ОПИСАНИЕ</div>
               <div class="info-text">
-                Водотрубный трехходовой котёл горизонтального исполнения.
-                Кострукция<br />
-                котла позволяет эффективно получать чистый сухой пар.<br />
-                Котёл полностью автоматизирован и не требует постоянного
-                присутствия<br />
-                оператора<br /><br />
+                <textarea
+                  id="tech-description"
+                  placeholder="Введите тех. описание..."
+                ></textarea>
               </div>
             </div>
 
-            <!-- КОМПЛЕКТАЦИЯ -->
+            <!-- Комплектация -->
             <div class="info-row">
               <div class="info-heading">КОМПЛЕКТАЦИЯ</div>
               <div class="info-text">
-                Двухступенчатая газовая горелка GAS Х 5/2 CE TL + R. CE D1" – S,
-                F.B.R. Италия<br />
-                Насос питательный CDM для работы на воде до 105 оС, в количестве
-                1 шт.<br />
-                Автоматика безопасности и регулирования с внешним управлением.
-                На базе<br />
-                ПЛК ОВЕН с сенсорным дисплеем<br />
-                Гидравлическая обвязка, предохранительная и запорная
-                арматура.<br />
-                Предохранительные клапана Goetze S642 Dn20 – 2<br/ ><br />
+                <textarea
+                  id="complexity"
+                  placeholder="Введите комплектацию..."
+                ></textarea>
               </div>
             </div>
 
-            <!-- СРОКИ И СТОИМОСТЬ -->
+            <!-- Сроки и стоимость -->
             <div class="info-row">
-              <div class="info-heading">СРОКИ И СТОИМОСТЬ</div>
+              <div class="info-heading">СРОКИ<br />И СТОИМОСТЬ</div>
               <div class="info-text">
-                Срок 30 дней <br />
-                Стоимость 2 100 000 руб без НДС
-                <br />
-                Порядок оплаты 50% предварительная, 50% по уведомлению о
-                готовности<br />
-                отгрузке.<br /><br />
+                Срок 30 дней<br />
+                Стоимость
+                <input type="text" id="price" placeholder="Введите цену..." />
+                руб (без НДС)<br />
+                Порядок оплаты 50% предоплата, 50% по уведомлению о готовности к
+                отгрузке.
               </div>
             </div>
 
-            <!-- ГАРАНТИЯ -->
+            <!-- Гарантия -->
             <div class="info-row">
               <div class="info-heading">УСЛОВИЯ<br />ГАРАНТИИ</div>
               <div class="info-text">
-                Гарантийный срок на оборудование 18 месяца с момента поставки,
-                или 12 <br />
-                месяцев с момента запуска в эксплуатацию. Гарантия на
-                теплообменник котла<br />
-                24 месяцев с момента продажи (при условии заказа ПНР)
+                Гарантийный срок на оборудование 18 месяцев с момента поставки,
+                или 12 месяцев<br />
+                с момента запуска в эксплуатацию. Гарантия на теплообменник
+                котла 24 месяца<br />
+                с момента продажи (при условии заказа ПНР).
               </div>
             </div>
 
-            <!-- СОПУТСТВУЮЩЕЕ ОБОРУДОВАНИЕ -->
+            <!-- Сопутствующее оборудование -->
             <div class="info-row">
-              <div class="info-heading">СОПУТСТВУЮЩЕЕ ОБОРУДОВАНИЕ</div>
+              <div class="info-heading">СОПУТСТВУЮЩЕЕ<br />ОБОРУДОВАНИЕ</div>
               <div class="info-list">
-                <!-- 1-я позиция -->
+                <!-- Пример одной позиции -->
                 <div class="info-item">
-                  <div class="info-item-text">
-                    Автоматика безопасности и регулирования с функцией<br />
-                    внешнего управления на аппаратной базе ПЛК ОВЕН с<br />
-                    функцией внешнего управления и передачей сигнала на<br />
-                    «верхний уровень» с сенсорной панелью управления 10<br />
-                    дюймов<br /><br />
-                  </div>
-                  <div class="info-item-price">390 000 руб</div>
+                  <textarea
+                    class="equipment-text-input"
+                    placeholder="Описание 1..."
+                  ></textarea>
+                  <input
+                    type="text"
+                    class="equipment-price"
+                    placeholder="Цена 1..."
+                  />
                 </div>
-
-                <!-- 2-я позиция -->
+                <!-- Ещё одна позиция -->
                 <div class="info-item">
-                  <div class="info-item-text">
-                    Группа автоматической продувки котла 25с945нж Kvy6,3
-                    Ру2,5<br />
-                    МПа Regada 472.0-0DFAG/00 - 370 т.р.<br /><br />
-                  </div>
-                  <div class="info-item-price">2 600 000 руб</div>
+                  <textarea
+                    class="equipment-text-input"
+                    placeholder="Описание 2..."
+                  ></textarea>
+                  <input
+                    type="text"
+                    class="equipment-price"
+                    placeholder="Цена 2..."
+                  />
                 </div>
-
-                <!-- 3-я позиция -->
-                <div class="info-item">
-                  <div class="info-item-text">
-                    Встроенный экономайзер-утилизатор тепла уходящих газов<br />
-                    для подогрева питательной воды ЭВ-1400 (КПД с ним 93%)<br /><br />
-                  </div>
-                  <div class="info-item-price">2 600 000 руб</div>
-                </div>
-
-                <!-- 4-я позиция -->
-                <div class="info-item">
-                  <div class="info-item-text">
-                    Деаэратор вакуумный компактный, напольного монтажа,<br />
-                    производительностью. 3000 л/ч, ДВ-3000<br /><br />
-                  </div>
-                  <div class="info-item-price">2 600 000 руб</div>
-                </div>
-
-                <!-- 5-я позиция -->
-                <div class="info-item">
-                  <div class="info-item-text">
-                    Бак сбора конденсата и подготовленной воды с функцией<br />
-                    изоляции рабочего тела от воздуха из стали 12х18н10т<br />
-                    объемом 1000 л – 460 000 руб<br /><br />
-                  </div>
-                  <div class="info-item-price">460 000 руб</div>
-                </div>
-
-                <!-- 6-я позиция -->
-                <div class="info-item">
-                  <div class="info-item-text">
-                    Пуско-наладочные работы поставленного комплекса<br />
-                    оборудования с обучением персонала –340 000 ру<br />
-                  </div>
-                  <div class="info-item-price">340 000 руб</div>
-                </div>
+                <!-- ...добавляете нужное количество позиций -->
               </div>
             </div>
           </section>
 
+          <!-- Подпись внизу -->
           <section class="bottom-signature">
             <div class="director-block">
-              <div class="paragraphs">С уважением</div>
-              <div class="paragraphs">Директор ООО "Инверсия"</div>
+              <p>С уважением</p>
+              <p>Директор ООО "Инверсия"</p>
             </div>
-
             <div class="signature-block">
-              <img src="../images/logo/Screenshot 2025-02-28 at 11.48.09.png" />
+              <img
+                src="../images/logo/Screenshot 2025-02-28 at 11.48.09.png"
+                alt="Подпись директора"
+              />
             </div>
-
             <div class="director-name">
-              <div class="paragraphs">Казанцев В.П.</div>
+              <p>Казанцев В.П.</p>
             </div>
           </section>
         </div>
       </main>
 
-      
-
       <footer class="page-footer">
         <div class="footer-logo">
-          <img src="../images/logo/Layer2.png" />
+          <img src="../images/logo/Layer2.png" alt="Лого снизу" />
         </div>
-
         <div class="footer-info">
-          <div class="paragraphs">ИНН 6674187204</div>
-          <div class="paragraphs">КПП 66850100</div>
-          <div class="paragraphs">
-            620100, Екатеринбург, ул. Восточная 31, офис 1
-          </div>
+          <p>ИНН 6674187204</p>
+          <p>КПП 66850100</p>
+          <p>620100, Екатеринбург, ул. Восточная 31, офис 1</p>
         </div>
       </footer>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jspdf"></script>
+    <script src="./setup_script/generatours.js"></script>
   </body>
 </html>

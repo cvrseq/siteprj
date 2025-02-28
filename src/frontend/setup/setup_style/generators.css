@@ -29,6 +29,25 @@ body {
   font-family: 'Actay', sans-serif;
 }
 
+.save-global-btn {
+  position: absolute;
+  top: 1rem;
+  right: 2rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-size: 1rem;
+  background-color: #aaaaaa;
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.save-global-btn:hover {
+  color: #595959;
+  transform: scale(1.1);
+}
+
 .element {
   font-size: 0.8rem;
 }
@@ -227,16 +246,15 @@ body {
   font-size: 0.85rem;
 }
 
-
 .bottom-signature {
   display: flex;
-  justify-content: space-between; 
+  justify-content: space-between;
   align-items: center;
-  margin-top: 4rem; 
+  margin-top: 4rem;
 }
 
 .director-block .paragraphs {
-  margin: 0.25rem 0; 
+  margin: 0.25rem 0;
   line-height: 1.2;
   font-family: 'Actay', sans-serif;
   font-size: 0.85rem;
@@ -265,9 +283,9 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-top: 0.0625rem solid #ccc; 
+  border-top: 0.0625rem solid #ccc;
   padding-top: 1rem;
-  margin-top: 2rem; 
+  margin-top: 2rem;
 }
 
 .footer-logo img {
@@ -276,9 +294,28 @@ body {
 
 .footer-info {
   display: flex;
-  flex-wrap: wrap; 
+  flex-wrap: wrap;
   gap: 1rem;
-  font-size: 0.85rem; 
+  font-size: 0.78rem;
+  font-family: 'Actay', sans-serif;
+}
+
+input,
+textarea {
+  font-size: 0.78rem;
+  padding: 0.25rem;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  outline: none;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  font-family: 'Actay', sans-serif;
+}
+
+textarea {
+  min-height: 2rem; /* примерная высота */
+  resize: vertical, horizontal;
   font-family: 'Actay', sans-serif;
 }
 
