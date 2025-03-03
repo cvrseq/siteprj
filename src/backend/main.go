@@ -298,9 +298,24 @@ func getDevice(w http.ResponseWriter, r *http.Request) {
 	var d Device
 	err := dbDevices.QueryRow(query, id).Scan(
 		&d.ID,
-		&d.Type,
-		// ...
-		&d.Mtp,
+			&d.Type,
+			&d.Name,
+			&d.Model,
+			&d.Fuel,
+			&d.PressureAtm,
+			&d.SteamCapacity,
+			&d.SteamTemp,
+			&d.Efficiency,
+			&d.Power,
+			&d.SteamProd,
+			&d.GasCons,
+			&d.DieselCons,
+			&d.FuelOilCons,
+			&d.SolidFuelCons,
+			&d.Weight,
+			&d.Burner,
+			&d.Mop,
+			&d.Mtp,
 	)
 	if err != nil {
 		http.Error(w, "Не найдено", http.StatusNotFound)

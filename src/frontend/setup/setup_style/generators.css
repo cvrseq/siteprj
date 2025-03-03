@@ -365,6 +365,7 @@ textarea:focus {
     flex-basis: auto;
   }
 }
+
 @font-face {
   font-family: 'Actay';
   src: url('../../fonts/OTF/ActayFamily/ActayWide-BoldItalic.otf')

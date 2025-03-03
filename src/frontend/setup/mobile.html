@@ -4,29 +4,256 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#ffffff" />
-    <link link="stylesheet" href="./setup_style/mobile.css" />
-    <title>Конфигурация</title>
+    <title>Парогенераторы</title>
+    <link rel="stylesheet" href="./setup_style/generators.css" />
   </head>
   <body>
-    <header class="head">
-      <img src="./Layer2.png" />
-      <div id="name-company">ИНВЕРСИЯ</div>
-      <div id="classification">паровые котлы и парогенераторы</div>
-      <div id="first_number">+7 3432548039</div>
-      <div id="second_number">+7 3433370058</div>
-      <div id="mail">2548039@gmail.com</div>
-      <div id="site">inversiya.com</div>
-    </header>
-
-    <div id="pdf-content">
-      <div id="original_number"></div>
-      <!--input-->
-      <div id="tlx_group">"ТЛХ-Групп"</div>
-      <div id="date"></div>
-      <!--считывание либо инпут-->
-    </div>
-    <script src="./setup_script/mobile.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="./setup_script/generatours.js"></script>
+    <!-- Обёртка для всего документа (A4-область) -->
+    <div class="general-wrapper">
+      <header class="page_header">
+        <div class="page-container">
+          <div class="header-top">
+            <div class="logo-block">
+              <img
+                src="../images/logoforpdfmod.png"
+                loading="lazy"
+                class="logo"
+                alt="Логотип"
+              />
+            </div>
+            <div class="contacts">
+              <div class="phone-col">
+                <span class="first_phone">+7 3432548039</span>
+                <span class="second_phone">+7 3433370058</span>
+              </div>
+              <span class="email">2548039@gmail.com</span>
+              <span class="site">
+                <img
+                  src="../images/icons/inversiyacom.png"
+                  class="site-img"
+                  alt="Сайт inversiya.com"
+                />
+              </span>
+            </div>
+          </div>
+
+          <hr class="header-line" />
+
+          <div class="header-details">
+            <div class="counter-date">
+              <div class="detail-left">
+                Исх №
+                <input
+                  type="text"
+                  id="ish"
+                  placeholder="Введите номер..."
+                  class="inline-input"
+                />
+              </div>
+              <div class="detail-center">
+                <input type="text" id="date" placeholder="Введите дату..." />
+              </div>
+            </div>
+            <div class="detail-right">
+              <input type="text" id="group" placeholder="ТЛХ_Групп..." />
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main class="main-content">
+        <div class="container-main-title">
+          <div id="first_title">
+            Добрый день, исходя из вашего запроса, предлагаем Вам:
+          </div>
+          <div id="second_title">
+            Парогенератор мобильный
+            <input
+              type="text"
+              id="boiler-name"
+              placeholder="Введите название установки..."
+              class="inline-input"
+            />
+          </div>
+        </div>
+
+        <div class="page-container">
+          <!-- Блок с характеристиками котла -->
+          <section class="boiler-specs">
+            <div class="specs-icon">
+              <img src="../images/icons/mbboiler.png" alt="Иконка котла" />
+            </div>
+
+            <div class="specs-columns">
+              <div class="spec-col">
+                <div class="element">ПРОИЗВОДИТЕЛЬНОСТЬ</div>
+                <div class="descript">
+                  <input
+                    type="text"
+                    id="capacity"
+                    placeholder="Введите производительность..."
+                  />
+                </div>
+
+                <div class="element">ТОПЛИВО</div>
+                <div class="descript">
+                  <input
+                    type="text"
+                    id="fuel"
+                    placeholder="Введите вид топлива..."
+                  />
+                </div>
+              </div>
+
+              <div class="spec-col">
+                <div class="element">ДАВЛЕНИЕ</div>
+                <div class="descript">
+                  <input
+                    type="text"
+                    id="pressure"
+                    placeholder="Введите давление (атм)..."
+                  />
+                </div>
+
+                <div class="element">ГАБАРИТНЫЕ РАЗМЕРЫ</div>
+                <div class="descript">
+                  <input
+                    type="text"
+                    id="size"
+                    placeholder="Пример: 3000x2000x1500мм"
+                  />
+                </div>
+              </div>
+
+              <div class="spec-col">
+                <div class="element">ТЕМПЕРАТУРА ПАРА °C</div>
+                <div class="descript">
+                  <input type="text" id="temp" placeholder="Температура..." />
+                </div>
+
+                <div class="element">ВЕС</div>
+                <div class="descript">
+                  <input type="text" id="weight" placeholder="Вес (кг)..." />
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Информационные блоки -->
+          <section class="info-sections">
+            <!-- Техническое описание -->
+            <div class="info-row">
+              <div class="info-heading">ТЕХНИЧЕСКОЕ<br />ОПИСАНИЕ</div>
+              <div class="info-text">
+                <textarea
+                  id="tech-description"
+                  placeholder="Введите тех. описание..."
+                ></textarea>
+              </div>
+            </div>
+
+            <!-- Комплектация -->
+            <div class="info-row">
+              <div class="info-heading">КОМПЛЕКТАЦИЯ</div>
+              <div class="info-text">
+                <textarea
+                  id="complexity"
+                  placeholder="Введите комплектацию..."
+                ></textarea>
+              </div>
+            </div>
+
+            <!-- Сроки и стоимость -->
+            <div class="info-row">
+              <div class="info-heading">СРОКИ<br />И СТОИМОСТЬ</div>
+              <div class="info-text">
+                Срок 30 дней<br />
+                Стоимость
+                <input type="text" id="price" placeholder="Введите цену..." />
+                руб (без НДС)<br />
+                Порядок оплаты 50% предоплата, 50% по уведомлению о готовности к
+                отгрузке.
+              </div>
+            </div>
+
+            <!-- Гарантия -->
+            <div class="info-row">
+              <div class="info-heading">УСЛОВИЯ<br />ГАРАНТИИ</div>
+              <div class="info-text">
+                Гарантийный срок на оборудование 18 месяцев с момента поставки,
+                или 12 месяцев<br />
+                с момента запуска в эксплуатацию. Гарантия на теплообменник
+                котла 24 месяца<br />
+                с момента продажи (при условии заказа ПНР).
+              </div>
+            </div>
+
+            <!-- Сопутствующее оборудование -->
+            <div class="info-row">
+              <div class="info-heading">СОПУТСТВУЮЩЕЕ<br />ОБОРУДОВАНИЕ</div>
+              <div class="info-list">
+                <!-- Пример одной позиции -->
+                <div class="info-item">
+                  <textarea
+                    class="equipment-text-input"
+                    placeholder="Описание 1..."
+                  ></textarea>
+                  <input
+                    type="text"
+                    class="equipment-price"
+                    placeholder="Цена 1..."
+                  />
+                </div>
+                <!-- Ещё одна позиция -->
+                <div class="info-item">
+                  <textarea
+                    class="equipment-text-input"
+                    placeholder="Описание 2..."
+                  ></textarea>
+                  <input
+                    type="text"
+                    class="equipment-price"
+                    placeholder="Цена 2..."
+                  />
+                </div>
+                <!-- ...добавляете нужное количество позиций -->
+              </div>
+            </div>
+          </section>
+
+          <!-- Подпись внизу -->
+          <section class="bottom-signature">
+            <div class="director-block">
+              <p>С уважением</p>
+              <p>Директор ООО "Инверсия"</p>
+            </div>
+            <div class="signature-block">
+              <img
+                src="../images/logo/Screenshot 2025-02-28 at 11.48.09.png"
+                alt="Подпись директора"
+              />
+            </div>
+            <div class="director-name">
+              <p>Казанцев В.П.</p>
+            </div>
+          </section>
+        </div>
+      </main>
+
+      <footer class="page-footer">
+        <div class="footer-logo">
+          <img src="../images/logo/Layer2.png" alt="Лого снизу" />
+        </div>
+        <div class="footer-info">
+          <p>ИНН 6674187204</p>
+          <p>КПП 66850100</p>
+          <p>620100, Екатеринбург, ул. Восточная 31, офис 1</p>
+        </div>
+      </footer>
+    </div>
   </body>
+  <button class="save-global-btn">Сохранить</button>
 </html>
