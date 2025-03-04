@@ -6,6 +6,10 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"net/http/httputil"
+	"net/url"
+	"os/exec"
+	"time"
 
 	"github.com/gorilla/mux"
 	_ "github.com/mattn/go-sqlite3"
@@ -93,10 +97,12 @@ type Employee struct {
 	Role     string `json:"role"`
 }
 
+
 var (
 	dbDevices   *sql.DB
 	dbEmployees *sql.DB
 )
+
 
 func main() {
 	var err error
@@ -128,6 +134,17 @@ func main() {
 	router.HandleFunc("/devices/{id}", deleteDevices).Methods("DELETE")
 
 	router.HandleFunc("/login", loginHandler).Methods("GET", "POST")
+
+	go startFilebrowser()
+
+	time.Sleep(2 * time.Second)
+
+	target, err := url.Parse("http://localhost:8081")
+	if err != nil { 
+		log.Fatal(err)
+	}
+	proxy := httputil.NewSingleHostReverseProxy(target)
+    http.Handle("/files/", http.StripPrefix("/files", proxy))
 
 	router.PathPrefix("/").Handler(http.FileServer(http.Dir("../frontend/")))
 
@@ -430,3 +447,14 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Неизвестная роль", http.StatusForbidden)
 	}
 }
+
+
+func startFilebrowser() { 
+	cmd := exec.Command("filebrowser", "-r", "./uploads", "-p", "8081")
+	if err := cmd.Start(); err != nil { 
+		log.Fatalf("Ошибка запуска filebrowser: %v", err)
+	}
+	log.Printf("filebrowser запущен с PID %d", cmd.Process.Pid)
+}
+
+

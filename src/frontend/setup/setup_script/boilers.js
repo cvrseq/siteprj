@@ -60,7 +60,11 @@ document.addEventListener('DOMContentLoaded', () => {
       });
 
       pdf.addImage(canvas, 'PNG', 0, 0, canvas.width / 2, canvas.height / 2);
-      pdf.save('offer.pdf');
+      const now = new Date();
+      const formattedDate = `${now.getDate()}-${
+        now.getMonth() + 1
+      }-${now.getFullYear()}_${now.getHours()}-${now.getMinutes()}`;
+      pdf.save(`КП_КПО_${formattedDate}.pdf`);
     } catch (err) {
       console.error('PDF Error:', err);
       alert(`Ошибка генерации: ${err.message}`);
