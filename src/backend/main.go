@@ -4,11 +4,14 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
+	"io"
 	"log"
 	"net/http"
 	"net/http/httputil"
 	"net/url"
+	"os"
 	"os/exec"
+	"path/filepath"
 	"time"
 
 	"github.com/gorilla/mux"
@@ -132,6 +135,8 @@ func main() {
 	router.HandleFunc("/devices", createDevices).Methods("POST")
 	router.HandleFunc("/devices/{id}", updateDevices).Methods("PUT")
 	router.HandleFunc("/devices/{id}", deleteDevices).Methods("DELETE")
+
+	router.HandleFunc("/upload", uploadHandler).Methods("POST")
 
 	router.HandleFunc("/login", loginHandler).Methods("GET", "POST")
 
@@ -458,3 +463,40 @@ func startFilebrowser() {
 }
 
 
+	func uploadHandler(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodPost {
+			http.NotFound(w, r)
+			return
+		}
+
+		r.ParseMultipartForm(30 << 30)
+	
+		file, header, err := r.FormFile("file")
+		if err != nil {
+			http.Error(w, "Ошибка при получении файла", http.StatusBadRequest)
+			return
+		}
+		defer file.Close()
+	
+		uploadDir := "uploads"
+		if _, err := os.Stat(uploadDir); os.IsNotExist(err) {
+			os.MkdirAll(uploadDir, 0755)
+		}
+	
+		targetPath := filepath.Join(uploadDir, header.Filename)
+		outFile, err := os.Create(targetPath)
+		if err != nil {
+			http.Error(w, "Ошибка при создании файла", http.StatusInternalServerError)
+			return
+		}
+		defer outFile.Close()
+	
+		_, err = io.Copy(outFile, file)
+		if err != nil {
+			http.Error(w, "Ошибка при сохранении файла", http.StatusInternalServerError)
+			return
+		}
+	
+		w.WriteHeader(http.StatusOK)
+		fmt.Fprintf(w, "Файл сохранен в %s", targetPath)
+	}
