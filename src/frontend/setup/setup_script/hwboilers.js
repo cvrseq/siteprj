@@ -5,8 +5,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const replaceInputsWithText = () => {
     originalElements = [];
-
-    for (const el of document.querySelectorAll('input, textarea')) {
+    const elements = document.querySelectorAll('input, textarea');
+    for (const el of elements) {
       const textEl = document.createElement('div');
       textEl.className = `text-replacement ${el.className}`;
       textEl.textContent = el.value || 'не указано';
@@ -58,13 +58,30 @@ document.addEventListener('DOMContentLoaded', () => {
         unit: 'px',
         format: [canvas.width / 2, canvas.height / 2],
       });
-
       pdf.addImage(canvas, 'PNG', 0, 0, canvas.width / 2, canvas.height / 2);
+
       const now = new Date();
       const formattedDate = `${now.getDate()}-${
         now.getMonth() + 1
       }-${now.getFullYear()}_${now.getHours()}-${now.getMinutes()}`;
-      pdf.save(`КП_КПО-КВ_${formattedDate}.pdf`);
+      const filename = `КП_КПО-КВ_${formattedDate}.pdf`;
+
+      pdf.save(filename);
+
+      const pdfBlob = pdf.output('blob');
+
+      const formData = new FormData();
+      formData.append('file', pdfBlob, filename);
+
+      const response = await fetch('/upload', {
+        method: 'POST',
+        body: formData,
+      });
+      if (!response.ok) {
+        console.error('Ошибка загрузки PDF на сервер');
+      } else {
+        console.log('PDF успешно загружен на сервер');
+      }
     } catch (err) {
       console.error('PDF Error:', err);
       alert(`Ошибка генерации: ${err.message}`);
@@ -73,18 +90,25 @@ document.addEventListener('DOMContentLoaded', () => {
       saveBtn.disabled = false;
     }
   });
-});
 
-document.addEventListener('DOMContentLoaded', () => {
-  const formElements = Array.from(document.querySelectorAll('input, textarea'));
+  let formElements = Array.from(document.querySelectorAll('input, textarea'));
 
   const handleKeyNavigation = (event) => {
     if (event.key === 'Enter' && event.target.tagName !== 'TEXTAREA') {
       event.preventDefault();
       const currentIndex = formElements.indexOf(event.target);
-
-      if (currentIndex > -1 && currentIndex < formElements.length - 1) {
-        formElements[currentIndex + 1].focus();
+      if (currentIndex > -1) {
+        const nextElement =
+          formElements[currentIndex + (event.shiftKey ? -1 : 1)];
+        if (nextElement) {
+          nextElement.focus();
+          nextElement.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center',
+          });
+        } else if (!event.shiftKey) {
+          saveBtn.focus();
+        }
       }
     }
   };
@@ -92,44 +116,16 @@ document.addEventListener('DOMContentLoaded', () => {
   for (const el of formElements) {
     el.addEventListener('keydown', handleKeyNavigation);
   }
-});
 
-const updateFormElements = () => {
-  formElements = Array.from(document.querySelectorAll('input, textarea'));
-};
+  const updateFormElements = () => {
+    formElements = Array.from(document.querySelectorAll('input, textarea'));
+  };
 
-document.querySelector('.add-equipment').addEventListener('click', () => {
-  addNewEquipmentField();
-  updateFormElements();
-});
-
-if (event.key === 'Enter') {
-  event.preventDefault();
-  const currentIndex = formElements.indexOf(event.target);
-
-  if (event.shiftKey) {
-    if (currentIndex > 0) {
-      formElements[currentIndex - 1].focus();
-    }
-  } else {
-    if (currentIndex < formElements.length - 1) {
-      formElements[currentIndex + 1].focus();
-    }
-  }
-}
-
-if (currentIndex > -1) {
-  const nextElement = formElements[currentIndex + (event.shiftKey ? -1 : 1)];
-
-  if (nextElement) {
-    nextElement.focus();
-    nextElement.scrollIntoView({
-      behavior: 'smooth',
-      block: 'center',
+  const addEquipmentBtn = document.querySelector('.add-equipment');
+  if (addEquipmentBtn) {
+    addEquipmentBtn.addEventListener('click', () => {
+      addNewEquipmentField();
+      updateFormElements();
     });
-  } else {
-    if (!event.shiftKey) {
-      document.querySelector('.save-global-btn').focus();
-    }
   }
-}
+});

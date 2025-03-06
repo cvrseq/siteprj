@@ -13,18 +13,3 @@ themeToggle.addEventListener('click', () => {
 });
 
 /* <-------------------------------------------------------------------> */
-const { jsPDF } = window.jspdf;
-
-function generatepdf() {
-  const doc = new jsPDF();
-
-  doc.setFont('helvetica', 'normal');
-  doc.text('привет', 10, 10);
-  doc.text('shrift', 10, 20);
-
-  doc.save('test.pdf');
-}
-
-/* <-------------------------------------------------------------------> */
-
-const form = document.getElementById('loginform');
