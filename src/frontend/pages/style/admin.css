@@ -341,19 +341,41 @@
 }
 
 .panel-section {
-  margin-bottom: 0.25rem; /* 20px */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
 }
 
-.panel-section h3 {
-  margin-bottom: 1.625rem;
-  font-size: 1rem;
-  font-family: 'Actay', sans-serif;
-  transition: color 0.3s ease, transform 0.3s ease;
+.container-filemanager {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.panel-section h3:hover {
-  color: #007bff;
-  transform: scale(1.1);
+.container-filemanager a {
+  display: block;
+  text-decoration: none;
+}
+
+.container-filemanager svg {
+  width: 4rem; /* Увеличенный размер иконки */
+  height: 4rem;
+  padding: 1rem;
+  background-color: #f8f9fa; /* Светло-серый фон */
+  border: 2px solid #e0e0e0; /* Серая рамка */
+  border-radius: 1rem; /* Закругленные углы */
+  transition: all 0.4s ease; /* Плавный переход для всех свойств */
+  color: #495057; /* Цвет иконки */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Легкая тень */
+}
+
+.container-filemanager a:hover svg {
+  transform: rotate(15deg) scale(1.1); /* Поворот и небольшое увеличение */
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* Усиленная тень */
+  background-color: #e9ecef; /* Чуть светлее при наведении */
+  border-color: #ced4da; /* Чуть темнее border */
+  color: #007bff; /* Подсветка синим при наведении */
 }
 
 .close-btn {
