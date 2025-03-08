@@ -156,6 +156,14 @@ table td {
   color: #ffffff;
 }
 
+.dark-mode #theme-icon {
+  color: #ffffff;
+}
+
+.dark-mode #theme-icon:hover {
+  color: #007bff;
+}
+
 .dark-mode .buttons button {
   background-color: #ffffff;
   color: rgb(22, 19, 19);
