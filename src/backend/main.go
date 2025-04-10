@@ -21,6 +21,8 @@ import (
 
 var store = sessions.NewCookieStore([]byte("секретный-ключ-замените-в-продакшне"))
 
+
+
 func stringOrEmpty(ns sql.NullString) string {
 	if ns.Valid {
 		return ns.String
@@ -266,7 +268,7 @@ func main() {
 
 	time.Sleep(2 * time.Second)
 
-	target, err := url.Parse("http://0.0.0.0:8081")
+	target, err := url.Parse("http://0.0.0.0:8081/")
 	if err != nil { 
 		log.Fatal(err)
 	}
@@ -571,7 +573,7 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func startFilebrowser() { 
-	cmd := exec.Command("filebrowser", "-r", "./uploads", "-p", "8081")
+	cmd := exec.Command("filebrowser", "-r", "./uploads", "-p", "8081", "-a", "0.0.0.0")
 	if err := cmd.Start(); err != nil { 
 		log.Fatalf("Ошибка запуска filebrowser: %v", err)
 	}
