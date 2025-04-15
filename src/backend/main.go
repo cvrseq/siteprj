@@ -12,6 +12,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strings"
 	"time"
 
 	"github.com/gorilla/mux"
@@ -111,24 +112,6 @@ var (
 	dbEmployees *sql.DB
 )
 
-func authRequired(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		session, _ := store.Get(r, "auth-session")
-		auth, ok := session.Values["authenticated"].(bool)
-		
-		if !ok || !auth {
-			if r.Header.Get("X-Requested-With") == "XMLHttpRequest" {
-				http.Error(w, "Unauthorized", http.StatusUnauthorized)
-				return
-			}
-			http.Redirect(w, r, "/login", http.StatusSeeOther)
-			return
-		}
-		
-		next.ServeHTTP(w, r)
-	})
-}
-
 func main() {
 	var err error
 
@@ -158,7 +141,32 @@ func main() {
 	router.HandleFunc("/devices/{id}", updateDevices).Methods("PUT")
 	router.HandleFunc("/devices/{id}", deleteDevices).Methods("DELETE")
 
+	router.HandleFunc("/index.html", func(w http.ResponseWriter, r *http.Request) {
+		http.Redirect(w, r, "user_panel", http.StatusMovedPermanently)
+	}).Methods("GET")
+
+	router.HandleFunc("/pages/admin.html", func(w http.ResponseWriter, r *http.Request) {
+		http.Redirect(w, r, "admin_panel", http.StatusMovedPermanently)
+	}).Methods("GET")
+
+	router.HandleFunc("/file_manager.html", func(w http.ResponseWriter, r *http.Request) {
+		http.Redirect(w, r, "filemanager", http.StatusMovedPermanently)
+	}).Methods("GET")
+
 	router.HandleFunc("/upload", uploadHandler).Methods("POST")
+
+
+	router.HandleFunc("/filemanager", func(w http.ResponseWriter, r *http.Request) { 
+		session, _ := store.Get(r, "auth-session")
+		auth, ok := session.Values["authenticated"].(bool)
+
+		if !ok || !auth { 
+			http.Redirect(w, r, "login", http.StatusSeeOther)
+			return
+		}
+
+		http.ServeFile(w, r, "../frontend/pages/file_manager.html")
+	}).Methods("GET")
 
 	router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		session, _ := store.Get(r, "auth-session")
@@ -176,9 +184,9 @@ func main() {
 		}
 		
 		if role == "admin" {
-			http.Redirect(w, r, "/pages/admin.html", http.StatusSeeOther)
+			http.Redirect(w, r, "/admin_panel", http.StatusSeeOther)
 		} else {
-			http.Redirect(w, r, "/index.html", http.StatusSeeOther)
+			http.Redirect(w, r, "/user_panel", http.StatusSeeOther)
 		}
 	}).Methods("GET")
 
@@ -190,9 +198,9 @@ func main() {
 			role, ok := session.Values["role"].(string)
 			if ok {
 				if role == "admin" {
-					http.Redirect(w, r, "/pages/admin.html", http.StatusSeeOther)
+					http.Redirect(w, r, "/admin_panel", http.StatusSeeOther)
 				} else {
-					http.Redirect(w, r, "/index.html", http.StatusSeeOther)
+					http.Redirect(w, r, "/user_panel", http.StatusSeeOther)
 				}
 				return
 			}
@@ -237,9 +245,9 @@ func main() {
 			return
 		}
 		
-		redirectURL := "/index.html"
+		redirectURL := "/user_panel"
 		if role == "admin" {
-			redirectURL = "/pages/admin.html"
+			redirectURL = "/admin_panel"
 		}
 		
 		w.Header().Set("Content-Type", "application/json")
@@ -268,18 +276,29 @@ func main() {
 
 	time.Sleep(2 * time.Second)
 
-	target, err := url.Parse("http://0.0.0.0:8081/")
+	target, err := url.Parse("http://localhost:8081/")
 	if err != nil { 
 		log.Fatal(err)
-	}
+	}	
 	proxy := httputil.NewSingleHostReverseProxy(target)
-	router.PathPrefix("/files/").Handler(http.StripPrefix("/files", proxy))
+	router.PathPrefix("/files/").HandlerFunc(func(w http.ResponseWriter, r *http.Request) { 
+		session, _ := store.Get(r, "auth-session")
+		auth, ok := session.Values["authenticated"].(bool)
 
-	router.HandleFunc("/index.html", func(w http.ResponseWriter, r *http.Request) {
+		if !ok || !auth { 
+			http.Redirect(w, r, "/login", http.StatusSeeOther)
+			return 
+		}
+
+		r.URL.Path = strings.TrimPrefix(r.URL.Path, "/files")
+		proxy.ServeHTTP(w, r)
+	}).Methods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+
+	router.HandleFunc("/user_panel", func(w http.ResponseWriter, r *http.Request) {
 		session, _ := store.Get(r, "auth-session")
 		auth, ok := session.Values["authenticated"].(bool)
 		
-		log.Printf("Доступ к /index.html, auth=%v, ok=%v", auth, ok)
+		log.Printf("Доступ к /user_panel, auth=%v, ok=%v", auth, ok)
 		
 		if !ok || !auth {
 			log.Printf("Перенаправление на /login")
@@ -291,7 +310,7 @@ func main() {
 		http.ServeFile(w, r, "../frontend/index.html")
 	}).Methods("GET")
 	
-	router.HandleFunc("/pages/admin.html", func(w http.ResponseWriter, r *http.Request) {
+	router.HandleFunc("/admin_panel", func(w http.ResponseWriter, r *http.Request) {
 		session, _ := store.Get(r, "auth-session")
 		auth, ok := session.Values["authenticated"].(bool)
 		
@@ -316,7 +335,7 @@ func main() {
 	router.PathPrefix("/").Handler(http.StripPrefix("/", http.FileServer(http.Dir("../frontend/"))))
 
 	fmt.Println("Сервер запущен на порту 8080")
-	log.Fatal(http.ListenAndServe("0.0.0.0:8080", router))
+	log.Fatal(http.ListenAndServe("localhost:8080", router))
 }
 
 func getEmployees(w http.ResponseWriter, r *http.Request) {
@@ -540,7 +559,7 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	r.ParseMultipartForm(30 << 30)
+	r.ParseMultipartForm(30 << 20)
 
 	file, header, err := r.FormFile("file")
 	if err != nil {
@@ -573,7 +592,12 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func startFilebrowser() { 
-	cmd := exec.Command("filebrowser", "-r", "./uploads", "-p", "8081", "-a", "0.0.0.0")
+	uploadDir := "./uploads"
+	if _, err := os.Stat(uploadDir); os.IsNotExist(err) { 
+		os.MkdirAll(uploadDir, 0755)
+	}
+
+	cmd := exec.Command("filebrowser", "-r", uploadDir, "-p", "8081", "-a", "localhost")
 	if err := cmd.Start(); err != nil { 
 		log.Fatalf("Ошибка запуска filebrowser: %v", err)
 	}
@@ -653,3 +677,4 @@ func corsMiddleware(next http.Handler) http.Handler {
         next.ServeHTTP(w, r)
     })
 }
+
