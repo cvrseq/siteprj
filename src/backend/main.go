@@ -153,6 +153,20 @@ func main() {
 		http.Redirect(w, r, "filemanager", http.StatusMovedPermanently)
 	}).Methods("GET")
 
+
+	router.HandleFunc("/cache-clear", func(w http.ResponseWriter, r *http.Request) {
+		session, _ := store.Get(r, "auth-session")
+		auth, ok := session.Values["authenticated"].(bool)
+
+		if !ok || !auth { 
+			http.Redirect(w, r, "login", http.StatusSeeOther)
+			return
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(map[string]bool{"success": true})
+	}).Methods("GET")
+
 	router.HandleFunc("/upload", uploadHandler).Methods("POST")
 
 
