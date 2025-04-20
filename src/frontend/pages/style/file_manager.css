@@ -1,0 +1,15 @@
+h1 {
+  font-family: 'Actay', sans-serif;
+}
+
+#if {
+  font-family: 'Actay', sans-serif;
+}
+
+@font-face {
+  font-family: 'Actay';
+  src: url('../fonts/OTF/ActayFamily/ActayWide-BoldItalic.otf')
+    format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
