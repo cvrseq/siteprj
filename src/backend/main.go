@@ -20,7 +20,7 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-var store = sessions.NewCookieStore([]byte("секретный-ключ-замените-в-продакшне"))
+var store = sessions.NewCookieStore([]byte("секретный-ключ-в-продакшне"))
 
 
 
@@ -141,6 +141,14 @@ func main() {
 	router.HandleFunc("/devices/{id}", updateDevices).Methods("PUT")
 	router.HandleFunc("/devices/{id}", deleteDevices).Methods("DELETE")
 
+	router.HandleFunc("/admin_employees.html", func(w http.ResponseWriter, r *http.Request) {
+		http.Redirect(w, r, "employees_panel", http.StatusMovedPermanently)
+	}).Methods("GET")
+
+	router.HandleFunc("/admin_employees", func(w http.ResponseWriter, r *http.Request) {
+    	http.Redirect(w, r, "/employees_panel", http.StatusMovedPermanently)
+	}).Methods("GET")
+
 	router.HandleFunc("/index.html", func(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "user_panel", http.StatusMovedPermanently)
 	}).Methods("GET")
@@ -151,6 +159,19 @@ func main() {
 
 	router.HandleFunc("/file_manager.html", func(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "filemanager", http.StatusMovedPermanently)
+	}).Methods("GET")
+
+
+	router.HandleFunc("/employees_panel", func(w http.ResponseWriter, r *http.Request) { 
+		session, _ := store.Get(r, "auth-session")
+		auth, ok := session.Values["authenticated"].(bool)
+
+		if !ok || !auth { 
+			http.Redirect(w, r, "login", http.StatusSeeOther)
+			return
+		}
+
+		http.ServeFile(w, r, "../frontend/pages/admin_employees.html")
 	}).Methods("GET")
 
 
@@ -327,8 +348,11 @@ func main() {
 	router.HandleFunc("/admin_panel", func(w http.ResponseWriter, r *http.Request) {
 		session, _ := store.Get(r, "auth-session")
 		auth, ok := session.Values["authenticated"].(bool)
+
+		log.Printf("Доступ к /admin_panel, auth=%v, ok=%v", auth, ok)
 		
 		if !ok || !auth {
+			log.Printf("Перенаправление на /login")
 			http.Redirect(w, r, "/login", http.StatusSeeOther)
 			return
 		}
@@ -617,6 +641,8 @@ func startFilebrowser() {
 	}
 	log.Printf("filebrowser запущен с PID %d", cmd.Process.Pid)
 }
+
+
 
 
 func updateDevices(w http.ResponseWriter, r *http.Request) {
