@@ -373,7 +373,7 @@ func main() {
 	router.PathPrefix("/").Handler(http.StripPrefix("/", http.FileServer(http.Dir("../frontend/"))))
 
 	fmt.Println("Сервер запущен на порту 8080")
-	log.Fatal(http.ListenAndServe("localhost:8080", router))
+	log.Fatal(http.ListenAndServe("0.0.0.0:80", router))
 }
 
 func getEmployees(w http.ResponseWriter, r *http.Request) {
@@ -635,7 +635,7 @@ func startFilebrowser() {
 		os.MkdirAll(uploadDir, 0755)
 	}
 
-	cmd := exec.Command("filebrowser", "-r", uploadDir, "-p", "8081", "-a", "localhost")
+	cmd := exec.Command("filebrowser", "-r", uploadDir, "-p", "8081", "-a", "0.0.0.0")
 	if err := cmd.Start(); err != nil { 
 		log.Fatalf("Ошибка запуска filebrowser: %v", err)
 	}
