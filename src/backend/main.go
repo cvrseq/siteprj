@@ -373,7 +373,7 @@ func main() {
 	router.PathPrefix("/").Handler(http.StripPrefix("/", http.FileServer(http.Dir("../frontend/"))))
 
 	fmt.Println("Сервер запущен на порту 8080")
-	log.Fatal(http.ListenAndServe("0.0.0.0:80", router))
+	log.Fatal(http.ListenAndServe("0.0.0.0:8080", router))
 }
 
 func getEmployees(w http.ResponseWriter, r *http.Request) {
