@@ -164,9 +164,6 @@ store.Options = &sessions.Options{
 		http.Redirect(w, r, "admin_panel", http.StatusMovedPermanently)
 	}).Methods("GET")
 
-	router.HandleFunc("/file_manager.html", func(w http.ResponseWriter, r *http.Request) {
-		http.Redirect(w, r, "http://195.24.67.115:8081/filemanager", http.StatusMovedPermanently)
-	}).Methods("GET")
 
 
 	router.HandleFunc("/employees_panel", func(w http.ResponseWriter, r *http.Request) { 
