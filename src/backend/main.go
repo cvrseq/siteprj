@@ -168,7 +168,7 @@ store.Options = &sessions.Options{
 	}).Methods("GET")
 
 	router.HandleFunc("/file_manager.html", func(w http.ResponseWriter, r *http.Request) {
-		http.Redirect(w, r, "filemanager", http.StatusMovedPermanently)
+		http.Redirect(w, r, "files", http.StatusMovedPermanently)
 	}).Methods("GET")
 
 
@@ -201,7 +201,7 @@ store.Options = &sessions.Options{
 	router.HandleFunc("/upload", uploadHandler).Methods("POST")
 
 
-	router.HandleFunc("/filemanager", func(w http.ResponseWriter, r *http.Request) { 
+	router.HandleFunc("/files", func(w http.ResponseWriter, r *http.Request) { 
 		session, _ := store.Get(r, "auth-session")
 		auth, ok := session.Values["authenticated"].(bool)
 
