@@ -165,7 +165,7 @@ store.Options = &sessions.Options{
 	}).Methods("GET")
 
 	router.HandleFunc("/file_manager.html", func(w http.ResponseWriter, r *http.Request) {
-		http.Redirect(w, r, "http://195.24.67.115:8081/files/", http.StatusMovedPermanently)
+		http.Redirect(w, r, "/files/", http.StatusMovedPermanently)
 	}).Methods("GET")
 
 
