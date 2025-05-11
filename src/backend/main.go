@@ -113,6 +113,16 @@ var (
 )
 
 func main() {
+	store = sessions.NewCookieStore([]byte("секретный-ключ-в-продакшне"))
+
+
+store.Options = &sessions.Options{
+    Path:     "/",
+    MaxAge:   86400 * 7, 
+    HttpOnly: true,
+    Secure:   false,      
+    SameSite: http.SameSiteLaxMode,
+}
 	var err error
 
 	dbDevices, err = sql.Open("sqlite3", "./db/mydatabase.db")
