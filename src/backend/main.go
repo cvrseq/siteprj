@@ -7,12 +7,9 @@ import (
 	"io"
 	"log"
 	"net/http"
-	"net/http/httputil"
-	"net/url"
 	"os"
 	"os/exec"
 	"path/filepath"
-	"strings"
 	"time"
 
 	"github.com/gorilla/mux"
@@ -168,7 +165,7 @@ store.Options = &sessions.Options{
 	}).Methods("GET")
 
 	router.HandleFunc("/file_manager.html", func(w http.ResponseWriter, r *http.Request) {
-		http.Redirect(w, r, "files", http.StatusMovedPermanently)
+		http.Redirect(w, r, "filemanager", http.StatusMovedPermanently)
 	}).Methods("GET")
 
 
@@ -201,7 +198,7 @@ store.Options = &sessions.Options{
 	router.HandleFunc("/upload", uploadHandler).Methods("POST")
 
 
-	router.HandleFunc("/files", func(w http.ResponseWriter, r *http.Request) { 
+	router.HandleFunc("/filemanager", func(w http.ResponseWriter, r *http.Request) { 
 		session, _ := store.Get(r, "auth-session")
 		auth, ok := session.Values["authenticated"].(bool)
 
@@ -321,23 +318,8 @@ store.Options = &sessions.Options{
 
 	time.Sleep(2 * time.Second)
 
-	target, err := url.Parse("http://localhost:8081/")
-	if err != nil { 
-		log.Fatal(err)
-	}	
-	proxy := httputil.NewSingleHostReverseProxy(target)
-	router.PathPrefix("/files/").HandlerFunc(func(w http.ResponseWriter, r *http.Request) { 
-		session, _ := store.Get(r, "auth-session")
-		auth, ok := session.Values["authenticated"].(bool)
-
-		if !ok || !auth { 
-			http.Redirect(w, r, "/login", http.StatusSeeOther)
-			return 
-		}
-
-		r.URL.Path = strings.TrimPrefix(r.URL.Path, "/files")
-		proxy.ServeHTTP(w, r)
-	}).Methods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+	
+	
 
 	router.HandleFunc("/user_panel", func(w http.ResponseWriter, r *http.Request) {
 		session, _ := store.Get(r, "auth-session")
